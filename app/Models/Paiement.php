@@ -15,7 +15,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int $app_id
  * @property string $ref
+ * @property float|null $montant
+ * @property string|null $devise
  * @property Carbon|null $date
+ * @property string|null $telephone
  * 
  * @property App $app
  *
@@ -28,13 +31,17 @@ class Paiement extends Model
 
 	protected $casts = [
 		'app_id' => 'int',
+		'montant' => 'float',
 		'date' => 'datetime'
 	];
 
 	protected $fillable = [
 		'app_id',
 		'ref',
-		'date'
+		'montant',
+		'devise',
+		'date',
+		'telephone'
 	];
 
 	public function app()

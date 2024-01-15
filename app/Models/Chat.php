@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $users_id
  * @property int $app_id
  * @property Carbon|null $date
+ * @property int|null $sent
  * 
  * @property App $app
  * @property User|null $user
@@ -32,13 +33,15 @@ class Chat extends Model
 	protected $casts = [
 		'users_id' => 'int',
 		'app_id' => 'int',
-		'date' => 'datetime'
+		'date' => 'datetime',
+		'sent' => 'int'
 	];
 
 	protected $fillable = [
 		'users_id',
 		'app_id',
-		'date'
+		'date',
+		'sent'
 	];
 
 	public function app()

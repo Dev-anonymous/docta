@@ -17,6 +17,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $uid
  * @property Carbon|null $date
  * @property Carbon|null $last_login
+ * @property string|null $telephone
+ * @property string|null $email
+ * @property string|null $nom
  * 
  * @property Collection|Chat[] $chats
  * @property Collection|Paiement[] $paiements
@@ -37,7 +40,10 @@ class App extends Model
 	protected $fillable = [
 		'uid',
 		'date',
-		'last_login'
+		'last_login',
+		'telephone',
+		'email',
+		'nom'
 	];
 
 	public function chats()

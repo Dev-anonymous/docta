@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $username
  * @property Carbon|null $date
  * @property int|null $sent
+ * @property int|null $senttouser
  * 
  * @property Chat $chat
  *
@@ -39,7 +40,8 @@ class Message extends Model
 		'appread' => 'int',
 		'fromuser' => 'int',
 		'date' => 'datetime',
-		'sent' => 'int'
+		'sent' => 'int',
+		'senttouser' => 'int'
 	];
 
 	protected $fillable = [
@@ -52,7 +54,8 @@ class Message extends Model
 		'fromuser',
 		'username',
 		'date',
-		'sent'
+		'sent',
+		'senttouser'
 	];
 
 	public function chat()
