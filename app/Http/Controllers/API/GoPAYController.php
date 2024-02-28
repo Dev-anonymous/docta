@@ -63,37 +63,40 @@ class GoPAYController extends Controller
         $r =   gopay_init_payment($amount, $devise, $tel);
         $app = userapp();
 
+        $myref = 'myref' . time() . rand(10000, 90000);
+        $gopay = Gopay::create([
+            'myref' => $myref,
+            'issaved' => 0,
+            'isfailed' => 0,
+            'paydata' => json_encode([
+                'app_id' => $app->id,
+                'ref' => $r->data->ref,
+                'montant' => $amount,
+                'devise' => $devise,
+                'telephone' => $tel
+            ]),
+        ]);
+
         $ref = null;
         if ($r->success) {
-            Gopay::create([
-                'ref' => $r->data->ref,
-                'issaved' => 0,
-                'isfailed' => 0,
-                'paydata' => json_encode([
-                    'app_id' => $app->id,
-                    'ref' => $r->data->ref,
-                    'montant' => $amount,
-                    'devise' => $devise,
-                    'telephone' => $tel
-                ]),
-            ]);
             $ref = $r->data->ref;
+            $gopay->update(compact('ref'));
         }
 
         return response([
             'success' => $r->success,
             'message' => $r->message,
-            'data' => ['ref' => $ref]
+            'data' => ['myref' => $myref]
         ]);
     }
 
 
     public function check_payment()
     {
-        $ref = request()->ref;
+        $myref = request()->myref;
         $ok =  false;
         $issaved = 0;
-        $trans = Gopay::where(['ref' => $ref])->lockForUpdate()->first();
+        $trans = Gopay::where(['myref' => $myref])->lockForUpdate()->first();
 
         if (!$trans) {
             return response([
@@ -102,11 +105,11 @@ class GoPAYController extends Controller
             ]);
         };
 
-        $t = transaction_status($ref);
+        $t = transaction_status($myref);
         $status = @$t->status;
 
         if ($status === 'success') {
-            $issaved = @Gopay::where(['ref' => $ref])->first()->issaved;
+            $issaved = @Gopay::where(['myref' => $myref])->first()->issaved;
             if ($issaved !== 1) {
                 $paydata = json_decode($trans->paydata);
                 saveData($paydata, $trans);

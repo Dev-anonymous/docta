@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AppController;
-use App\Http\Controllers\api\AuthController;
+use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\GoPAYController;
 use Illuminate\Support\Facades\Route;
 
