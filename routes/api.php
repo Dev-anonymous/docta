@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AppController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\DoctaAPIController;
 use App\Http\Controllers\API\GoPAYController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,3 +27,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('user/message/received', [AppController::class, 'received2']);
     Route::post('user/chat/received', [AppController::class, 'chatreceived']);
 });
+
+Route::resource('docta', DoctaAPIController::class);
