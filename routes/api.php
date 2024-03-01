@@ -28,4 +28,4 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('user/chat/received', [AppController::class, 'chatreceived']);
 });
 
-Route::resource('docta', DoctaAPIController::class);
+Route::resource('doctas', DoctaAPIController::class);

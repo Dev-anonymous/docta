@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class DoctaAPIController extends Controller
 {
@@ -15,7 +17,14 @@ class DoctaAPIController extends Controller
      */
     public function index()
     {
-        $data = User::where('user_role', 'docta')->orderBy('id', 'desc')->get();
+        $t = User::where('user_role', 'docta')->orderBy('id', 'desc')->get();
+        $data = [];
+
+        foreach ($t as $el) {
+            $o = (object) $el->toArray();
+            $o->derniere_connexion = $el->derniere_connexion?->format('d-m-Y H:i:s') ?? '-';
+            $data[] = $o;
+        }
         return $data;
     }
 
@@ -27,7 +36,29 @@ class DoctaAPIController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make(request()->all(), [
+            'name' => 'required',
+            'email' => 'required|unique:users',
+            'phone' => 'required|min:10|unique:users',
+            'pass' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $m = implode(" ", $validator->errors()->all());
+            return response([
+                'message' => $m
+            ]);
+        }
+
+        $data = $validator->validated();
+        $data['password'] = Hash::make(request('pass'));
+        $data['user_role'] = 'docta';
+        User::create($data);
+
+        return response([
+            'success' => true,
+            'message' => "Compte créé avec succès."
+        ]);
     }
 
     /**
@@ -48,9 +79,32 @@ class DoctaAPIController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $docta)
     {
-        //
+        $validator = Validator::make(request()->all(), [
+            'name' => 'required',
+            'email' => 'required|unique:users,email,' . $docta->id,
+            'phone' => 'required|min:10|unique:users,phone,' . $docta->id,
+            'pass' => 'sometimes',
+        ]);
+
+        if ($validator->fails()) {
+            $m = implode(" ", $validator->errors()->all());
+            return response([
+                'message' => $m
+            ]);
+        }
+
+        $data = $validator->validated();
+        if (request('pass')) {
+            $data['password'] = Hash::make(request('pass'));
+        }
+        $docta->update($data);
+
+        return response([
+            'success' => true,
+            'message' => "Compte mis à jour avec succès."
+        ]);
     }
 
     /**
@@ -59,8 +113,12 @@ class DoctaAPIController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $docta)
     {
-        //
+        $docta->delete();
+        return response([
+            'success' => true,
+            'message' => "Compte supprimé avec succès."
+        ]);
     }
 }

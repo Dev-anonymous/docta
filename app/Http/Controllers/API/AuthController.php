@@ -15,7 +15,7 @@ class AuthController extends Controller
     {
 
         if (!User::first()) {
-            User::create(['name' => 'Admin', 'email' => 'admin@admin.admin', 'password' => Hash::make('admin1001')]);
+            User::create(['name' => 'Admin', 'user_role' => 'admin', 'email' => 'admin@admin.admin', 'password' => Hash::make('admin1001')]);
         }
 
         // User::create(['name' => 'Admin', 'email' => '0', 'phone' => '0', 'password' => Hash::make('a')]);

@@ -25,6 +25,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property Carbon|null $updated_at
  * @property string|null $phone
  * @property Carbon|null $derniere_connexion
+ * @property string|null $user_role
  *
  * @property Collection|Chat[] $chats
  *
@@ -53,7 +54,8 @@ class User extends Authenticatable
         'password',
         'remember_token',
         'phone',
-        'derniere_connexion'
+        'derniere_connexion',
+        'user_role'
     ];
 
     public function chats()
