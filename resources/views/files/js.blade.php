@@ -3,7 +3,6 @@
 <script src="{{ asset('js/settings.js') }}"></script>
 <script src="{{ asset('js/gleek.js') }}"></script>
 <script src="{{ asset('js/styleSwitcher.js') }}"></script>
-
 <script>
     @if (!Auth::check())
         localStorage.setItem('token', '')
