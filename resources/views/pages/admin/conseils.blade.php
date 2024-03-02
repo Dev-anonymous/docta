@@ -1,5 +1,6 @@
 @extends('layouts.main')
 @section('title', 'Conseils')
+
 @section('body')
     <div class="content-body">
         <div class="row page-titles mx-0">
@@ -15,223 +16,20 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Conseils médicals (<span nb></span>)</h4>
+                            <div class="d-flex justify-content-between">
+                                <h4 class="card-title">Conseils médicals (<span nb></span>)</h4>
+                                <button class="btn btn-default" data-toggle="modal" data-target="#addmdl">Nouveau
+                                    Conseil</button>
+                            </div>
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered zero-configuration">
+                                <table table class="table table-striped table-hover table-condensed">
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Position</th>
-                                            <th>Office</th>
-                                            <th>Age</th>
-                                            <th>Start date</th>
-                                            <th>Salary</th>
+                                            <th></th>
+                                            <th style="width: 100px !important"></th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Tiger Nixon</td>
-                                            <td>System Architect</td>
-                                            <td>Edinburgh</td>
-                                            <td>61</td>
-                                            <td>2011/04/25</td>
-                                            <td>$320,800</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Garrett Winters</td>
-                                            <td>Accountant</td>
-                                            <td>Tokyo</td>
-                                            <td>63</td>
-                                            <td>2011/07/25</td>
-                                            <td>$170,750</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Ashton Cox</td>
-                                            <td>Junior Technical Author</td>
-                                            <td>San Francisco</td>
-                                            <td>66</td>
-                                            <td>2009/01/12</td>
-                                            <td>$86,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Cedric Kelly</td>
-                                            <td>Senior Javascript Developer</td>
-                                            <td>Edinburgh</td>
-                                            <td>22</td>
-                                            <td>2012/03/29</td>
-                                            <td>$433,060</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Airi Satou</td>
-                                            <td>Accountant</td>
-                                            <td>Tokyo</td>
-                                            <td>33</td>
-                                            <td>2008/11/28</td>
-                                            <td>$162,700</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Brielle Williamson</td>
-                                            <td>Integration Specialist</td>
-                                            <td>New York</td>
-                                            <td>61</td>
-                                            <td>2012/12/02</td>
-                                            <td>$372,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Herrod Chandler</td>
-                                            <td>Sales Assistant</td>
-                                            <td>San Francisco</td>
-                                            <td>59</td>
-                                            <td>2012/08/06</td>
-                                            <td>$137,500</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Rhona Davidson</td>
-                                            <td>Integration Specialist</td>
-                                            <td>Tokyo</td>
-                                            <td>55</td>
-                                            <td>2010/10/14</td>
-                                            <td>$327,900</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Colleen Hurst</td>
-                                            <td>Javascript Developer</td>
-                                            <td>San Francisco</td>
-                                            <td>39</td>
-                                            <td>2009/09/15</td>
-                                            <td>$205,500</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Sonya Frost</td>
-                                            <td>Software Engineer</td>
-                                            <td>Edinburgh</td>
-                                            <td>23</td>
-                                            <td>2008/12/13</td>
-                                            <td>$103,600</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Jena Gaines</td>
-                                            <td>Office Manager</td>
-                                            <td>London</td>
-                                            <td>30</td>
-                                            <td>2008/12/19</td>
-                                            <td>$90,560</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Quinn Flynn</td>
-                                            <td>Support Lead</td>
-                                            <td>Edinburgh</td>
-                                            <td>22</td>
-                                            <td>2013/03/03</td>
-                                            <td>$342,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Charde Marshall</td>
-                                            <td>Regional Director</td>
-                                            <td>San Francisco</td>
-                                            <td>36</td>
-                                            <td>2008/10/16</td>
-                                            <td>$470,600</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Haley Kennedy</td>
-                                            <td>Senior Marketing Designer</td>
-                                            <td>London</td>
-                                            <td>43</td>
-                                            <td>2012/12/18</td>
-                                            <td>$313,500</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Tatyana Fitzpatrick</td>
-                                            <td>Regional Director</td>
-                                            <td>London</td>
-                                            <td>19</td>
-                                            <td>2010/03/17</td>
-                                            <td>$385,750</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Michael Silva</td>
-                                            <td>Marketing Designer</td>
-                                            <td>London</td>
-                                            <td>66</td>
-                                            <td>2012/11/27</td>
-                                            <td>$198,500</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Paul Byrd</td>
-                                            <td>Chief Financial Officer (CFO)</td>
-                                            <td>New York</td>
-                                            <td>64</td>
-                                            <td>2010/06/09</td>
-                                            <td>$725,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Gloria Little</td>
-                                            <td>Systems Administrator</td>
-                                            <td>New York</td>
-                                            <td>59</td>
-                                            <td>2009/04/10</td>
-                                            <td>$237,500</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Bradley Greer</td>
-                                            <td>Software Engineer</td>
-                                            <td>London</td>
-                                            <td>41</td>
-                                            <td>2012/10/13</td>
-                                            <td>$132,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Dai Rios</td>
-                                            <td>Personnel Lead</td>
-                                            <td>Edinburgh</td>
-                                            <td>35</td>
-                                            <td>2012/09/26</td>
-                                            <td>$217,500</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Jenette Caldwell</td>
-                                            <td>Development Lead</td>
-                                            <td>New York</td>
-                                            <td>30</td>
-                                            <td>2011/09/03</td>
-                                            <td>$345,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Yuri Berry</td>
-                                            <td>Chief Marketing Officer (CMO)</td>
-                                            <td>New York</td>
-                                            <td>40</td>
-                                            <td>2009/06/25</td>
-                                            <td>$675,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Caesar Vance</td>
-                                            <td>Pre-Sales Support</td>
-                                            <td>New York</td>
-                                            <td>21</td>
-                                            <td>2011/12/12</td>
-                                            <td>$106,450</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Doris Wilder</td>
-                                            <td>Sales Assistant</td>
-                                            <td>Sidney</td>
-                                            <td>23</td>
-                                            <td>2010/09/20</td>
-                                            <td>$85,600</td>
-                                        </tr>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Position</th>
-                                            <th>Office</th>
-                                            <th>Age</th>
-                                            <th>Start date</th>
-                                            <th>Salary</th>
-                                        </tr>
-                                    </tfoot>
+                                    <tbody></tbody>
                                 </table>
                             </div>
                         </div>
@@ -240,8 +38,92 @@
             </div>
         </div>
     </div>
-@endsection
 
+    <div class="modal fade" id="addmdl" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nouveau conseil médical</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">X</span>
+                    </button>
+                </div>
+                <form id="fadd">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-form-label">Conseil médical</label>
+                            <textarea name="conseil" maxlength="128" required class="form-control" cols="30" rows="10"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <div id="rep"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-default"><span></span> Valider</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="delmdl" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Suppression</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">X</span>
+                    </button>
+                </div>
+                <form id="fdel">
+                    <input type="hidden" name="id">
+                    <div class="modal-body">
+                        <p>Confirmer la suppression du conseil <i compte></i> ?</p>
+                        <div class="form-group">
+                            <div id="rep"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-light" data-dismiss="modal">NON</button>
+                        <button type="submit" class="btn btn-default"><span></span> OUI</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editmdl" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Mis à jour conseil</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">X</span>
+                    </button>
+                </div>
+                <form id="fedit">
+                    <input type="hidden" name="id">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-form-label">Conseil médical</label>
+                            <textarea name="conseil" maxlength="128" required class="form-control" cols="30" rows="10"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <div id="rep"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-default"><span></span> Valider</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+@endsection
 @section('js-code')
     <link href="{{ asset('plugins/tables/css/datatable/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
     <script src="{{ asset('plugins/tables/js/jquery.dataTables.min.js') }}"></script>
@@ -249,7 +131,158 @@
     <script src="{{ asset('plugins/tables/js/datatable-init/datatable-basic.min.js') }}"></script>
     <script>
         $(function() {
+            $('#fadd').submit(function() {
+                event.preventDefault();
+                var form = $(this);
+                var btn = $(':submit', form);
+                btn.find('span').removeClass().addClass('fa fa-spinner fa-spin');
+                var data = form.serialize();
+                $(':input', form).attr('disabled', true);
+                var rep = $('#rep', form);
+                rep.stop().slideUp();
+                $.ajax({
+                    type: 'post',
+                    data: data,
+                    url: '{{ route('conseil.store') }}',
+                    success: function(data) {
+                        if (data.success) {
+                            form[0].reset();
+                            rep.removeClass().addClass('alert alert-success');
+                            getdata();
+                            setTimeout(() => {
+                                $('.modal').modal('hide');
+                            }, 2000);
+                        } else {
+                            rep.removeClass().addClass('alert alert-danger');
+                        }
+                        rep.html(data.message).slideDown();
+                    },
+                    error: function(data) {
+                        rep.removeClass().addClass('alert alert-danger').html(
+                            "Erreur, veuillez réessayer.").slideDown();
+                    }
+                }).always(function() {
+                    btn.find('span').removeClass();
+                    $(':input', form).attr('disabled', false);
+                })
+            });
 
+            $('#fdel').submit(function() {
+                event.preventDefault();
+                var form = $(this);
+                var btn = $(':submit', form);
+                btn.find('span').removeClass().addClass('fa fa-spinner fa-spin');
+                var data = form.serialize();
+                var id = $('[name=id]', form).val();
+                $(':input', form).attr('disabled', true);
+                var rep = $('#rep', form);
+                rep.stop().slideUp();
+                $.ajax({
+                    type: 'delete',
+                    data: data,
+                    url: '{{ route('conseil.destroy', '') }}/' + id,
+                    success: function(data) {
+                        if (data.success) {
+                            form[0].reset();
+                            rep.removeClass().addClass('alert alert-success');
+                            getdata();
+                            setTimeout(() => {
+                                $('.modal').modal('hide');
+                            }, 2000);
+                        } else {
+                            rep.removeClass().addClass('alert alert-danger');
+                        }
+                        rep.html(data.message).slideDown();
+                    },
+                    error: function(data) {
+                        console.log(rep);
+                        rep.removeClass().addClass('alert alert-danger').html(
+                            "Erreur, veuillez réessayer.").slideDown();
+                    }
+                }).always(function() {
+                    btn.find('span').removeClass();
+                    $(':input', form).attr('disabled', false);
+                })
+            });
+
+            $('#fedit').submit(function() {
+                event.preventDefault();
+                var form = $(this);
+                var btn = $(':submit', form);
+                btn.find('span').removeClass().addClass('fa fa-spinner fa-spin');
+                var data = form.serialize();
+                var id = $('[name=id]', form).val();
+                $(':input', form).attr('disabled', true);
+                var rep = $('#rep', form);
+                rep.stop().slideUp();
+                $.ajax({
+                    type: 'put',
+                    data: data,
+                    url: '{{ route('conseil.update', '') }}/' + id,
+                    success: function(data) {
+                        if (data.success) {
+                            form[0].reset();
+                            rep.removeClass().addClass('alert alert-success');
+                            getdata();
+                            setTimeout(() => {
+                                $('.modal').modal('hide');
+                            }, 2000);
+                        } else {
+                            rep.removeClass().addClass('alert alert-danger');
+                        }
+                        rep.html(data.message).slideDown();
+                    },
+                    error: function(data) {
+                        rep.removeClass().addClass('alert alert-danger').html(
+                            "Erreur, veuillez réessayer.").slideDown();
+                    }
+                }).always(function() {
+                    btn.find('span').removeClass();
+                    $(':input', form).attr('disabled', false);
+                })
+            });
+
+            var table = $('[table]');
+
+            function getdata() {
+                $.getJSON('{{ route('conseil.index') }}', function(data) {
+                    var str = '';
+                    $.each(data, function(i, e) {
+                        str += `
+                        <tr>
+                            <td>${e.conseil}</td>
+                            <td>
+                                <div class='d-flex'>
+                                    <button data="${escape( JSON.stringify(e) )}" class='bdel btn btn-outline-danger btn-sm m-1'><i class='fa fa-trash'></i></button>
+                                    <button data="${escape( JSON.stringify(e) )}" class='bedit btn btn-default btn-sm m-1'><i class='fa fa-edit'></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        `;
+                    });
+                    $('[nb]').html(data.length);
+                    table.DataTable().destroy();
+                    table.find('tbody').html(str);
+                    $('.bdel').off('click').click(function() {
+                        var d = $(this).attr('data');
+                        var data = JSON.parse(unescape(d));
+                        var mdl = $('#delmdl');
+                        $('[name=id]', mdl).val(data.id);
+                        mdl.modal('show');
+                    })
+                    $('.bedit').off('click').click(function() {
+                        var d = $(this).attr('data');
+                        var data = JSON.parse(unescape(d));
+                        var mdl = $('#editmdl');
+                        $('[name=id]', mdl).val(data.id);
+                        $('[name=conseil]', mdl).val(data.conseil);
+                        mdl.modal('show');
+                    })
+                    table.DataTable();
+                })
+            }
+
+            getdata();
         })
     </script>
 @endsection

@@ -6,10 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Connexion | {{ config('app.name') }}</title>
-    <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/images/favicon.png') }}">
-    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous"> -->
-    <link href="css/style.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ asset('images/icon.png') }}">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 </head>
 
 <body class="h-100">
@@ -32,14 +30,20 @@
                                 <a class="text-center" href="/">
                                     <h4>{{ config('app.name') }}</h4>
                                 </a>
-                                <form class="mt-5 mb-5 login-input">
+                                <form class="mt-5 mb-5 login-input" id="log">
+                                    @csrf
                                     <div class="form-group">
-                                        <input type="email" class="form-control" placeholder="Email">
+                                        <label for="login">Email ou Tel.</label>
+                                        <input required type="email" class="form-control" name="login"
+                                            id="login" placeholder="Ex: 099xxxx ou email@docta.com">
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" class="form-control" placeholder="Mot de passe">
+                                        <label for="pass">Mot de passe</label>
+                                        <input required id="pass" type="password" class="form-control"
+                                            name="password" placeholder="Mot de passe">
                                     </div>
-                                    <button class="btn login-form__btn submit w-100">Connexion</button>
+                                    <div class="w-100" id="rep"></div>
+                                    <button class="btn login-form__btn submit w-100"><span></span> Connexion</button>
                                 </form>
                             </div>
                         </div>
@@ -54,6 +58,48 @@
     <script src="{{ asset('js/settings.js') }}"></script>
     <script src="{{ asset('js/gleek.js') }}"></script>
     <script src="{{ asset('js/styleSwitcher.js') }}"></script>
+
+    <script>
+        $(function() {
+            $('#log').submit(function() {
+                event.preventDefault();
+                var form = $(this);
+                var btn = $(':submit', form);
+                btn.find('span').removeClass().addClass('fa fa-spinner fa-spin');
+                var data = form.serialize();
+                $(':input', form).attr('disabled', true);
+                var rep = $('#rep', form);
+                rep.stop().slideUp();
+                $.ajax({
+                    type: 'post',
+                    data: data,
+                    url: '{{ route('web.login') }}',
+                    success: function(data) {
+                        if (data.success) {
+                            form[0].reset();
+                            localStorage.setItem('token', data.data.token);
+                            rep.removeClass().addClass('alert alert-success');
+                            setTimeout(() => {
+                                location.reload();
+                            }, 2000);
+                        } else {
+                            rep.removeClass().addClass('alert alert-danger');
+                        }
+                        rep.html(data.message).slideDown();
+                    },
+                    error: function(data) {
+                        rep.removeClass().addClass('alert alert-danger').html(
+                            "Erreur, veuillez réessayer.").slideDown();
+                    }
+                }).always(function() {
+                    btn.find('span').removeClass();
+                    $(':input', form).attr('disabled', false);
+                })
+
+
+            })
+        })
+    </script>
 </body>
 
 </html>

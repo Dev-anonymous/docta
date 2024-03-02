@@ -4,12 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\App;
 use App\Models\Solde;
+use App\Models\User;
 
 class AdminController extends Controller
 {
     public function index()
     {
-        return view('pages.admin.index');
+        $docta = User::where('user_role', 'docta')->count();
+        $client = App::count();
+        $clientactif = App::count();
+
+        return view('pages.admin.index', compact('docta', 'client', 'clientactif'));
     }
 
     public function clients()

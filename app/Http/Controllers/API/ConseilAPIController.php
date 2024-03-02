@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Conseilmedical;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ConseilAPIController extends Controller
 {
@@ -14,7 +16,8 @@ class ConseilAPIController extends Controller
      */
     public function index()
     {
-        //
+        $data = Conseilmedical::orderBy('id', 'desc')->get();
+        return $data;
     }
 
     /**
@@ -25,16 +28,33 @@ class ConseilAPIController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make(request()->all(), [
+            'conseil' => 'required|unique:conseilmedical|max:128',
+        ]);
+
+        if ($validator->fails()) {
+            $m = implode(" ", $validator->errors()->all());
+            return response([
+                'message' => $m
+            ]);
+        }
+
+        $data = $validator->validated();
+        Conseilmedical::create($data);
+
+        return response([
+            'success' => true,
+            'message' => "Conseil médical créé avec succès."
+        ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Conseilmedical  $conseilmedical
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Conseilmedical $conseil)
     {
         //
     }
@@ -43,22 +63,43 @@ class ConseilAPIController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Conseilmedical  $conseilmedical
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Conseilmedical $conseil)
     {
-        //
+        $validator = Validator::make(request()->all(), [
+            'conseil' => 'required|unique:conseilmedical|max:128',
+        ]);
+
+        if ($validator->fails()) {
+            $m = implode(" ", $validator->errors()->all());
+            return response([
+                'message' => $m
+            ]);
+        }
+
+        $data = $validator->validated();
+        $conseil->update($data);
+
+        return response([
+            'success' => true,
+            'message' => "Conseil médical mis à jour avec succès."
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Conseilmedical  $conseilmedical
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Conseilmedical $conseil)
     {
-        //
+        $conseil->delete();
+        return response([
+            'success' => true,
+            'message' => "Conseil médical supprimé avec succès."
+        ]);
     }
 }

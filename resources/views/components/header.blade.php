@@ -34,7 +34,8 @@
                                     <a href="page-lock.html"><i class="icon-lock"></i> <span>Lock
                                             Screen</span></a>
                                 </li> --}}
-                                <li><a href="page-login.html"><i class="icon-key"></i> <span>Se déconnecter</span></a>
+                                <li><a href="#" logout><i class="icon-key"></i> <span>Se
+                                            déconnecter</span></a>
                                 </li>
                             </ul>
                         </div>

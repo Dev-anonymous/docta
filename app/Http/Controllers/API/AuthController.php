@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthController extends Controller
 {
@@ -86,11 +87,16 @@ class AuthController extends Controller
     public function logout()
     {
         if (Auth::check()) {
-            /** @var \App\Models\User $user **/
-            $user = auth()->user();
-            $user->tokens()->delete();
-            Auth::guard('web')->logout();
+            $accessToken = request()->bearerToken();
+            $token = PersonalAccessToken::findToken($accessToken);
+            if ($token) {
+                $token->delete();
+            }
+            Auth::logout();
         }
-        return response()->json([]);
+        if (request()->wantsJson()) {
+            return response()->json(['success' => true]);
+        }
+        return redirect(route('login'));
     }
 }
