@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\App;
+use App\Models\Contact;
 use App\Models\Solde;
 use App\Models\User;
 
@@ -33,5 +34,11 @@ class AdminController extends Controller
     public function conseils()
     {
         return view('pages.admin.conseils');
+    }
+
+    public function contact()
+    {
+        $data = Contact::orderBy('id', 'desc')->get();
+        return view('pages.admin.contact', compact('data'));
     }
 }

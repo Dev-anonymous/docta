@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
             Route::get('clients', 'clients')->name('admin.client');
             Route::get('docta', 'docta')->name('admin.docteur');
             Route::get('conseils', 'conseils')->name('admin.conseils');
+            Route::get('contact', 'contact')->name('admin.contact');
         });
     });
 });

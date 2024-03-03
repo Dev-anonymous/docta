@@ -56,8 +56,8 @@
                 <i class="bi bi-list mobile-nav-toggle"></i>
             </nav>
 
-            <a href="#appointment" class="appointment-btn scrollto">
-                <span class="d-none d-md-inline"><i class="fa fa-download"></i> Download APP</span>
+            <a href="#" class="appointment-btn" id="dapp">
+                <span class="d-none d-md-inline"><i class="fa fa-download"></i> Download </span>APP
             </a>
 
         </div>
@@ -150,8 +150,8 @@
                     <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
                         <div class="count-box">
                             <i class="fas fa-user-group"></i>
-                            <span data-purecounter-start="0" data-purecounter-end="12" data-purecounter-duration="1"
-                                class="purecounter"></span>
+                            <span data-purecounter-start="0" data-purecounter-end="2028"
+                                data-purecounter-duration="1" class="purecounter"></span>
                             <p>Users</p>
                         </div>
                     </div>
@@ -216,7 +216,8 @@
 
                     <div class="col-lg-8 mt-5 mt-lg-0">
 
-                        <form action="forms/contact.php" method="post" role="form" class="php-email-form">
+                        <form id="fcont" action="#" class="php-email-form">
+                            @csrf
                             <div class="row">
                                 <div class="col-md-6 form-group">
                                     <input type="text" name="name" class="form-control" id="name"
@@ -224,7 +225,7 @@
                                 </div>
                                 <div class="col-md-6 form-group mt-3 mt-md-0">
                                     <input type="email" class="form-control" name="email" id="email"
-                                        placeholder="Your Email" required>
+                                        placeholder="Your Email or Phone" required>
                                 </div>
                             </div>
                             <div class="form-group mt-3">
@@ -235,11 +236,9 @@
                                 <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
                             </div>
                             <div class="my-3">
-                                <div class="loading">Loading</div>
-                                <div class="error-message"></div>
-                                <div class="sent-message">Your message has been sent. Thank you!</div>
+                                <div id="rep" class="loading"></div>
                             </div>
-                            <div class="text-center"><button type="submit">Send Message</button></div>
+                            <div class="text-center"><button type="submit"><span></span> Send Message</button></div>
                         </form>
 
                     </div>
@@ -277,10 +276,53 @@
     <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
+    {{-- <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script> --}}
 
     <script src="{{ asset('assets/js/main.js') }}"></script>
+    <script>
+        document.getElementById("dapp").addEventListener("click", function() {
+            event.preventDefault();
+            location.assign('{{ asset('docta.apk') }}');
+        });
+    </script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" referrerpolicy="no-referrer"></script>
+    <script>
+        $('#fcont').submit(function() {
+            event.preventDefault();
+            var form = $(this);
+            var btn = $(':submit', form);
+            btn.find('span').removeClass().addClass('fa fa-spinner fa-spin');
+            var data = form.serialize();
+            $(':input', form).attr('disabled', true);
+            var rep = $('#rep', form);
+            rep.stop().slideUp();
+            $.ajax({
+                type: 'post',
+                data: data,
+                url: '{{ route('contact.store') }}',
+                success: function(data) {
+                    if (data.success) {
+                        form[0].reset();
+                        rep.removeClass().addClass('alert alert-success');
+                        setTimeout(() => {
+                            rep.stop().slideUp();
+                        }, 3000);
+                    } else {
+                        rep.removeClass().addClass('alert alert-danger');
+                    }
+                    rep.html(data.message).slideDown();
+                },
+                error: function(data) {
+                    rep.removeClass().addClass('alert alert-danger').html(
+                        "Oops ! please retry.").slideDown();
+                }
+            }).always(function() {
+                btn.find('span').removeClass();
+                $(':input', form).attr('disabled', false);
+            })
+        })
+    </script>
 </body>
 
 </html>

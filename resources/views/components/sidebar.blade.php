@@ -10,6 +10,7 @@
                     <li><a href="{{ route('admin.client') }}">Clients</a></li>
                     <li><a href="{{ route('admin.docteur') }}">Docteurs</a></li>
                     <li><a href="{{ route('admin.conseils') }}">Conseils</a></li>
+                    <li><a href="{{ route('admin.contact') }}">Contact & Feedback</a></li>
                 </ul>
             </li>
 
