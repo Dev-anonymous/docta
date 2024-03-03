@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\App;
 use App\Models\Contact;
+use App\Models\Forfait;
 use App\Models\Solde;
+use App\Models\Taux;
 use App\Models\User;
 
 class AdminController extends Controller
@@ -13,8 +15,8 @@ class AdminController extends Controller
     {
         $docta = User::where('user_role', 'docta')->count();
         $client = App::count();
-        $clientactif = App::count();
-
+        $min_date = now('Africa/Lubumbashi')->subDays(7)->format("Y-m-d H:i:s");
+        $clientactif = App::whereDate('last_login', '>=' , $min_date)->count();
         return view('pages.admin.index', compact('docta', 'client', 'clientactif'));
     }
 
@@ -40,5 +42,17 @@ class AdminController extends Controller
     {
         $data = Contact::orderBy('id', 'desc')->get();
         return view('pages.admin.contact', compact('data'));
+    }
+
+    public function facturation()
+    {
+        $data = Forfait::first();
+        return view('pages.admin.facturation', compact('data'));
+    }
+
+    public function taux()
+    {
+        $data = Taux::first();
+        return view('pages.admin.taux', compact('data'));
     }
 }

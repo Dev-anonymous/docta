@@ -8,21 +8,22 @@ use Illuminate\Support\Facades\DB;
 
 $xApiKey = "MFE2R0s0cEZMZVh2Rm8zb0tZNjNMdz09";
 
-define('API_BASE', 'https://gopay.gooomart.com/api/v1');
+define('API_BASE', 'https://gopay.gooomart.com/api/v2');
 define('API_HEADEARS',  [
     "Accept: application/json",
     "Content-Type: application/json",
     "x-api-key: $xApiKey"
 ]);
 
-function gopay_init_payment($amount, $devise, $telephone)
+function gopay_init_payment($amount, $devise, $telephone, $myref)
 {
     $_api_headers = API_HEADEARS;
     $telephone = (float) $telephone;
     $data = array(
         "telephone" => "+$telephone",
-        "amount" => "$amount",
-        "devise" => "$devise"
+        "amount" => $amount,
+        "devise" => $devise,
+        "myref" => $myref,
     );
 
     $data = json_encode($data);
@@ -53,25 +54,24 @@ function gopay_init_payment($amount, $devise, $telephone)
 function completeTrans()
 {
     $pendingPayments = Gopay::where(['issaved' => '0', 'isfailed' => '0'])->get();
-    foreach ($pendingPayments as $e) {
-        $paydata = json_decode($e->paydata);
-        $ref = $e->ref;
-        $t = transaction_status($ref);
-        if ($t === true) {
-            saveData($paydata, $e);
-        } else {
-            if ($t === false) {
-                $e->update(['isfailed' => 1]);
-            }
+    foreach ($pendingPayments as $trans) {
+        $paydata = json_decode($trans->paydata);
+        $myref = $trans->myref;
+        $t = transaction_status($myref);
+        $status = @$t->status;
+        if ($status === 'success') {
+            saveData($paydata, $trans);
+        } else if ($status === 'failed') {
+            $trans->update(['isfailed' => 1]);
         }
     }
 }
 
-function transaction_status($ref)
+function transaction_status($myref)
 {
     $_api_headers = API_HEADEARS;
 
-    $gateway = API_BASE . "/payment/check/" . $ref;
+    $gateway = API_BASE . "/payment/check/" . $myref;
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $gateway);
     curl_setopt($ch, CURLOPT_HTTPHEADER, $_api_headers);
@@ -94,15 +94,13 @@ function saveData($paydata, $trans)
     try {
         DB::transaction(function () use ($paydata, $trans) {
             $d = (array) $paydata;
+            $d['ref'] = $trans->ref;
             $d['date'] =  now('Africa/Lubumbashi');
             Paiement::create($d);
             $montant = $paydata->montant;
             $devise = $paydata->devise;
             $taux = Taux::first();
-            if (!$taux) {
-                $taux = Taux::create(['cdf_usd' => 0.00037, 'usd_cdf' => 2690]);
-            }
-
+             
             if ($devise == 'USD') {
                 $val = $montant;
             } else {
@@ -118,7 +116,7 @@ function saveData($paydata, $trans)
             $trans->update(['issaved' => 1]);
         });
     } catch (\Throwable $th) {
-        //throw $th;
+        // throw $th;
     }
 }
 

@@ -35,17 +35,27 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($app as $el)
+                                            @php
+                                                $actif = '';
+                                                if ($el->last_login) {
+                                                    $n = now()->diffInDays($el->last_login );
+                                                    if($n <= 7){
+                                                        $actif = '<b style="cursor:pointer" title="Utilisateur actif" data-toggle="tooltip" class="badge badge-success"> <i class="fa fa-check-circle"></i> ACTIF</b>';
+                                                    }
+                                                }
+                                            @endphp
                                             <tr>
                                                 <td>{{ $el->uid }}</td>
                                                 <td>
-                                                    <span class="badge badge-danger font-weight-bold" style="min-width: 120px">
+                                                    <span class="badge badge-danger font-weight-bold"
+                                                        style="min-width: 120px">
                                                         {{ "$ " . number_format($el->soldes()->first()->solde_usd, 2, '.', ' ') }}
                                                     </span>
                                                 </td>
                                                 <td>{!! "$el->email<br>$el->telephone" !!}</td>
                                                 <td>{{ $el->nom ?? '-' }}</td>
+                                                <td>{{ $el->last_login?->format('d-m-Y H:i:s') }} {!! $actif !!}</td>
                                                 <td>{{ $el->date?->format('d-m-Y H:i:s') }}</td>
-                                                <td>{{ $el->last_login?->format('d-m-Y H:i:s') }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>

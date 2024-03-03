@@ -9,5 +9,10 @@
         background: #02BBFF;
         color: #fff;
     }
-</style>
 
+    .metismenu a.active {
+        background: #02BBFF !important;
+        color: #000 !important;
+        font-weight: 700 !important;
+    }
+</style>

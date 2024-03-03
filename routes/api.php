@@ -6,7 +6,9 @@ use App\Http\Controllers\API\ConseilAPIController;
 use App\Http\Controllers\API\ConseilMedicalAPIController;
 use App\Http\Controllers\API\ContactAPIController;
 use App\Http\Controllers\API\DoctaAPIController;
+use App\Http\Controllers\API\ForfaitAPIController;
 use App\Http\Controllers\API\GoPAYController;
+use App\Http\Controllers\API\TauxAPIController;
 use App\Models\Conseilmedical;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +36,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // ADMIN
     Route::resource('doctas', DoctaAPIController::class);
     Route::resource('conseil', ConseilAPIController::class);
+    Route::resource('forfait', ForfaitAPIController::class);
+    Route::resource('taux', TauxAPIController::class);
 });
 
 Route::resource('contact', ContactAPIController::class);

@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int|null $issaved
  * @property int|null $isfailed
+ * @property string|null $myref
  * @property string|null $ref
  * @property string|null $paydata
  * @property Carbon|null $date
@@ -35,6 +36,7 @@ class Gopay extends Model
 	protected $fillable = [
 		'issaved',
 		'isfailed',
+		'myref',
 		'ref',
 		'paydata',
 		'date'

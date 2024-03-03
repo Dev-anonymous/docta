@@ -59,8 +59,6 @@ class GoPAYController extends Controller
                 ]);
             }
         }
-
-        $r =   gopay_init_payment($amount, $devise, $tel);
         $app = userapp();
 
         $myref = 'myref' . time() . rand(10000, 90000);
@@ -70,12 +68,12 @@ class GoPAYController extends Controller
             'isfailed' => 0,
             'paydata' => json_encode([
                 'app_id' => $app->id,
-                'ref' => $r->data->ref,
                 'montant' => $amount,
                 'devise' => $devise,
                 'telephone' => $tel
             ]),
         ]);
+        $r =   gopay_init_payment($amount, $devise, $tel, $myref);
 
         $ref = null;
         if ($r->success) {

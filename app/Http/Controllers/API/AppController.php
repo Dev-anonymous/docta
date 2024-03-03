@@ -129,10 +129,7 @@ class AppController extends Controller
         }
 
         $forf = Forfait::first();
-        if (!$forf) {
-            $forf = Forfait::create(['cout' => 0.008]);
-        }
-
+         
         $sol = number_format($solde->solde_usd, 3, '.', ' ');
         $fac = number_format($forf->cout, 3, '.', ' ');
 
