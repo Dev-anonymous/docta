@@ -24,17 +24,20 @@ Route::get('login', function () {
 Route::post('/auth/login', [AuthController::class, 'login'])->name('web.login');
 
 Route::middleware('auth')->group(function () {
-    Route::post('/auth/logout', [AuthController::class, 'logout'])->name('web.logout');
+    Route::middleware('admin.mdwl')->group(function () {
 
-    Route::prefix('admin-dash')->group(function () {
-        Route::controller(AdminController::class)->group(function () {
-            Route::get('', 'index')->name('admin.home');
-            Route::get('clients', 'clients')->name('admin.client');
-            Route::get('docta', 'docta')->name('admin.docteur');
-            Route::get('conseils', 'conseils')->name('admin.conseils');
-            Route::get('contact', 'contact')->name('admin.contact');
-            Route::get('facturation', 'facturation')->name('admin.facturation');
-            Route::get('taux', 'taux')->name('admin.taux');
+        Route::post('/auth/logout', [AuthController::class, 'logout'])->name('web.logout');
+
+        Route::prefix('admin-dash')->group(function () {
+            Route::controller(AdminController::class)->group(function () {
+                Route::get('', 'index')->name('admin.home');
+                Route::get('clients', 'clients')->name('admin.client');
+                Route::get('docta', 'docta')->name('admin.docteur');
+                Route::get('conseils', 'conseils')->name('admin.conseils');
+                Route::get('contact', 'contact')->name('admin.contact');
+                Route::get('facturation', 'facturation')->name('admin.facturation');
+                Route::get('taux', 'taux')->name('admin.taux');
+            });
         });
     });
 });
