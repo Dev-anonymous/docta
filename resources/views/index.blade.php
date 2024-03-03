@@ -6,7 +6,11 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Accueil - {{ config('app.name') }}</title>
     <link rel="icon" type="image/png" href="{{ asset('images/icon.png') }}">
-    <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+    <meta name="description" content="Your health is our priority.">
+    <meta property="og:title" content="Welcome to {{ config('app.name') }}">
+    <meta property="og:description" content="Your health is our priority.">
+    <meta property="og:image" content="{{ asset('images/logo.png') }}">
+    <meta property="og:url" content="{{ url()->current() }}">
 
     <link
         href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
@@ -66,7 +70,7 @@
     <section id="hero" class="d-flex align-items-center">
         <div class="container">
             <h1>Welcome to {{ config('app.name') }}</h1>
-            <h2>your health is our priority.</h2>
+            <h2>Your health is our priority.</h2>
             <a href="#about" class="btn-get-started scrollto">Get Started</a>
         </div>
     </section>
