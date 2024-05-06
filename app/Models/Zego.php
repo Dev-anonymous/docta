@@ -9,26 +9,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Forfait
+ * Class Zego
  * 
  * @property int $id
- * @property float $appel
- * @property float|null $sms
+ * @property int|null $appid
+ * @property string|null $appsign
  *
  * @package App\Models
  */
-class Forfait extends Model
+class Zego extends Model
 {
-	protected $table = 'forfait';
+	protected $table = 'zego';
 	public $timestamps = false;
 
 	protected $casts = [
-		'appel' => 'float',
-		'sms' => 'float'
+		'appid' => 'int'
 	];
 
 	protected $fillable = [
-		'appel',
-		'sms'
+		'appid',
+		'appsign'
 	];
 }

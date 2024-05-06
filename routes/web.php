@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('contact', 'contact')->name('admin.contact');
                 Route::get('facturation', 'facturation')->name('admin.facturation');
                 Route::get('taux', 'taux')->name('admin.taux');
+                Route::get('zegocloud', 'zegocloud')->name('admin.zegocloud');
             });
         });
     });

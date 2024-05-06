@@ -17,17 +17,29 @@ class AppMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+        $deviceid = $request->header('deviceid');
         $uid = $request->header('uid');
-        $app = App::where('uid', $uid)->first();
-        if (!$app) {
-            if (request()->wantsJson()) {
-                return response(["message" => "Nah"], 403);
+
+        $app = App::where('deviceid', $deviceid)->first();
+        if ($app) {
+            if ($uid) {
+                $app->update(['uid' => $uid]);
             }
-            abort(403);
+        } else {
+            $app = App::where('uid', $uid)->first();
+            if ($app) {
+                if ($deviceid) {
+                    $app->update(['deviceid' => $deviceid]);
+                }
+            } else {
+                if (request()->wantsJson()) {
+                    return response(["message" => "Nahe"], 403);
+                }
+                abort(403);
+            }
         }
         $now = now('Africa/Lubumbashi');
         $app->update(['last_login' => $now]);
-
         return $next($request);
     }
 }

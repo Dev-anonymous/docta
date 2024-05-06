@@ -29,7 +29,7 @@ class ConseilAPIController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make(request()->all(), [
-            'conseil' => 'required|unique:conseilmedical|max:128',
+            'conseil' => 'required|unique:conseilmedical',
         ]);
 
         if ($validator->fails()) {
@@ -69,7 +69,7 @@ class ConseilAPIController extends Controller
     public function update(Request $request, Conseilmedical $conseil)
     {
         $validator = Validator::make(request()->all(), [
-            'conseil' => 'required|unique:conseilmedical|max:128',
+            'conseil' => 'required|unique:conseilmedical',
         ]);
 
         if ($validator->fails()) {

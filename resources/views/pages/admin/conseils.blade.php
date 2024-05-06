@@ -52,7 +52,7 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label class="col-form-label">Conseil médical</label>
-                            <textarea name="conseil" maxlength="128" required class="form-control" cols="30" rows="10"></textarea>
+                            <textarea name="conseil" required class="form-control" cols="30" rows="10"></textarea>
                         </div>
                         <div class="form-group">
                             <div id="rep"></div>
@@ -108,7 +108,7 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label class="col-form-label">Conseil médical</label>
-                            <textarea name="conseil" maxlength="128" required class="form-control" cols="30" rows="10"></textarea>
+                            <textarea name="conseil" required class="form-control" cols="30" rows="10"></textarea>
                         </div>
                         <div class="form-group">
                             <div id="rep"></div>

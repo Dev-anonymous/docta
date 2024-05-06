@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * Class Message
  * 
  * @property int $id
+ * @property string|null $local_id
  * @property int $chat_id
  * @property string|null $type
  * @property string|null $message
@@ -45,6 +46,7 @@ class Message extends Model
 	];
 
 	protected $fillable = [
+		'local_id',
 		'chat_id',
 		'type',
 		'message',

@@ -5,9 +5,12 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\App;
 use App\Models\Chat;
+use App\Models\Conseilmedical;
 use App\Models\Forfait;
 use App\Models\Message;
 use App\Models\Solde;
+use App\Models\User;
+use App\Models\Zego;
 use DateTime;
 use Illuminate\Support\Facades\Validator;
 
@@ -15,25 +18,30 @@ class AppController extends Controller
 {
     public function uid()
     {
+        $now = now('Africa/Lubumbashi');
+        $deviceid = request('deviceid');
+        if (!$deviceid) {
+            abort(403);
+        }
         $uid = request('uid');
         if (!$uid) {
             $uid =  makeRand("USER-");
-        }
-        $app = App::where('uid', $uid)->first();
-        $now = now('Africa/Lubumbashi');
-        if (!$app) {
             while (1) {
-                $app = App::where('uid', $uid)->first();
-                if ($app) {
+                $t = App::where('uid', $uid)->first();
+                if ($t) {
                     $uid =  makeRand("USER-");
                 } else {
                     break;
                 }
             }
-            App::create(['uid' => $uid, 'date' => $now, 'last_login' => $now]);
+        }
+        $app = App::where('deviceid', $deviceid)->first();
+        if (!$app) {
+            $app = App::create(['deviceid' => $deviceid, 'uid' => $uid, 'date' => $now, 'last_login' => $now]);
         } else {
             $app->update(['last_login' => $now]);
         }
+
         return response()->json([
             'success' => true,
             'message' => "Welcome $uid",
@@ -43,7 +51,12 @@ class AppController extends Controller
 
     public function message()
     {
+        canmessage();
+        $app = userapp();
+        $chat = $app->chats()->first();
+
         $validator = Validator::make(request()->all(), [
+            'id' => 'required',
             'message' => 'required',
             'file' => 'sometimes',
             'date' => 'required:date'
@@ -56,29 +69,49 @@ class AppController extends Controller
             ]);
         }
 
-        $app = userapp();
-
         $chat = $app->chats()->first();
         if (!$chat) {
             $chat = Chat::create(['app_id' => $app->id, 'date' => now('Africa/Lubumbashi')]);
         }
 
-        $message = request('message');
-        $date = request('date');
-        $file = request('file');
+        $id = request('id');
+        $chat_id = request('chat_id');
 
-        $data = compact('message', 'date');
-        $data['type'] = $file ? 'file' : 'text';
-        $data['file'] = $file;
-        $data['appread'] = 1;
-        $data['fromuser'] = 0;
-        $data['username'] = $app['nom'] ?? $app['uid'];
-        $data['chat_id'] = $chat->id;
-        Message::create($data);
+        $r = Message::where(['local_id' => $id, 'chat_id' => $chat_id, 'fromuser' => 0])->first();
+        if (!$r) {
+            $message = request('message');
+            $date = request('date');
+            $file = request('file');
+
+            $data = compact('message', 'date');
+
+            $data['type'] = $file ? 'file' : 'text';
+            $data['file'] = $file;
+            $data['appread'] = 1;
+            $data['fromuser'] = 0;
+            $data['username'] = $app['nom'] ?? $app['uid'];
+            $data['chat_id'] = $chat->id;
+            $data['local_id'] = $id;
+            Message::create($data);
+        }
+
+        $solde = $app->soldes()->first();
+        $forf = Forfait::first();
+        $sms = @$forf->sms;
+        $newsol = (float) @$solde->solde_usd - (float) $sms;
+        if ($newsol < 0) $newsol = 0;
+        $solde->update(['solde_usd' => $newsol]);
+
+        $sol = number_format($newsol, 3, '.', ' ');
+        $sms = number_format($forf->sms, 3, '.', ' ');
+        $appel = number_format($forf->appel, 3, '.', ' ');
+
+        $data = ['solde' => $sol, 'sms' => $sms, 'appel' => $appel];
 
         return response()->json([
             'success' => true,
-            'message' => "Saved"
+            'message' => "Saved",
+            'data' => $data,
         ]);
     }
 
@@ -101,10 +134,23 @@ class AppController extends Controller
             }
             $messages = $tmp;
         }
+
+        $conseil = Conseilmedical::orderBy('id')->get();
+        $docta = User::where('user_role', 'docta')->orderBy('derniere_connexion', 'desc')->pluck('id')->all();
+        $zego = Zego::first();
+
+        $userread = Message::where(['chat_id' => $chat->id, 'fromuser' => 0, 'userread' => 0])->first();
+
         return response()->json([
             'success' => true,
             'message' => '',
-            'data' => $messages
+            'data' => [
+                'message' => $messages,
+                'markhasread' => !(bool) $userread,
+                'conseils' => $conseil,
+                'docta' => $docta,
+                'zego' => $zego,
+            ]
         ]);
     }
 
@@ -113,6 +159,13 @@ class AppController extends Controller
         $data = explode(',', request('data'));
         $data = array_filter($data);
         Message::whereIn('id', $data)->update(['sent' => 1]);
+
+        $m = Message::whereIn('id', $data)->get();
+        foreach ($m as $mes) {
+            $chat_id = $mes->chat_id;
+            Message::where('chat_id', $chat_id)->update(['appread' => 1]);
+        }
+
         return response()->json([
             'success' => true,
             'message' => '',
@@ -129,11 +182,12 @@ class AppController extends Controller
         }
 
         $forf = Forfait::first();
-         
-        $sol = number_format($solde->solde_usd, 3, '.', ' ');
-        $fac = number_format($forf->cout, 3, '.', ' ');
 
-        $data = ['solde' => $sol, 'facturation' => $fac];
+        $sol = number_format($solde->solde_usd, 3, '.', ' ');
+        $sms = number_format($forf->sms, 3, '.', ' ');
+        $appel = number_format($forf->appel, 3, '.', ' ');
+
+        $data = ['solde' => $sol, 'sms' => $sms, 'appel' => $appel];
         return response()->json([
             'success' => true,
             'message' => '',
@@ -181,27 +235,76 @@ class AppController extends Controller
     // docta admin
     public function getchat()
     {
+        $historique = (array) @json_decode(request('historique'));
+
+        foreach ($historique as $uid => $hist) {
+            $app = App::where('uid', $uid)->first();
+            if ($app) {
+                $sec = array_sum($hist);
+                $forf = Forfait::first();
+                $cout =  $sec * $forf->appel;
+                if ($cout) {
+                    $soldOb = $app->soldes()->first();
+                    $newsolde = (float) ((float) $soldOb->solde_usd - $cout);
+                    if ($newsolde < 0) {
+                        $newsolde = 0;
+                    }
+                    $soldOb->update(['solde_usd' => $newsolde]);
+                }
+            }
+        }
+
+        $emptychat = Chat::whereNull('users_id')->get();
+        $users = User::where('user_role', 'docta')->pluck('id')->all();
+        foreach ($emptychat as $el) {
+            $u = $users[array_rand($users)];
+            $el->update(['users_id' => $u]);
+        }
+
         /** @var $user App\Models\Usere **/
         $user = auth()->user();
         $chat = $user->chats()->orderBy('id', 'desc')->with('app');
 
         $chatClone = clone $chat;
         $chatid = $chatClone->pluck('id')->all();
-        $chats = $chat->get();
-        // $chats = $chat->where(['sent' => 0])->get();
+        $chats = $chat->where(['sent' => 0])->get();
 
         $messages = [];
-        $d = Message::where(['senttouser' => 0])->whereIn('chat_id', $chatid)->get();
+        $d = Message::where(['senttouser' => 0, 'fromuser' => 0])->whereIn('chat_id', $chatid)->get();
         foreach ($d as $dd) {
             $mm = $dd->toArray();
             $mm['date'] = $dd->date->format('Y-m-d H:i:s');
             $messages[] = $mm;
         }
 
+        $apps = App::all();
+        $soldes = [];
+        foreach ($apps as $el) {
+            $sol = (float) @$el->soldes()->first()->solde_usd;
+            $uid = $el->uid;
+            $soldes[$uid] = round($sol, 3);
+        }
+
+        $zego = Zego::first();
+
+        $forf = Forfait::first();
+        $coutappel =  $forf->appel;
+
+        $appread = [];
+        foreach ($user->chats()->get() as $c) {
+            $ap = Message::where(['chat_id' => $c->id, 'fromuser' => 1, 'appread' => 0])->first();
+            if (!$ap) {
+                $historique = (array) @json_decode(request('historique'));
+                $appread[] = $c->id;
+            }
+        }
+
+        $conseils = Conseilmedical::orderBy('id')->get();
+
         return response([
             'success' => true,
             'message' => "",
-            'data' => compact('chats', 'messages')
+            'data' => compact('chats', 'appread', 'messages', 'zego', 'soldes', 'coutappel', 'conseils')
         ]);
     }
 
@@ -210,6 +313,13 @@ class AppController extends Controller
         $data = explode(',', request('data'));
         $data = array_filter($data);
         Message::whereIn('id', $data)->update(['senttouser' => 1]);
+
+        $m = Message::whereIn('id', $data)->get();
+        foreach ($m as $mes) {
+            $chat_id = $mes->chat_id;
+            Message::where('chat_id', $chat_id)->update(['userread' => 1]);
+        }
+
         return response()->json([
             'success' => true,
             'message' => '',
@@ -232,6 +342,7 @@ class AppController extends Controller
     {
         $validator = Validator::make(request()->all(), [
             'chat_id' => 'required|exists:chat,id',
+            'id' => 'required',
             'message' => 'required',
             'file' => 'sometimes',
             'date' => 'required:date'
@@ -246,18 +357,26 @@ class AppController extends Controller
 
         $user = auth()->user();
 
-        $message = request('message');
-        $date = request('date');
-        $file = request('file');
+        $id = request('id');
+        $chat_id = request('chat_id');
 
-        $data = compact('message', 'date');
-        $data['type'] = $file ? 'file' : 'text';
-        $data['file'] = $file;
-        $data['appread'] = 1;
-        $data['fromuser'] = 1;
-        $data['username'] = $user->name;
-        $data['chat_id'] = request('chat_id');
-        Message::create($data);
+        $r = Message::where(['local_id' => $id, 'chat_id' => $chat_id, 'fromuser' => 1])->first();
+        if (!$r) {
+            $message = request('message');
+            $date = request('date');
+            $file = request('file');
+
+            $data = compact('message', 'date');
+
+            $data['type'] = $file ? 'file' : 'text';
+            $data['file'] = $file;
+            $data['appread'] = 0;
+            $data['fromuser'] = 1;
+            $data['username'] = $user->name;
+            $data['chat_id'] = $chat_id;
+            $data['local_id'] = $id;
+            Message::create($data);
+        }
 
         return response()->json([
             'success' => true,

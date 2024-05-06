@@ -20,6 +20,7 @@
                 <ul aria-expanded="true">
                     <li><a href="{{ route('admin.facturation') }}">Facturation</a></li>
                     <li><a href="{{ route('admin.taux') }}">Taux</a></li>
+                    <li><a href="{{ route('admin.zegocloud') }}">Zegocloud</a></li>
                 </ul>
             </li>
         </ul>

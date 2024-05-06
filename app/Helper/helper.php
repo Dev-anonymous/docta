@@ -100,7 +100,7 @@ function saveData($paydata, $trans)
             $montant = $paydata->montant;
             $devise = $paydata->devise;
             $taux = Taux::first();
-             
+
             if ($devise == 'USD') {
                 $val = $montant;
             } else {
@@ -145,4 +145,30 @@ function userapp()
 {
     $uid = request()->header('uid');
     return App::where('uid', $uid)->first();
+}
+
+
+function canmessage()
+{
+    $app = userapp();
+    $chat = $app->chats()->first();
+    if ($chat) {
+        $n = $chat->messages()->where('fromuser', 0)->whereNull('file')->count();
+        $sold = $app->soldes()->first()->solde_usd;
+        if ($n > 5 && $sold == 0) {
+            $app->update(['canmessage' => 0]);
+            abort(403, 'Balance error SMS');
+        }
+        $n = $chat->messages()->where('fromuser', 0)->whereNotNull('file')->count();
+        $sold = $app->soldes()->first()->solde_usd;
+        if ($n > 1 && $sold == 0) {
+            $app->update(['canmessage' => 0]);
+            abort(403, 'Balance error FILE');
+        }
+    }
+
+    if (!$app->canmessage) {
+        abort(403, 'Can not send message.');
+    }
+    $app->update(['canmessage' => 1]);
 }

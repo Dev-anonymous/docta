@@ -20,6 +20,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $telephone
  * @property string|null $email
  * @property string|null $nom
+ * @property int|null $canmessage
+ * @property string|null $deviceid
  * 
  * @property Collection|Chat[] $chats
  * @property Collection|Paiement[] $paiements
@@ -34,7 +36,8 @@ class App extends Model
 
 	protected $casts = [
 		'date' => 'datetime',
-		'last_login' => 'datetime'
+		'last_login' => 'datetime',
+		'canmessage' => 'int'
 	];
 
 	protected $fillable = [
@@ -43,7 +46,9 @@ class App extends Model
 		'last_login',
 		'telephone',
 		'email',
-		'nom'
+		'nom',
+		'canmessage',
+		'deviceid'
 	];
 
 	public function chats()

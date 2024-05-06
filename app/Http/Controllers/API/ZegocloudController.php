@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Forfait;
+use App\Models\Zego;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class ForfaitAPIController extends Controller
+class ZegocloudController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -33,26 +33,26 @@ class ForfaitAPIController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Forfait  $forfait
+     * @param  \App\Models\Zego  $zego
      * @return \Illuminate\Http\Response
      */
-    public function show(Forfait $forfait)
+    public function show(Zego $zego)
     {
-
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Forfait  $forfait
+     * @param  \App\Models\Zego  $zego
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Forfait $forfait)
+    public function update(Request $request, Zego $zego)
     {
         $validator = Validator::make(request()->all(), [
-            'appel' => 'required|numeric|min:0.001',
-            'sms' => 'required|numeric|min:0.001',
+            'appid' => 'required|numeric',
+            'appsign' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -63,21 +63,21 @@ class ForfaitAPIController extends Controller
         }
 
         $data = $validator->validated();
-        $forfait->update($data);
+        $zego->update($data);
 
         return response([
             'success' => true,
-            'message' => "Prix mis à jour avec succès."
+            'message' => "Données mises à jour avec succès."
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Forfait  $forfait
+     * @param  \App\Models\Zego  $zego
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Forfait $forfait)
+    public function destroy(Zego $zego)
     {
         //
     }

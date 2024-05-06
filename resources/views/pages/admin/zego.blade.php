@@ -1,12 +1,12 @@
 @extends('layouts.main')
-@section('title', 'Facturation')
+@section('title', 'Zegocloud')
 @section('body')
     <div class="content-body">
         <div class="row page-titles mx-0">
             <div class="col p-md-0">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
-                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Facturation</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Zegocloud</a></li>
                 </ol>
             </div>
         </div>
@@ -16,22 +16,22 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
-                                <h4 class="card-title">Facturation d'appel</h4>
+                                <h4 class="card-title">Zegocloud</h4>
 
                             </div>
                             <div class="table-responsive">
                                 <table table class="table table-striped table-hover table-condensed zero-configuration">
                                     <thead>
                                         <tr>
-                                            <th>Prix d'appel</th>
+                                            <th>API Credentials</th>
                                             <th style="width: 100px !important"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
                                             <td>
-                                                Appel : {{ $data->appel }} USD/Sec <br>
-                                                SMS : {{ $data->sms }} USD/SMS
+                                                AppID : {{ $data->appid }}<br>
+                                                AppSign : {{ $data->appsign }}
                                             </td>
                                             <td>
                                                 <button data-toggle="modal" data-target="#editmdl"
@@ -63,14 +63,12 @@
                     <input type="hidden" name="id" value="{{ $data->id }}">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">Appel : Prix par sec</label>
-                            <input type="number" min="0.0001" step="0.0001" value="{{ $data->appel }}"
-                                class="form-control" name="appel" required>
+                            <label for="recipient-name" class="col-form-label">AppID</label>
+                            <input type="number" value="{{ $data->appid }}" class="form-control" name="appid" required>
                         </div>
                         <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">SMS : Prix par message</label>
-                            <input type="number" min="0.0001" step="0.0001" value="{{ $data->sms }}"
-                                class="form-control" name="sms" required>
+                            <label for="recipient-name" class="col-form-label">AppSign</label>
+                            <input value="{{ $data->appsign }}" class="form-control" name="appsign" required>
                         </div>
                         <div class="form-group">
                             <div id="rep"></div>
@@ -107,7 +105,7 @@
                 $.ajax({
                     type: 'put',
                     data: data,
-                    url: '{{ route('forfait.update', '') }}/' + id,
+                    url: '{{ route('zego.update', '') }}/' + id,
                     success: function(data) {
                         if (data.success) {
                             form[0].reset();
