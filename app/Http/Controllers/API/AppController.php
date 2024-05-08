@@ -139,7 +139,7 @@ class AppController extends Controller
         $docta = User::where('user_role', 'docta')->orderBy('derniere_connexion', 'desc')->pluck('id')->all();
         $zego = Zego::first();
 
-        $userread = Message::where(['chat_id' => $chat->id, 'fromuser' => 0, 'userread' => 0])->first();
+        $userread = Message::where(['chat_id' => @$chat->id, 'fromuser' => 0, 'userread' => 0])->first();
 
         return response()->json([
             'success' => true,
