@@ -35,7 +35,7 @@
         <div class="container d-flex justify-content-between">
             <div class="contact-info d-flex align-items-center">
                 <i class="bi bi-envelope"></i> <a href="mailto:contact@docta-tam.com">contact@docta-tam.com</a>
-                <i class="bi bi-phone"></i> +1 234567890
+                <i class="bi bi-phone"></i> <a href="tel:+243851810869" class="text-muted">+243 85 18 10 869</a>
             </div>
             <div class="d-none d-lg-flex social-links align-items-center">
                 <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
@@ -71,7 +71,7 @@
         <div class="container">
             <h1>Welcome to {{ config('app.name') }}</h1>
             <h2>Your health is our priority.</h2>
-            <a href="#about" class="btn-get-started scrollto">Get Started</a>
+            <a href="#contact" class="btn-get-started scrollto">Get Started</a>
         </div>
     </section>
 
@@ -85,14 +85,13 @@
                         <div class="content">
                             <h3>Why Choose {{ config('app.name') }}?</h3>
                             <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit
-                                Asperiores dolores sed et. Tenetur quia eos. Autem tempore quibusdam vel necessitatibus
-                                optio ad corporis.
+                                No need for an appointment or waiting in line, chat instantly with a doctor from the
+                                comfort of your bedroom, living room, office, etc. at any time and from any location on
+                                the globe. Docta, your doctor friend.
                             </p>
-                            <div class="text-center">
+                            {{-- <div class="text-center">
                                 <a href="#" class="more-btn">Learn More <i class="bx bx-chevron-right"></i></a>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                     <div class="col-lg-8 d-flex align-items-stretch">
@@ -100,26 +99,26 @@
                             <div class="row">
                                 <div class="col-xl-4 d-flex align-items-stretch">
                                     <div class="icon-box mt-4 mt-xl-0">
-                                        <i class="bx bx-receipt"></i>
-                                        <h4>Corporis voluptates sit</h4>
-                                        <p>Consequuntur sunt aut quasi enim aliquam quae harum pariatur laboris nisi ut
-                                            aliquip</p>
+                                        <i class="bx bx-check-circle"></i>
+                                        <h4>Reassuring</h4>
+                                        <p>Your well-being is our priority! we will do our best to provide you with the
+                                            best of ourselves.</p>
                                     </div>
                                 </div>
                                 <div class="col-xl-4 d-flex align-items-stretch">
                                     <div class="icon-box mt-4 mt-xl-0">
-                                        <i class="bx bx-cube-alt"></i>
-                                        <h4>Ullamco laboris ladore pan</h4>
-                                        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-                                            deserunt</p>
+                                        <i class="bx bx-check-circle"></i>
+                                        <h4>Fast</h4>
+                                        <p>No need to wait in line at the hospital! with Docta, just a call or a message
+                                            will save you from long processes.</p>
                                     </div>
                                 </div>
                                 <div class="col-xl-4 d-flex align-items-stretch">
                                     <div class="icon-box mt-4 mt-xl-0">
-                                        <i class="bx bx-images"></i>
-                                        <h4>Labore consequatur</h4>
-                                        <p>Aut suscipit aut cum nemo deleniti aut omnis. Doloribus ut maiores omnis
-                                            facere</p>
+                                        <i class="bx bx-check-circle"></i>
+                                        <h4>Discreet</h4>
+                                        <p>Ask a special doctor in complete discretion, none of your data will be kept.
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -179,16 +178,14 @@
 
                 <div class="section-title">
                     <h2>Contact</h2>
-                    <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit
-                        sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias
-                        ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+                    <p>Need more informations? don't hesitate to contact us.</p>
                 </div>
             </div>
 
             <div>
                 <iframe style="border:0; width: 100%; height: 350px;"
-                    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12097.433213460943!2d-74.0062269!3d40.7101282!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb89d1fe6bc499443!2sDowntown+Conference+Center!5e0!3m2!1smk!2sbg!4v1539943755621"
-                    frameborder="0" allowfullscreen></iframe>
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d125032.68739457447!2d27.41979049233817!3d-11.675162240022242!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19723ea34874cbd9%3A0xa1c6f5a74f805b2f!2sLubumbashi!5e0!3m2!1sen!2scd!4v1715285465474!5m2!1sen!2scd"
+                    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
 
             <div class="container">
@@ -199,7 +196,7 @@
                             <div class="address">
                                 <i class="bi bi-geo-alt"></i>
                                 <h4>Location:</h4>
-                                <p>A108 Adam Street, New York, NY 535022</p>
+                                <p>Lubumbashi, DRC</p>
                             </div>
 
                             <div class="email">
@@ -211,7 +208,9 @@
                             <div class="phone">
                                 <i class="bi bi-phone"></i>
                                 <h4>Call:</h4>
-                                <p>+1 5589 55488 55s</p>
+                                <p>
+                                    <a href="tel:+243851810869" class="text-muted">+243 85 18 10 869</a>
+                                </p>
                             </div>
 
                         </div>
