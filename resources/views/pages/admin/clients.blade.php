@@ -18,7 +18,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <h4 class="card-title">Clients ({{ count($app) }})</h4>
-                                <h4 class="card-title">Total Solde appel : <span
+                                <h4 class="card-title">Total Solde appel : <span style="font-size: 18px"
                                         class="badge badge-dark">{{ "$ $solde" }}</span></h4>
                             </div>
                             <div class="table-responsive">
@@ -26,6 +26,7 @@
                                     <thead>
                                         <tr>
                                             <th>UID</th>
+                                            <th>DEVICE ID</th>
                                             <th>SOLDE D'APPEL</th>
                                             <th>EMAIL/TEL</th>
                                             <th>NOM</th>
@@ -46,9 +47,10 @@
                                             @endphp
                                             <tr>
                                                 <td>{{ $el->uid }}</td>
+                                                <td>{{ $el->deviceid }}</td>
                                                 <td>
                                                     <span class="badge badge-danger font-weight-bold"
-                                                        style="min-width: 120px">
+                                                        style="min-width: 120px; font-size: 18px">
                                                         {{ "$ " . number_format($el->soldes()->first()->solde_usd, 2, '.', ' ') }}
                                                     </span>
                                                 </td>
