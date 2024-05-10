@@ -31,7 +31,7 @@
                         <img src="{{ asset('images/logo.png') }}" alt="">
                     </span>
                     <span class="brand-title">
-                        <img src="{{ asset('images/logo.png') }}" alt="">
+                        <img src="{{ asset('images/logo.png') }}" height="40" alt="">
                     </span>
                 </a>
             </div>
