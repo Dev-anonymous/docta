@@ -25,13 +25,13 @@
             <div class="brand-logo">
                 <a href="{{ route('admin.home') }}">
                     <b class="logo-abbr">
-                        <img src="{{ asset('images/logo.png') }}" width="100px" height="50px" alt="">
+                        <img src="{{ asset('images/logo.png') }}" alt="">
                     </b>
                     <span class="logo-compact">
-                        <img src="{{ asset('images/logo.png') }}" width="100px" height="50px" alt="">
+                        <img src="{{ asset('images/logo.png') }}" alt="">
                     </span>
                     <span class="brand-title">
-                        <img src="{{ asset('images/logo.png') }}" width="100px" height="50px" alt="">
+                        <img src="{{ asset('images/logo.png') }}" alt="">
                     </span>
                 </a>
             </div>
