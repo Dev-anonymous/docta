@@ -7,7 +7,7 @@
     <title>@yield('title') - {{ config('app.name') }} </title>
     <link rel="icon" type="image/png" href="{{ asset('images/icon.png') }}">
     <meta name="description" content="Votre Santé est notre priorité.">
-    <meta property="og:title" content="Welcome to {{ config('app.name') }}">
+    <meta property="og:title" content="Bienvenue chez {{ config('app.name') }}">
     <meta property="og:description" content="Votre Santé est notre priorité.">
     <meta property="og:image" content="{{ asset('images/logo.png') }}">
     <meta property="og:url" content="{{ url()->current() }}">
