@@ -8,6 +8,7 @@ use App\Http\Controllers\API\ContactAPIController;
 use App\Http\Controllers\API\DoctaAPIController;
 use App\Http\Controllers\API\ForfaitAPIController;
 use App\Http\Controllers\API\GoPAYController;
+use App\Http\Controllers\API\SiteAPIController;
 use App\Http\Controllers\API\TauxAPIController;
 use App\Http\Controllers\API\ZegocloudController;
 use App\Models\Conseilmedical;
@@ -46,4 +47,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('forfait', ForfaitAPIController::class);
     Route::resource('taux', TauxAPIController::class);
     Route::resource('zego', ZegocloudController::class);
+    Route::resource('site', SiteAPIController::class);
 });

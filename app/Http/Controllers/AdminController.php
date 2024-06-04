@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\App;
 use App\Models\Contact;
 use App\Models\Forfait;
+use App\Models\Site;
 use App\Models\Solde;
 use App\Models\Taux;
 use App\Models\User;
@@ -64,5 +65,19 @@ class AdminController extends Controller
             $data = Zego::create(['appid' => 1611714402, 'appsign' => '79ae0359bb4e80dee8b2e1d1cace4013e9155b96b2a609058f6054b20dfe8d87']);
         }
         return view('pages.admin.zego', compact('data'));
+    }
+
+    public function site()
+    {
+        foreach (['terme', 'politique', 'mention'] as $type) {
+            if (!Site::where('type', $type)->first()) {
+                Site::create(['type' => $type]);
+            }
+        }
+
+        $terme = Site::where('type', 'terme')->first();
+        $politique = Site::where('type', 'politique')->first();
+        $mention = Site::where('type', 'mention')->first();
+        return view('pages.admin.site', compact('terme', 'politique', 'mention'));
     }
 }

@@ -2,12 +2,9 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\WEBController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
-Route::get('/', function () {
-    return view('index');
-});
 
 Route::get('login', function () {
     $r = request('r');
@@ -22,6 +19,11 @@ Route::get('login', function () {
 })->name('login');
 
 Route::post('/auth/login', [AuthController::class, 'login'])->name('web.login');
+Route::get('', [WEBController::class, 'index'])->name('web.index');
+Route::get('/politique-de-confidentialite', [WEBController::class, 'politique'])->name('web.politique');
+Route::get('/mention-legale', [WEBController::class, 'mention'])->name('web.mention');
+Route::get('/termes-et-conditions', [WEBController::class, 'terme'])->name('web.terme');
+
 
 Route::middleware('auth')->group(function () {
     Route::middleware('admin.mdwl')->group(function () {
@@ -38,6 +40,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('facturation', 'facturation')->name('admin.facturation');
                 Route::get('taux', 'taux')->name('admin.taux');
                 Route::get('zegocloud', 'zegocloud')->name('admin.zegocloud');
+                Route::get('site', 'site')->name('admin.site');
             });
         });
     });
