@@ -23,13 +23,10 @@
                                 <table table class="table table-striped table-hover table-condensed ">
                                     <tbody>
                                         <tr>
-                                            <td>
+                                            <td bshow style="cursor: pointer">
                                                 Termes et conditions
                                             </td>
                                             <td class="d-flex justify-content-end">
-                                                <button bshow class='btn btn-default btn-sm m-1'>
-                                                    <i class="fa fa-eye"></i>
-                                                </button>
                                                 <button bedit class='btn btn-default btn-sm m-1'>
                                                     <i class='fa fa-edit'></i>
                                                 </button>
@@ -53,14 +50,11 @@
                                 <table table class="table table-striped table-hover table-condensed mt-4">
                                     <tbody>
                                         <tr>
-                                            <td>
+                                            <td bshow style="cursor: pointer">
                                                 Politique de confidentialité
                                             </td>
 
                                             <td class="d-flex justify-content-end">
-                                                <button bshow class='btn btn-default btn-sm m-1'>
-                                                    <i class="fa fa-eye"></i>
-                                                </button>
                                                 <button bedit class='btn btn-default btn-sm m-1'>
                                                     <i class='fa fa-edit'></i>
                                                 </button>
@@ -84,14 +78,11 @@
                                 <table table class="table table-striped table-hover table-condensed mt-4">
                                     <tbody>
                                         <tr>
-                                            <td>
+                                            <td bshow style="cursor: pointer">
                                                 Mentions légales
                                             </td>
 
                                             <td class="d-flex justify-content-end">
-                                                <button bshow class='btn btn-default btn-sm m-1'>
-                                                    <i class="fa fa-eye"></i>
-                                                </button>
                                                 <button bedit class='btn btn-default btn-sm m-1'>
                                                     <i class='fa fa-edit'></i>
                                                 </button>
