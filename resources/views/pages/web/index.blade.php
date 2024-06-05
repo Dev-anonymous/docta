@@ -37,17 +37,20 @@
                                      <div class="icon-box mt-4 mt-xl-0">
                                          <i class="bx bx-check-circle"></i>
                                          <h4>Rassurant</h4>
-                                         <p>Votre bien-être est notre priorité ! nous ferons de notre mieux pour vous
-                                             offrir le meilleur de nous-mêmes.</p>
+                                         <p>
+                                             Docta met à votre disposition des professionnels pour que votre joie soit
+                                             parfaite. Votre bien être est notre priorité !
+                                         </p>
                                      </div>
                                  </div>
                                  <div class="col-xl-4 d-flex align-items-stretch">
                                      <div class="icon-box mt-4 mt-xl-0">
                                          <i class="bx bx-check-circle"></i>
                                          <h4>Rapide</h4>
-                                         <p>Pas besoin de faire la queue à l'hôpital ! avec Docta, juste un appel ou un
-                                             message
-                                             vous évitera de longs processus.</p>
+                                         <p>
+                                             Le service est instantané, vous avez besoin de parler à un médecin ? Choisissez
+                                             Docta !
+                                         </p>
                                      </div>
                                  </div>
                                  <div class="col-xl-4 d-flex align-items-stretch">
