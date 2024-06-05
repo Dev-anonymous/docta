@@ -57,8 +57,8 @@
                                      <div class="icon-box mt-4 mt-xl-0">
                                          <i class="bx bx-check-circle"></i>
                                          <h4>Discret</h4>
-                                         <p>Renseignez-vous auprès d'un médecin spécialisé en toute discrétion, aucune de
-                                             vos données ne sera conservée.
+                                         <p>Aucune de vos données n'est conservé, discutez tranquillement de votre santé ou
+                                             de celle de vos proches avec DOCTA.
                                          </p>
                                      </div>
                                  </div>
