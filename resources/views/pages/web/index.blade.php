@@ -20,10 +20,10 @@
                          <div class="content">
                              <h3>Pourquoi choisir {{ config('app.name') }}?</h3>
                              <p>
-                                 Pas besoin de rendez-vous ni de file d'attente, discutez instantanément avec un médecin
-                                 du
-                                 confort de votre chambre, salon, bureau, etc. à tout moment et depuis n'importe quel
-                                 endroit le globe. Docta, ton ami médecin.
+                                 Pas besoin de rendez-vous ni de file d'attente, de partout où vous vous trouvez discutez
+                                 instantanément avec un médecin.
+                                 <br><br>
+                                 Docta, ton ami médecin
                              </p>
                              {{-- <div class="text-center">
                                 <a href="#" class="more-btn">Learn More <i class="bx bx-chevron-right"></i></a>
@@ -57,7 +57,7 @@
                                      <div class="icon-box mt-4 mt-xl-0">
                                          <i class="bx bx-check-circle"></i>
                                          <h4>Discret</h4>
-                                         <p>Aucune de vos données n'est conservé, discutez tranquillement de votre santé ou
+                                         <p>Aucune de vos données n'est conservée, discutez tranquillement de votre santé ou
                                              de celle de vos proches avec DOCTA.
                                          </p>
                                      </div>
@@ -138,16 +138,11 @@
                  <div class="section-title">
                      <h2>Mission</h2>
                      <p>
-                         Docta, ton ami médecin a pour mission de vous accompagner dans toutes vos questions relatives à
-                         la santé ( votre santé ou celle de vos proches ), en mettant à votre disposition des médecins
-                         ayant suivi un cursus normal d'études de médecine et inscrits régulièrement à l'ordre des
-                         médecins et avec une expérience minimum de 3 ans de service clinique.
-                     </p>
-                     <p>
-                         Docta, ton ami médecin n'est pas un hôpital virtuel, mais travaille en collaboration avec des
-                         hôpitaux, services d'imagerie ou de laboratoires comme partenaires pour continuité ou relais
-                         physique si avéré nécessaire par le médecin contacté via la plateforme; ce qui sera disponible
-                         avec le service premium.
+                         Docta , ton ami médecin a pour mission de vous faciliter la vie en vous accompagnant dans toutes
+                         vos questions relatives à la santé ( votre santé ou celle de vos proches ), afin de mieux
+                         comprendre votre corps et sa santé, prendre les décisions bien éclairées et explicitées en francais
+                         facile. En effet, Docta met à votre disposition des médecins régulièrement inscrits à l'ordre des
+                         médecins et disposant d'une expérience clinique minimale de 3 ans.
                      </p>
                  </div>
              </div>
@@ -155,19 +150,10 @@
                  <div class="section-title">
                      <h2> Services offerts</h2>
                      <ul>
-                         <li>La version simple vous permet d'interagir avec un médecin généraliste de manière
-                             instantanée
-                             sur les questions ou préoccupations qui vous dérangent et cela par appel ou par
-                             messagerie
-                             (avec possibilité de joindre un fichier et/ou faire un audio).</li>
+                         <li>La version simple permet une interaction instantanée avec un médecin par appel ou messagerie (
+                             avec possibilité de joindre un fichier et/ou faire un audio ).</li>
                          <li>
-                             La version premium, bientôt disponible permet une interaction avec un médecin
-                             spécialiste
-                             d'une filière de votre choix par appel ou messagerie avec possibilité d'être recommandé
-                             dans
-                             une structure sanitaire partenaire à moindre frais pour un suivi médical si avéré
-                             important
-                             par le médecin.
+                             La version premium : bientôt disponible vous rendra la vie encore plus facile.
                          </li>
                      </ul>
                  </div>
@@ -175,13 +161,12 @@
              <div class="container">
                  <div class="section-title">
                      <h2>Facturation</h2>
-                     <p>Le payement se fait principalement par :
-                     </p>
+
                      <div class="d-flex justify-content-center">
                          <ul class="text-start">
-                             <li><i class="fa fa-check-circle text-success"></i> Mobile money : Airtel money, Orange
-                                 money, M-pesa, Afrimoney;</li>
-                             <li><i class="fa fa-check-circle text-success"></i> Online banking via carte bancaire </li>
+                             <li><i class="fa fa-check-circle text-success"></i> Online banking via carte bancaire</li>
+                             <li><i class="fa fa-check-circle text-success"></i> Mobile money pour les résidants de la
+                                 République démocratique du Congo : Airtel money, Orange money, M-pesa, Afrimoney</li>
                          </ul>
                      </div>
 
