@@ -149,14 +149,16 @@
              <div class="container">
                  <div class="section-title">
                      <h2> Services offerts</h2>
-                     <ul>
+                     <div class="d-flex justify-content-center">
+                     <ul class="text-start">
                          <li>La version simple permet une interaction instantanée avec un médecin par appel ou messagerie (
                              avec possibilité de joindre un fichier et/ou faire un audio ).</li>
                          <li>
                              La version premium : bientôt disponible vous rendra la vie encore plus facile.
                          </li>
                      </ul>
-                 </div>
+                     </div>
+                    </div>
              </div>
              <div class="container">
                  <div class="section-title">
