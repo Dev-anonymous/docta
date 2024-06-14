@@ -33,7 +33,7 @@ class AppMiddleware
                 }
             } else {
                 if (request()->wantsJson()) {
-                    return response(["message" => "Nahe"], 403);
+                    return response(["message" => "Nah"], 403);
                 }
                 abort(403);
             }

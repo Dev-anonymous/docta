@@ -8,10 +8,10 @@
     <input type="hidden" name="MerchantID" value="45ca4c2a7ef944278042c59b2fd37dde">
     <input type="hidden" name="MerchantPassword" value="890690861ca04a8fb6751ebd489511e5">
     <input type="hidden" name="Language" value="fr">
-    <input type="hidden" name="Reference" value="ref0011">
-    <input type="hidden" name="accepturl" value="https://docta-tam.com">
-    <input type="hidden" name="cancelurl" value="https://docta-tam.com">
-    <input type="hidden" name="declineurl" value="https://docta-tam.com">
+    <input type="hidden" name="Reference" value="REF-6668b00dd35aa1.68246967">
+    <input type="hidden" name="accepturl" value="{{ route('pay.callback', ['_action'=> 'accept']) }}">
+    <input type="hidden" name="cancelurl" value="{{ route('pay.callback', ['_action'=> 'cancel']) }}">
+    <input type="hidden" name="declineurl" value="{{ route('pay.callback', ['_action'=> 'decline']) }}">
     {{-- <input type="hidden" name="notifyurl" value="https://docta-tam.com"> --}}
 
     {{-- {

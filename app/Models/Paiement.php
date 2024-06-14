@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $devise
  * @property Carbon|null $date
  * @property string|null $telephone
+ * @property string|null $methode
  * 
  * @property App $app
  *
@@ -41,7 +42,8 @@ class Paiement extends Model
 		'montant',
 		'devise',
 		'date',
-		'telephone'
+		'telephone',
+		'methode'
 	];
 
 	public function app()

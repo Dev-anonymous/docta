@@ -7,7 +7,7 @@ use App\Http\Controllers\API\ConseilMedicalAPIController;
 use App\Http\Controllers\API\ContactAPIController;
 use App\Http\Controllers\API\DoctaAPIController;
 use App\Http\Controllers\API\ForfaitAPIController;
-use App\Http\Controllers\API\GoPAYController;
+use App\Http\Controllers\API\PAYController;
 use App\Http\Controllers\API\SiteAPIController;
 use App\Http\Controllers\API\TauxAPIController;
 use App\Http\Controllers\API\ZegocloudController;
@@ -26,9 +26,11 @@ Route::prefix('v1')->group(function () {
         Route::post('message', [AppController::class, 'message']);
         Route::post('message/received', [AppController::class, 'received']);
         Route::get('solde', [AppController::class, 'solde']);
-        Route::post('/pay/init', [GoPAYController::class, 'init_payment']);
-        Route::get('/pay/check', [GoPAYController::class, 'check_payment']);
+        Route::post('/pay/init', [PAYController::class, 'init_payment']);
+        Route::get('/pay/check', [PAYController::class, 'check_payment']);
+        Route::post('/pay/cardpayment', [PAYController::class, 'cardpayment']);
         Route::post('/profil', [AppController::class, 'profil']);
+        Route::post('/pay/pay-historique', [AppController::class, 'payhistorique']);
     });
 
     Route::group(['middleware' => ['auth:sanctum']], function () {

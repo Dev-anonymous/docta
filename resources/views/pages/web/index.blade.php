@@ -161,7 +161,6 @@
              <div class="container">
                  <div class="section-title">
                      <h2>Facturation</h2>
-
                      <div class="d-flex justify-content-center">
                          <ul class="text-start">
                              <li><i class="fa fa-check-circle text-success"></i> Online banking via carte bancaire</li>
@@ -169,7 +168,6 @@
                                  République démocratique du Congo : Airtel money, Orange money, M-pesa, Afrimoney</li>
                          </ul>
                      </div>
-
                  </div>
              </div>
              <div class="container">
@@ -177,7 +175,7 @@
                      <h2>Pourquoi choisir Docta ?</h2>
                      <p>Docta, ton ami médecin vient réellement vous procurer un ami médecin et vous faire gagner du
                          temps en vous
-                         donnant la capacité de le joindre pour de manière instantanée via son application depuis le lieu
+                         donnant la capacité de le joindre de manière instantanée via son application depuis le lieu
                          où vous êtes(
                          chambre, bureau, taxi, etc.)
                      </p>
@@ -196,7 +194,6 @@
                  </div>
              </div>
          </section>
-
 
          <section id="contact" class="contact">
              <div class="container">
@@ -230,7 +227,7 @@
                                  <i class="bi bi-phone"></i>
                                  <h4>Apples:</h4>
                                  <p>
-                                     <a href="tel:+243851810869" class="text-muted">+243 85 18 10 869</a>
+                                     <a href="tel:+243980004002" class="text-muted">+243 98 000 40 02</a>
                                  </p>
                              </div>
 

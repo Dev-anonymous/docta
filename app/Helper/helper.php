@@ -41,8 +41,7 @@ function gopay_init_payment($amount, $devise, $telephone, $myref)
     if (curl_errno($ch)) {
         $rep['message'] = "Erreur, veuillez reessayer.";
     } else {
-        $jsonRes = json_decode($response); // GOPAY API JSON RESPONSE
-        // DD($jsonRes);  // UNCOMMENT TO SEE
+        $jsonRes = json_decode($response);
         $rep['success'] = @$jsonRes->success;
         $rep['message'] = @$jsonRes->message;
         $rep['data'] = @$jsonRes->data;

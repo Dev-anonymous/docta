@@ -231,6 +231,25 @@ class AppController extends Controller
         ]);
     }
 
+    function payhistorique()
+    {
+        $app = userapp();
+        $tab = [];
+        foreach ($app->paiements()->orderBy('id', 'desc')->get() as $el) {
+            $o = (object)[];
+            $o->ref = $el->ref;
+            $o->montant = number_format($el->montant, 2, '.', ' ') . " $el->devise";
+            $o->date = $el->date->format('d-m-Y H:i:s');
+            $o->methode = $el->methode;
+            $tab[] = $o;
+        }
+        return response([
+            'success' => true,
+            'message' => "",
+            'data' => $tab,
+        ]);
+    }
+
 
     // docta admin
     public function getchat()

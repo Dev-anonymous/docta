@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\PAYController;
 use App\Http\Controllers\WEBController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -23,7 +24,8 @@ Route::get('', [WEBController::class, 'index'])->name('web.index');
 Route::get('/politique-de-confidentialite', [WEBController::class, 'politique'])->name('web.politique');
 Route::get('/mention-legale', [WEBController::class, 'mention'])->name('web.mention');
 Route::get('/termes-et-conditions', [WEBController::class, 'terme'])->name('web.terme');
-
+Route::get('/apptermes', [WEBController::class, 'terme00'])->name('terme00');
+Route::get('/pay-cb', [PAYController::class, 'pay_cb'])->name('pay.callback');
 
 Route::middleware('auth')->group(function () {
     Route::middleware('admin.mdwl')->group(function () {
