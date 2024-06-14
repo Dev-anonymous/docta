@@ -12,7 +12,6 @@
         </div>
     </div>
 </div>
-
 <header id="header" class="fixed-top">
     <div class="container d-flex align-items-center">
 
