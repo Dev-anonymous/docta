@@ -30,7 +30,7 @@ Route::prefix('v1')->group(function () {
         Route::get('/pay/check', [PAYController::class, 'check_payment']);
         Route::post('/pay/cardpayment', [PAYController::class, 'cardpayment']);
         Route::post('/profil', [AppController::class, 'profil']);
-        Route::post('/pay/pay-historique', [AppController::class, 'payhistorique']);
+        Route::get('/pay/pay-historique', [AppController::class, 'payhistorique']);
     });
 
     Route::group(['middleware' => ['auth:sanctum']], function () {
