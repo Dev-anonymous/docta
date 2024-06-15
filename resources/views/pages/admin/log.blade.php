@@ -24,7 +24,7 @@
                                     style="'width:100%">
                                     <thead>
                                         <tr>
-                                            <th>1</th>
+                                            <th>#</th>
                                             <th>Log</th>
                                         </tr>
                                     </thead>
