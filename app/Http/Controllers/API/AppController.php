@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\App;
 use App\Models\Chat;
 use App\Models\Conseilmedical;
+use App\Models\Errorlog;
 use App\Models\Forfait;
 use App\Models\Message;
 use App\Models\Solde;
@@ -16,6 +17,14 @@ use Illuminate\Support\Facades\Validator;
 
 class AppController extends Controller
 {
+    function error()
+    {
+        $err = request('error');
+        $now = now('Africa/Lubumbashi');
+        if (is_string($err) and $err) {
+            Errorlog::create(['date' => $now, 'data' => $err]);
+        }
+    }
     public function uid()
     {
         $now = now('Africa/Lubumbashi');

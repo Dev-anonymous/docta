@@ -19,6 +19,8 @@ Route::post('/auth/login', [AuthController::class, 'login']);
 Route::resource('contact', ContactAPIController::class);
 
 Route::prefix('v1')->group(function () {
+    Route::post('/applog', [AppController::class, 'error']);
+
     Route::get('uid', [AppController::class, 'uid']);
 
     Route::middleware('uid.mdwl')->group(function () {

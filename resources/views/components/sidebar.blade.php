@@ -22,6 +22,7 @@
                     <li><a href="{{ route('admin.taux') }}">Taux</a></li>
                     <li><a href="{{ route('admin.zegocloud') }}">Zegocloud</a></li>
                     <li><a href="{{ route('admin.site') }}">Site</a></li>
+                    <li><a href="{{ route('admin.log') }}">Logs</a></li>
                 </ul>
             </li>
         </ul>

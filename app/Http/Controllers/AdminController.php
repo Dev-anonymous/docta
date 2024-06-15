@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\App;
 use App\Models\Contact;
+use App\Models\Errorlog;
 use App\Models\Forfait;
 use App\Models\Site;
 use App\Models\Solde;
@@ -79,5 +80,11 @@ class AdminController extends Controller
         $politique = Site::where('type', 'politique')->first();
         $mention = Site::where('type', 'mention')->first();
         return view('pages.admin.site', compact('terme', 'politique', 'mention'));
+    }
+
+    public function log()
+    {
+        $data = Errorlog::orderBy('id', 'desc')->get();
+        return view('pages.admin.log', compact('data'));
     }
 }

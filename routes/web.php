@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('taux', 'taux')->name('admin.taux');
                 Route::get('zegocloud', 'zegocloud')->name('admin.zegocloud');
                 Route::get('site', 'site')->name('admin.site');
+                Route::get('log', 'log')->name('admin.log');
             });
         });
     });
