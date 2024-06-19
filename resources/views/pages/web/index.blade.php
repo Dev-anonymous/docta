@@ -247,7 +247,7 @@
                                          placeholder="Votre nom" required>
                                  </div>
                                  <div class="col-md-6 form-group mt-3 mt-md-0">
-                                     <input type="email" class="form-control" name="email" id="email"
+                                     <input class="form-control" name="email" id="email"
                                          placeholder="Votre Email ou Phone" required>
                                  </div>
                              </div>
