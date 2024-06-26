@@ -228,7 +228,7 @@
 
                              <div class="phone">
                                  <i class="bi bi-phone"></i>
-                                 <h4>Apples:</h4>
+                                 <h4>Appel:</h4>
                                  <p>
                                      <a href="tel:+243980004002" class="text-muted">+243 98 000 40 02</a>
                                  </p>
