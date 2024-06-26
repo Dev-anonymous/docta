@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Mail\AppMail;
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class ContactAPIController extends Controller
@@ -27,12 +29,20 @@ class ContactAPIController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make(request()->all(), [
-            'name' => 'required',
-            'email' => 'required',
-            'subject' => 'required',
-            'message' => 'required',
-        ]);
+        $validator = Validator::make(
+            request()->all(),
+            [
+                'name' => 'required',
+                'email' => 'required',
+                'subject' => 'required',
+                'message' => 'required',
+                'g-recaptcha-response' => 'required|captcha'
+            ],
+            [
+                'g-recaptcha-response.required' => 'Veuillez cocher la case “Je ne suis pas un robot”',
+                'g-recaptcha-response.captcha' => "captcha non valide"
+            ]
+        );
 
         if ($validator->fails()) {
             $m = implode(" ", $validator->errors()->all());
@@ -42,8 +52,20 @@ class ContactAPIController extends Controller
         }
 
         $data = $validator->validated();
-        $data['date'] = now('Africa/Lubumbashi');
-        Contact::create($data);
+
+        // try {
+            $m['user'] = "{$data['name']} {$data['email']}";
+            $m['msg'] = "{$data['message']}\n\n\n";
+            $m['subject'] = "[CONTACT] " . $data['subject'];
+            Mail::to('contact@docta-tam.com')->send(new AppMail((object)$m));
+
+            $data['date'] = now('Africa/Lubumbashi');
+            Contact::create($data);
+        // } catch (\Throwable $th) {
+        //     return response([
+        //         'message' => "Oops, please try again."
+        //     ]);
+        // }
 
         return response([
             'success' => true,

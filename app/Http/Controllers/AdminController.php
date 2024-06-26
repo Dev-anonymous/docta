@@ -18,7 +18,7 @@ class AdminController extends Controller
     {
         $docta = User::where('user_role', 'docta')->count();
         $client = App::count();
-        $min_date = now('Africa/Lubumbashi')->subDays(7)->format("Y-m-d H:i:s");
+        $min_date = now('Africa/Lubumbashi')->subDays(8)->format("Y-m-d H:i:s");
         $clientactif = App::whereDate('last_login', '>=', $min_date)->count();
         return view('pages.admin.index', compact('docta', 'client', 'clientactif'));
     }

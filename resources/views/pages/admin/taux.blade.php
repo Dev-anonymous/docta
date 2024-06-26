@@ -28,7 +28,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
+                                        <tr class="text-nowrap">
                                             <td>
                                                 1 CDF = {{ $data->cdf_usd }} USD <br>
                                                 1 USD = {{ $data->usd_cdf }} CDF <br>

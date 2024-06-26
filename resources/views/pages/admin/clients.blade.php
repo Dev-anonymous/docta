@@ -25,8 +25,7 @@
                                 <table class="table table-striped table-bordered zero-configuration">
                                     <thead>
                                         <tr>
-                                            <th>UID</th>
-                                            <th>DEVICE ID</th>
+                                            <th>UID / DEVICE ID</th>
                                             <th>SOLDE D'APPEL</th>
                                             <th>EMAIL/TEL</th>
                                             <th>NOM</th>
@@ -39,15 +38,15 @@
                                             @php
                                                 $actif = '';
                                                 if ($el->last_login) {
-                                                    $n = now()->diffInDays($el->last_login );
-                                                    if($n <= 7){
-                                                        $actif = '<b style="cursor:pointer" title="Utilisateur actif" data-toggle="tooltip" class="badge badge-success"> <i class="fa fa-check-circle"></i> ACTIF</b>';
+                                                    $n = now()->diffInDays($el->last_login);
+                                                    if ($n <= 7) {
+                                                        $actif =
+                                                            '<b style="cursor:pointer" title="Utilisateur actif" data-toggle="tooltip" class="badge badge-success"> <i class="fa fa-check-circle"></i> ACTIF</b>';
                                                     }
                                                 }
                                             @endphp
-                                            <tr>
-                                                <td>{{ $el->uid }}</td>
-                                                <td>{{ $el->deviceid }}</td>
+                                            <tr class="text-nowrap">
+                                                <td>{{ $el->uid }} <br> {{ $el->deviceid }}</td>
                                                 <td>
                                                     <span class="badge badge-danger font-weight-bold"
                                                         style="min-width: 120px; font-size: 18px">
@@ -56,7 +55,8 @@
                                                 </td>
                                                 <td>{!! "$el->email<br>$el->telephone" !!}</td>
                                                 <td>{{ $el->nom ?? '-' }}</td>
-                                                <td>{{ $el->last_login?->format('d-m-Y H:i:s') }} {!! $actif !!}</td>
+                                                <td>{{ $el->last_login?->format('d-m-Y H:i:s') }} {!! $actif !!}
+                                                </td>
                                                 <td>{{ $el->date?->format('d-m-Y H:i:s') }}</td>
                                             </tr>
                                         @endforeach

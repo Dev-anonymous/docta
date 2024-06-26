@@ -150,15 +150,16 @@
                  <div class="section-title">
                      <h2> Services offerts</h2>
                      <div class="d-flex justify-content-center">
-                     <ul class="text-start">
-                         <li>La version simple permet une interaction instantanée avec un médecin par appel ou messagerie (
-                             avec possibilité de joindre un fichier et/ou faire un audio ).</li>
-                         <li>
-                             La version premium : bientôt disponible vous rendra la vie encore plus facile.
-                         </li>
-                     </ul>
+                         <ul class="text-start">
+                             <li>La version simple permet une interaction instantanée avec un médecin par appel ou
+                                 messagerie (
+                                 avec possibilité de joindre un fichier et/ou faire un audio ).</li>
+                             <li>
+                                 La version premium : bientôt disponible vous rendra la vie encore plus facile.
+                             </li>
+                         </ul>
                      </div>
-                    </div>
+                 </div>
              </div>
              <div class="container">
                  <div class="section-title">
@@ -237,7 +238,7 @@
 
                      </div>
 
-                     <div class="col-lg-8 mt-5 mt-lg-0">
+                     <div class="col-lg-8 mt-5 mt-lg-0" id="contact-form">
 
                          <form id="fcont" action="#" class="php-email-form">
                              @csrf
@@ -257,6 +258,10 @@
                              </div>
                              <div class="form-group mt-3">
                                  <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
+                             </div>
+                             <div class="form-group mt-3">
+                                 {!! NoCaptcha::renderJs('fr') !!}
+                                 {!! NoCaptcha::display() !!}
                              </div>
                              <div class="my-3">
                                  <div id="rep" class="loading"></div>

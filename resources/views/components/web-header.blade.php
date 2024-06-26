@@ -28,7 +28,7 @@
         </nav>
 
         <a href="#" class="appointment-btn" id="dapp">
-            <span class="d-none d-md-inline"><i class="fa fa-download"></i> Télecharger l'</span> APP</span>
+            <span class="d-none d-md-inline"> Télecharger l'</span> APP <i class="fa fa-download"></i></span>
         </a>
     </div>
 </header>

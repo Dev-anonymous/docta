@@ -28,7 +28,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
+                                        <tr class="text-nowrap">
                                             <td>
                                                 Appel : {{ $data->appel }} USD/Sec <br>
                                                 SMS : {{ $data->sms }} USD/SMS
