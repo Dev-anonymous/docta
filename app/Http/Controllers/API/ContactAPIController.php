@@ -53,7 +53,7 @@ class ContactAPIController extends Controller
 
         $data = $validator->validated();
 
-        // try {
+        try {
             $m['user'] = "{$data['name']} {$data['email']}";
             $m['msg'] = "{$data['message']}\n\n\n";
             $m['subject'] = "[CONTACT] " . $data['subject'];
@@ -61,11 +61,11 @@ class ContactAPIController extends Controller
 
             $data['date'] = now('Africa/Lubumbashi');
             Contact::create($data);
-        // } catch (\Throwable $th) {
-        //     return response([
-        //         'message' => "Oops, please try again."
-        //     ]);
-        // }
+        } catch (\Throwable $th) {
+            return response([
+                'message' => "Oops, please try again."
+            ]);
+        }
 
         return response([
             'success' => true,
