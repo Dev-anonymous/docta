@@ -5,6 +5,7 @@ use App\Models\Gopay;
 use App\Models\Paiement;
 use App\Models\Taux;
 use Illuminate\Support\Facades\DB;
+use Google\Client;
 
 $xApiKey = "d2V1aUlBT2JkdGZDV282Ty9wK3pzdz09";
 
@@ -190,7 +191,7 @@ function fcmtoken()
 
     // 'docta-b2844';
 
-    $client = new \Google_Client();
+    $client = new Google_Client();
     $client->setAuthConfig($credentialsFilePath);
     $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
     $client->refreshTokenWithAssertion();
