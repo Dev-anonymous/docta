@@ -174,7 +174,22 @@ function canmessage()
 
 function fcmtoken()
 {
-    $credentialsFilePath = 'docta-b2844';
+    $credentialsFilePath =  [
+        "type" => "service_account",
+        "project_id" => "docta-b2844",
+        "private_key_id" => "6c0659e961317447ab54ed71d4735a0f81327c30",
+        "private_key" => "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDFX395x7G7fio7\nZcHHAkiFjHOWOKfSX4EDbqN+wcgvwAsRJ68DTsnpMQeU7PbacpEFoGyeZlMiV0A3\nufoFJSy/y2phiaS9vJzUrVWzrIsZ8g5yyY8KoHZ2RWdtyc3oRhIomcSDZCQz4Fo/\nYdxAFmYH39lTMoDMsDdXaaeQmTQPu+F4dYyffCxUPm1e0xQIj50Pgv3b5ouGd7oS\nEok9Wj1lDLWYCwXDFbvy131IcJF7H40HSKyoaUwYohMVTZqXE8L+s7od9NhZHpvP\n9FZQiGWxF3zuK6CGJuLYKT+QV6gU5po2uf4LW0a4kIoUuWfLjoOgBsee2pxTDJKJ\n/E5NvaEFAgMBAAECggEABd3nxzAyPKnlWEAXIk9MV8jL8FPLk3txmOghno46KEb6\n0MqPdn6KjkBvycHdOM+hU5g2VeM+bbTV51W1JjtytVpTY80qVPKZQwqt9xZygg6m\nK9pQQqyMtx65WX57w/+Tb2GhZOv+nQxd57a9y/7+cqQHXo8d6nCRYeQufE6u11EO\nsSEGjKfXnAMm6yK6ciKSTv+5+bIDeunYogMCTHiw9nBHJkCWG9TUWOkmqI3g/ffs\njZ99ZiqAv+oN35+2YMlYVC6iH07J3jtdjj6RhbRnXqu/pjRcv4n93oMSgwkNw8GU\nw6YwsK3Yh+U+RmRaKya+O9SWbqMsR79l/Smnv8WeNwKBgQD0QXXPQwDjwUnvSBEh\nH+RUS1JSp4tMJFJ05mQAp+8jJSpkABc4R3MGhgPP7iBmxchcB0eXjm23ZH/oChjh\nOKljg9aEp7yeyt+ybH5Hxpt48Q8CnamhVbSs9F6QKlYKhbETtN6ivoqvGXcilM1s\ne7pBcjcCs5aJvYBLc16grJBI4wKBgQDO3PWxPXmbIps2tzcx9DlOLnoPHjFgc15x\ngxMiHPyk1jfdSB37jdZNJX3es1zOPEp8PDFsyN6z9i4CM7a0u6VL7M3hj/HLIwLc\nph9VOZr1ATaKMUJZFrktp3OdERj3sn/JJbDwSeAMrcgPIOaV9nF+qcHzcFoFqF/9\nVe5IVZLa9wKBgGevUf9Fhh8oceYtRXg2PYq63ptPnAYadRZCprjQkObuY+xHTZQK\nYH2obf3aK870rnTCclWXlGOBOfqaLq2Mi/s+f9WYDq2pmQP4ojJ90ImqaqDFpLhj\n1WqF4Y55KkUVM3IWGVwkXmKuALChUgJ3Ez2s6kUvTvvxgYCF3Ol/10/ZAoGAMCkt\nYnhniYDDFjgNt6medd9IN6DV6hiyEkdr+vM4tr/Q/cm+gUSCci+aYHDt2G4dAVOa\nRjN19fwItiaIEQfm8ghN3of+yUZ7cheTD+p7czM3GXFiew9ZSZHEzvqeD30VVyVZ\nTnhEm28SNsN4K83WmqC3MRAlRU/wGTEaaujRaf0CgYEAhGobKd51GGnSeORmrmqU\nfgHzF0F0HSjQ7mQHJ0A7Uoo+rF6v32FQaGta22CzNwE1dgcWL7yUm+aEC5YResME\nmd5VRM2rz5+iulto2KRQN0s9+WiDNSLDDC4r9uYKP8szPRTycnxzKD7Pp/AqnLTJ\nkm61xNsz1ubKhKKc6QKPy5M=\n-----END PRIVATE KEY-----\n",
+        "client_email" => "firebase-adminsdk-57kb0@docta-b2844.iam.gserviceaccount.com",
+        "client_id" => "115396384437441200121",
+        "auth_uri" => "https://accounts.google.com/o/oauth2/auth",
+        "token_uri" => "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url" => "https://www.googleapis.com/oauth2/v1/certs",
+        "client_x509_cert_url" => "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-57kb0%40docta-b2844.iam.gserviceaccount.com",
+        "universe_domain" => "googleapis.com"
+    ];
+
+    // 'docta-b2844';
+
     $client = new \Google_Client();
     $client->setAuthConfig($credentialsFilePath);
     $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
