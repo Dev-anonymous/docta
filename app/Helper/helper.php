@@ -174,7 +174,7 @@ function canmessage()
 
 function fcmtoken()
 {
-    $credentialsFilePath = 'docta-b2844-firebase.json';
+    $credentialsFilePath = 'docta-b2844';
     $client = new \Google_Client();
     $client->setAuthConfig($credentialsFilePath);
     $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
