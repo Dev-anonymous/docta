@@ -38,6 +38,7 @@ class SendPush extends Command
                 try {
                     $ok = sendMessage($data->token, $data->title, $data->message);
                 } catch (\Throwable $th) {
+                   
                 }
                 if ($ok) {
                     $push->delete();
