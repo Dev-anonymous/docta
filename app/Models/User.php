@@ -26,6 +26,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string|null $phone
  * @property Carbon|null $derniere_connexion
  * @property string|null $user_role
+ * @property string|null $fcmtoken
  *
  * @property Collection|Chat[] $chats
  *
@@ -35,31 +36,33 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $table = 'users';
+	protected $table = 'users';
 
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'derniere_connexion' => 'datetime'
-    ];
+	protected $casts = [
+		'email_verified_at' => 'datetime',
+		'derniere_connexion' => 'datetime'
+	];
 
-    protected $hidden = [
-        'password',
-        'remember_token'
-    ];
+	protected $hidden = [
+		'password',
+		'remember_token',
+		'fcmtoken'
+	];
 
-    protected $fillable = [
-        'name',
-        'email',
-        'email_verified_at',
-        'password',
-        'remember_token',
-        'phone',
-        'derniere_connexion',
-        'user_role'
-    ];
+	protected $fillable = [
+		'name',
+		'email',
+		'email_verified_at',
+		'password',
+		'remember_token',
+		'phone',
+		'derniere_connexion',
+		'user_role',
+		'fcmtoken'
+	];
 
-    public function chats()
-    {
-        return $this->hasMany(Chat::class, 'users_id');
-    }
+	public function chats()
+	{
+		return $this->hasMany(Chat::class, 'users_id');
+	}
 }

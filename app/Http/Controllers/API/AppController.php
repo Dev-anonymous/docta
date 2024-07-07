@@ -9,6 +9,7 @@ use App\Models\Conseilmedical;
 use App\Models\Errorlog;
 use App\Models\Forfait;
 use App\Models\Message;
+use App\Models\Pushnotification;
 use App\Models\Solde;
 use App\Models\User;
 use App\Models\Zego;
@@ -102,6 +103,15 @@ class AppController extends Controller
             $data['chat_id'] = $chat->id;
             $data['local_id'] = $id;
             Message::create($data);
+
+            $user = $chat->user;
+            if ($user) {
+                $title = $app->nom ? ucfirst($app->nom) : $app->uid;
+                $pushno = json_encode(['token' => $user->fcmtoken, 'title' => $title, 'message' => $message]);
+                Pushnotification::create([
+                    'data' => $pushno
+                ]);
+            }
         }
 
         $solde = $app->soldes()->first();
@@ -127,6 +137,12 @@ class AppController extends Controller
     public function getmessage()
     {
         $app = userapp();
+        $fcmtoken = request('fcmtoken');
+        if ($fcmtoken) {
+            if ($app->fcmtoken != $fcmtoken) {
+                $app->update(['fcmtoken' => $fcmtoken]);
+            }
+        }
         $chat = $app->chats()->first();
 
         $messages = [];
@@ -291,6 +307,14 @@ class AppController extends Controller
 
         /** @var $user App\Models\Usere **/
         $user = auth()->user();
+
+        $fcmtoken = request('fcmtoken');
+        if ($fcmtoken) {
+            if ($user->fcmtoken != $fcmtoken) {
+                $user->update(['fcmtoken' => $fcmtoken]);
+            }
+        }
+
         $chat = $user->chats()->orderBy('id', 'desc')->with('app');
 
         $chatClone = clone $chat;
@@ -404,6 +428,18 @@ class AppController extends Controller
             $data['chat_id'] = $chat_id;
             $data['local_id'] = $id;
             Message::create($data);
+
+            $chat = Chat::where('id', $chat_id)->first();
+            if ($chat) {
+                $app = $chat->app;
+                if ($app) {
+                    $title = 'Docta';
+                    $pushno = json_encode(['token' => $app->fcmtoken, 'title' => $title, 'message' => $message]);
+                    Pushnotification::create([
+                        'data' => $pushno
+                    ]);
+                }
+            }
         }
 
         return response()->json([

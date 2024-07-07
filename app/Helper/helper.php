@@ -171,3 +171,58 @@ function canmessage()
     }
     $app->update(['canmessage' => 1]);
 }
+
+function fcmtoken()
+{
+    $credentialsFilePath = public_path('docta-b2844-firebase.json');
+    $client = new \Google_Client();
+    $client->setAuthConfig($credentialsFilePath);
+    $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
+    $client->refreshTokenWithAssertion();
+    $token = $client->getAccessToken();
+    return $token['access_token'];
+}
+function sendMessage($token, $title, $body)
+{
+    if (!$token) {
+        return false;
+    }
+    $apiurl = 'https://fcm.googleapis.com/v1/projects/docta-b2844/messages:send';
+    $headers = [
+        'Authorization: Bearer ' . fcmtoken(),
+        'Content-Type: application/json'
+    ];
+
+    $message = [
+        'message' => [
+            'token' => $token,
+            'notification' => [
+                'title' => $title,
+                'body' => $body,
+            ],
+        ],
+    ];
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $apiurl);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($message));
+    $result = curl_exec($ch);
+
+    $ok = false;
+    if ($result === FALSE) {
+        // die('Curl failed: ' . curl_error($ch));
+    }
+    curl_close($ch);
+    try {
+        $result = json_decode($result);
+        $ok = (bool) @$result->name;
+    } catch (\Throwable $th) {
+        //throw $th;
+    }
+    // dd($result, $ok);
+    return $ok;
+}
