@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('send:push')->everySecond(30);
+        $schedule->command('sendpush')->everySecond(30);
     }
 
     /**
