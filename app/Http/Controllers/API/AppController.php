@@ -90,7 +90,7 @@ class AppController extends Controller
 
         $id = request('id');
         $chat_id = request('chat_id');
-        $success = true;
+        $success = false;
 
         $rms = 'Saved';
         try {
@@ -109,17 +109,15 @@ class AppController extends Controller
                 $data['username'] = $app['nom'] ?? $app['uid'];
                 $data['chat_id'] = $chat->id;
                 $data['local_id'] = $id;
-                DB::transaction(function () use ($data, $solde) {
-                    Message::create($data);
-                    ////
-                    $sms = @$forf->sms;
-                    $newsol = (float) @$solde->solde_usd - (float) $sms;
-                    if ($newsol < 0) {
-                        abort(403, 'Balance error for SMS');
-                    };
-                    $solde->update(['solde_usd' => $newsol]);
-                    ////
-                });
+                DB::beginTransaction();
+                Message::create($data);
+
+                $sms = @$forf->sms;
+                $newsol = (float) @$solde->solde_usd - (float) $sms;
+                if ($newsol < 0) {
+                    abort(403, 'Balance error for SMS');
+                };
+                $solde->update(['solde_usd' => $newsol]);
 
                 $user = $chat->user;
                 if ($user) {
@@ -129,11 +127,12 @@ class AppController extends Controller
                         'data' => $pushno
                     ]);
                 }
+                DB::commit();
+                $success = true;
             }
         } catch (\Throwable $th) {
             //throw $th;
             $rms =  $th->getMessage();
-            $success = false;
         }
 
         $sol = number_format($solde->solde_usd, 3, '.', ' ');
