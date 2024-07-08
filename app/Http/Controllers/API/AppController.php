@@ -84,6 +84,9 @@ class AppController extends Controller
             $chat = Chat::create(['app_id' => $app->id, 'date' => now('Africa/Lubumbashi')]);
         }
 
+        $solde = $app->soldes()->first();
+        $forf = Forfait::first();
+
         $id = request('id');
         $chat_id = request('chat_id');
 
@@ -104,6 +107,11 @@ class AppController extends Controller
             $data['local_id'] = $id;
             Message::create($data);
 
+            $sms = @$forf->sms;
+            $newsol = (float) @$solde->solde_usd - (float) $sms;
+            if ($newsol < 0) $newsol = 0;
+            $solde->update(['solde_usd' => $newsol]);
+
             $user = $chat->user;
             if ($user) {
                 $title = $app->nom ? ucfirst($app->nom) : $app->uid;
@@ -114,21 +122,13 @@ class AppController extends Controller
             }
         }
 
-        $solde = $app->soldes()->first();
-        $forf = Forfait::first();
-        $sms = @$forf->sms;
-        $newsol = (float) @$solde->solde_usd - (float) $sms;
-        if ($newsol < 0) $newsol = 0;
-        $solde->update(['solde_usd' => $newsol]);
-
-        $sol = number_format($newsol, 3, '.', ' ');
+        $sol = number_format($solde->solde_usd, 3, '.', ' ');
         $sms = number_format($forf->sms, 3, '.', ' ');
         $appel = number_format($forf->appel, 3, '.', ' ');
-
         $data = ['solde' => $sol, 'sms' => $sms, 'appel' => $appel];
 
         return response()->json([
-            'success' => true,
+            'successr' => true,
             'message' => "Saved",
             'data' => $data,
         ]);
