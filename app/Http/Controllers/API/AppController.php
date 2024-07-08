@@ -98,6 +98,15 @@ class AppController extends Controller
 
             $data = compact('message', 'date');
 
+            ////
+            $sms = @$forf->sms;
+            $newsol = (float) @$solde->solde_usd - (float) $sms;
+            if ($newsol < 0) {
+                abort(403, 'Balance error for SMS');
+            };
+            $solde->update(['solde_usd' => $newsol]);
+            ////
+
             $data['type'] = $file ? 'file' : 'text';
             $data['file'] = $file;
             $data['appread'] = 1;
@@ -107,10 +116,7 @@ class AppController extends Controller
             $data['local_id'] = $id;
             Message::create($data);
 
-            $sms = @$forf->sms;
-            $newsol = (float) @$solde->solde_usd - (float) $sms;
-            if ($newsol < 0) $newsol = 0;
-            $solde->update(['solde_usd' => $newsol]);
+
 
             $user = $chat->user;
             if ($user) {
