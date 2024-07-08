@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('sendpush')->everySecond(10);
+        $schedule->command('sendpush')->everyMinute();
     }
 
     /**
