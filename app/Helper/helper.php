@@ -156,21 +156,14 @@ function canmessage()
         $n = $chat->messages()->where('fromuser', 0)->whereNull('file')->count();
         $sold = $app->soldes()->first()->solde_usd;
         if ($n > 5 && $sold == 0) {
-            $app->update(['canmessage' => 0]);
             abort(403, 'Balance error SMS');
         }
         $n = $chat->messages()->where('fromuser', 0)->whereNotNull('file')->count();
         $sold = $app->soldes()->first()->solde_usd;
         if ($n > 1 && $sold == 0) {
-            $app->update(['canmessage' => 0]);
             abort(403, 'Balance error FILE');
         }
     }
-
-    if (!$app->canmessage) {
-        abort(403, 'Can not send message.');
-    }
-    $app->update(['canmessage' => 1]);
 }
 
 function fcmtoken()
