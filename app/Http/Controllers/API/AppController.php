@@ -89,43 +89,49 @@ class AppController extends Controller
 
         $id = request('id');
         $chat_id = request('chat_id');
+        $success = true;
 
-        $r = Message::where(['local_id' => $id, 'chat_id' => $chat_id, 'fromuser' => 0])->first();
-        if (!$r) {
-            $message = request('message');
-            $date = request('date');
-            $file = request('file');
+        $rms = 'Saved';
+        try {
+            $r = Message::where(['local_id' => $id, 'chat_id' => $chat_id, 'fromuser' => 0])->first();
+            if (!$r) {
+                $message = request('message');
+                $date = request('date');
+                $file = request('file');
 
-            $data = compact('message', 'date');
+                $data = compact('message', 'date');
 
-            ////
-            $sms = @$forf->sms;
-            $newsol = (float) @$solde->solde_usd - (float) $sms;
-            if ($newsol < 0) {
-                abort(403, 'Balance error for SMS');
-            };
-            $solde->update(['solde_usd' => $newsol]);
-            ////
+                ////
+                $sms = @$forf->sms;
+                $newsol = (float) @$solde->solde_usd - (float) $sms;
+                if ($newsol < 0) {
+                    abort(403, 'Balance error for SMS');
+                };
+                $solde->update(['solde_usd' => $newsol]);
+                ////
 
-            $data['type'] = $file ? 'file' : 'text';
-            $data['file'] = $file;
-            $data['appread'] = 1;
-            $data['fromuser'] = 0;
-            $data['username'] = $app['nom'] ?? $app['uid'];
-            $data['chat_id'] = $chat->id;
-            $data['local_id'] = $id;
-            Message::create($data);
+                $data['type'] = $file ? 'file' : 'text';
+                $data['file'] = $file;
+                $data['appread'] = 1;
+                $data['fromuser'] = 0;
+                $data['username'] = $app['nom'] ?? $app['uid'];
+                $data['chat_id'] = $chat->id;
+                $data['local_id'] = $id;
+                Message::create($data);
 
-
-
-            $user = $chat->user;
-            if ($user) {
-                $title = $app->nom ? ucfirst($app->nom) : $app->uid;
-                $pushno = json_encode(['token' => $user->fcmtoken, 'title' => $title, 'message' => $message]);
-                Pushnotification::create([
-                    'data' => $pushno
-                ]);
+                $user = $chat->user;
+                if ($user) {
+                    $title = $app->nom ? ucfirst($app->nom) : $app->uid;
+                    $pushno = json_encode(['token' => $user->fcmtoken, 'title' => $title, 'message' => $message]);
+                    Pushnotification::create([
+                        'data' => $pushno
+                    ]);
+                }
             }
+        } catch (\Throwable $th) {
+            //throw $th;
+            $rms =  $th->getMessage();
+            $success = false;
         }
 
         $sol = number_format($solde->solde_usd, 3, '.', ' ');
@@ -134,8 +140,8 @@ class AppController extends Controller
         $data = ['solde' => $sol, 'sms' => $sms, 'appel' => $appel];
 
         return response()->json([
-            'successr' => true,
-            'message' => "Saved",
+            'success' => $success,
+            'message' => $rms,
             'data' => $data,
         ]);
     }
