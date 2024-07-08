@@ -30,7 +30,7 @@ class SendPush extends Command
     {
         $pend = Pushnotification::all();
         foreach ($pend as $push) {
-            if ($push->retry > 10) {
+            if ($push->retry > 500) {
                 $push->delete();
             } else {
                 $data = json_decode($push->data);

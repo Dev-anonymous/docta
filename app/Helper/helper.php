@@ -189,8 +189,6 @@ function fcmtoken()
         "universe_domain" => "googleapis.com"
     ];
 
-    // 'docta-b2844';
-
     $client = new Google_Client();
     $client->setAuthConfig($credentialsFilePath);
     $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
@@ -237,7 +235,7 @@ function sendMessage($token, $title, $body)
         $result = json_decode($result);
         $ok = (bool) @$result->name;
     } catch (\Throwable $th) {
-        //throw $th;
+        // throw $th;
     }
     // dd($result, $ok);
     return $ok;
