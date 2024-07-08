@@ -14,6 +14,7 @@ use App\Models\Solde;
 use App\Models\User;
 use App\Models\Zego;
 use DateTime;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class AppController extends Controller
@@ -101,15 +102,6 @@ class AppController extends Controller
 
                 $data = compact('message', 'date');
 
-                ////
-                $sms = @$forf->sms;
-                $newsol = (float) @$solde->solde_usd - (float) $sms;
-                if ($newsol < 0) {
-                    abort(403, 'Balance error for SMS');
-                };
-                $solde->update(['solde_usd' => $newsol]);
-                ////
-
                 $data['type'] = $file ? 'file' : 'text';
                 $data['file'] = $file;
                 $data['appread'] = 1;
@@ -117,7 +109,17 @@ class AppController extends Controller
                 $data['username'] = $app['nom'] ?? $app['uid'];
                 $data['chat_id'] = $chat->id;
                 $data['local_id'] = $id;
-                Message::create($data);
+                DB::transaction(function () use ($data, $solde) {
+                    Message::create($data);
+                    ////
+                    $sms = @$forf->sms;
+                    $newsol = (float) @$solde->solde_usd - (float) $sms;
+                    if ($newsol < 0) {
+                        abort(403, 'Balance error for SMS');
+                    };
+                    $solde->update(['solde_usd' => $newsol]);
+                    ////
+                });
 
                 $user = $chat->user;
                 if ($user) {
