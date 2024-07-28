@@ -260,7 +260,7 @@
                 <div class="p-3 rounded-5" style="background-color: rgba(0, 0, 0, 0.075)">
                     <div class="w-100 text-center">
                         <button alire class="btn btn-outline-danger btn-sm mb-2"
-                            style="stext-transform: none !important; font-size: 10px">
+                            style="font-size: 10px">
                             <i class="fa fa-exclamation-triangle">
                                 <span>A lire !</span>
                             </i>
