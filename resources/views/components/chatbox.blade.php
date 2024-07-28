@@ -44,7 +44,7 @@
         justify-content: space-between;
         width: 24rem;
         height: 38rem;
-        z-index: 2;
+        z-index: 1000;
         box-sizing: border-box;
         border-radius: 10px;
         background: white;
@@ -55,18 +55,20 @@
         font-family: "Montserrat", sans-serif;
     }
 
+    .appcolor {
+        background: var(--zbotColor);
+        color: white;
+    }
+
     .zbot-chat-box-header {
         background: var(--zbotColor);
-        height: 70px;
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
         color: white;
-        text-align: center;
         font-size: 18px;
-        padding: 17px;
-        padding-bottom: 0px;
-        display: flex;
-        justify-content: space-between;
+        padding-top: 17px;
+        padding-left: 17px;
+        padding-right: 17px;
         font-weight: bold;
     }
 
@@ -111,8 +113,8 @@
     .zbot-chatbox .messages .message.bot {
         margin: 0.5rem 0.5rem 0.5rem auto;
         border-radius: 1.125rem 1.125rem 0 1.125rem;
-        background: rgb(240, 242, 247) none repeat scroll 0% 0%;
-        color: rgb(6, 19, 43);
+        background: rgb(32, 46, 84) none repeat scroll 0% 0%;
+        color: rgb(188, 196, 211);
     }
 
     .zbot-chatbox .box {
@@ -198,14 +200,24 @@
 
 <div id="chat-box" class="zbot-chatbox" style="display: none">
     <div class="">
-        <div class="zbot-chat-box-header">Ecrire au Docteur
-            <span>
-                <span class="chat-box-toggle" style="cursor: pointer">
-                    <i class="fa fa-times-circle text-danger fa-2x"></i>
+        <div class="zbot-chat-box-header d-block pb-2">
+            <div class="d-flex justify-content-between">
+                <span>
+                    Ecrire au Docteur
                 </span>
-            </span>
+                <span>
+                    <span class="chat-box-toggle" style="cursor: pointer">
+                        <i class="fa fa-times-circle text-danger fa-2x"></i>
+                    </span>
+                </span>
+            </div>
+            <div class="w-100 appcolor">
+                <span class="badge bg-secondary" btnprofile style="cursor: pointer">
+                    <i class="fa fa-info-circle text-muted"></i>
+                    <span solde></span>
+                </span>
+            </div>
         </div>
-
     </div>
     <div class="messages">
         <div id="zone-msg"></div>
@@ -213,6 +225,14 @@
     <div class="">
         <div class="box">
             <textarea maxlength="160" class="textarea" placeholder="Message ..."></textarea>
+        </div>
+        <div class="w-100">
+            <div syncdiv class="progress w-100" style="display:none">
+                <div syncbar class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"></div>
+            </div>
+            <div class="d-flex justify-content-center">
+                <span error class="text-danger" style="font-size: 10px"></span>
+            </div>
         </div>
         <div class="d-flex justify-content-end ">
             <span>
@@ -233,6 +253,121 @@
     </div>
 </div>
 
+<div class="modal fade" id="mdl-pro" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content ">
+            <div class="modal-body">
+                <div class="p-3 rounded-5" style="background-color: rgba(0, 0, 0, 0.075)">
+                    <h4>Facturation</h4>
+                    <hr>
+                    <h6>Appel : <b s-appel></b></h6>
+                    <h6>SMS : <b s-sms></b> </h6>
+                    <hr>
+                    <h4>Crédit d'appel</h4>
+                    <h6>Solde : <b s-solde></b></h6>
+                    <button class="btn btn-outline-info btn-sm mt-3" btnrech type="button">
+                        Recharger
+                    </button>
+                    <hr>
+                    <h4>Profil</h4>
+                    <h6>Nom : <span unom></span></h6>
+                    <h6>Tel : <span utel></span></h6>
+                    <h6>Email : <span uemail></span></h6>
+                    <button class="btn btn-outline-info btn-sm mt-3" btnpfo type="button">
+                        Modifier
+                    </button>
+                    <div class="mt-3" style="display: none" divpro>
+                        <form action="#" class="was-validated" id="f-up">
+                            <div class="form-group">
+                                <label for="">Nom (*)</label>
+                                <input required type="text" class="form-control" placeholder="Votre nom"
+                                    name="nom">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Télephone (*)</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1">+243</span>
+                                    </div>
+                                    <input type="text" required pattern="[0-9.]+" class="form-control"
+                                        placeholder="Votre numéro Tel." name="telephone" maxlength="9">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Email (facultatif)</label>
+                                <input type="email" class="form-control" placeholder="Votre email" name="email">
+                            </div>
+                            <div class="mt-3">
+                                <div id="rep"></div>
+                            </div>
+                            <button class="btn btn-outline-info mt-3" type="submit">
+                                <span></span>
+                                Valider
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-info" onclick="event.preventDefault();" data-bs-dismiss="modal">
+                    Fermer
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdl-rech" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content ">
+            <div class="modal-body">
+                <div class="p-3 rounded-5" style="background-color: rgba(0, 0, 0, 0.075)">
+                    <div class="d-flex justify-content-between">
+                        <h4>Recharge crédit d'appel</h4>
+                        <i class="fa fa-lock text-success fa-2x"></i>
+                    </div>
+                    <hr>
+                    <div class="alert alert-success">
+                        <i class="fa fa-info-circle"></i>
+                        Nous utilisons les payements sécurisés
+                    </div>
+                    <form action="#" class="was-validated" id="f-pay">
+                        <div class="form-group">
+                            <label for="">Télephone Mobile Money</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">+243</span>
+                                </div>
+                                <input type="text" required pattern="[0-9.]+" class="form-control"
+                                    placeholder="Votre numéro Tel." name="telephone" maxlength="9">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Montant de recharche</label>
+                            <input type="number" class="form-control" placeholder="Montant, Ex: 5" name="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Devise</label>
+                            <select name="devise" id="" class="form-control">
+                                <option>CDF</option>
+                                <option>USD</option>
+                            </select>
+                        </div>
+                        <div class="mt-3">
+                            <div id="rep"></div>
+                        </div>
+                        <button class="btn btn-outline-info mt-3" type="submit">
+                            <span></span>
+                            Valider
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
 <script src="{{ asset('assets/js/moment.js') }}"></script>
 <script>
     var btn_send = $('#btn-send');
@@ -247,6 +382,7 @@
         div.stop().animate({
             scrollTop: div[0].scrollHeight
         }, 500);
+        received();
     });
 
     function mcount() {
@@ -265,6 +401,15 @@
 
     function sendMessage() {
         var msg = ta.val().trim();
+        var d = btn_send.attr('disabled');
+        if (d == 'disabled') {
+            var sp = $('[error]');
+            sp.stop().html("Patientez SVP.");
+            setTimeout(() => {
+                sp.html('');
+            }, 2000);
+            return false;
+        }
         if (msg.length == 0) {
             ta.val('');
             return false;
@@ -348,6 +493,7 @@
     }
 
     function setMsg(mess) {
+        lockbtn(true);
         var msg = getMsg();
         var exist = msg.filter(function(el) {
             return el.id == mess.id;
@@ -356,6 +502,7 @@
             msg.push(mess);
         }
         localStorage.setItem('docta_msg', JSON.stringify(msg));
+        lockbtn(false);
     }
 
     function restoreMsg() {
@@ -371,6 +518,10 @@
                         '<i class="fa fa-clock text-danger" style="margin-left:20px; font-size:13px;"></i>';
                 }
                 if (mess.sent == 1) {
+                    icon =
+                        '<i class="fa fa-check text-success" style="margin-left:20px; font-size:13px;"></i>';
+                }
+                if (mess.userread == 1) {
                     icon =
                         '<i class="fa fa-check-double text-success" style="margin-left:20px; font-size:13px;"></i>';
                 }
@@ -397,7 +548,12 @@
                     </div>`;
             }
         });
-        $('#zone-msg').html(str);
+        var zm = $('#zone-msg')
+        zm.html(str);
+        var div = zm.closest('.messages');
+        div.stop().animate({
+            scrollTop: div[0].scrollHeight
+        }, 500);
     }
 
     first = true;
@@ -405,7 +561,6 @@
     function watchMsg() {
         $.ajax({
             'url': '{{ route('api.message') }}',
-            type: "get",
             data: {
 
             },
@@ -421,13 +576,26 @@
                     e.received = 0;
                     e.fromuser = 1;
                     setMsg(e);
-                })
+                });
                 if (newmsg) {
                     $('span[unread]').html(messages.length);
                     new Audio('{{ asset('notify.mp3') }}').play();
+                    restoreMsg();
                 } else {
                     $('span[unread]').html('');
                 }
+                if ($("#chat-box").is(':visible')) {
+                    received();
+                }
+
+                var solde = data.solde;
+                var sms = data.sms;
+                var appel = data.appel;
+                $('[solde]').html(`Crédit d'appel : ${solde} USD`);
+
+                $('[s-solde]').html(`${solde} USD`);
+                $('[s-appel]').html(`${appel} USD/Séc`);
+                $('[s-sms]').html(`${sms} USD/SMS`);
             }
         }).always(function() {
             setTimeout(function() {
@@ -436,35 +604,148 @@
         })
     }
 
-    function sendlocalmsg() {
+    function lockbtn(lock) {
         var txt = `<i class="fa fa-envelope-circle-check"></i> Envoyer`;
-        btn_send.attr('disabled', true).html(`<i class="spinner-border spinner-border-sm"></i> un instant SVP`);
+        var txt2 = `<i class="spinner-border spinner-border-sm"></i> un instant SVP`;
+        btn_send.attr('disabled', lock).html(lock ? txt2 : txt);
+    }
+
+    async function sendlocalmsg() {
+        lockbtn(true);
         var msg = getMsg();
 
         var newtab = [];
-        $(msg).each(async function(i, e) {
-            // try {
-            if (e['fromuser'] == 0 && e['sent'] == 0) {
-                var rep = await $.ajax({
-                    url: '{{ route('api.message') }}',
-                    type: 'post',
-                    data: {
-                        id: e.id,
-                        message: e.message,
-                        file: e.file,
-                        date: e.date,
-                    },
-                }).then();
-                e.sent = rep.success == true ? 1 : 0;
+        var tosent = msg.filter(function(e) {
+            return e['fromuser'] == 0 && e['sent'] == 0;
+        }).length;
+        var sent = 0;
+
+        var syncdiv = $('[syncdiv]');
+        var syncbar = $('[syncbar]');
+        syncdiv.slideDown();
+
+        for (var i in msg) {
+            var e = msg[i];
+            try {
+                if (e['fromuser'] == 0 && e['sent'] == 0) {
+                    var rep = await $.ajax({
+                        url: '{{ route('api.message') }}',
+                        type: 'post',
+                        data: {
+                            id: e.id,
+                            message: e.message,
+                            file: e.file,
+                            date: e.date,
+                        },
+                    }).then();
+                    e.sent = rep.success == true ? 1 : 0;
+                    sent += 1;
+                }
+            } catch (error) {
+                if (e['fromuser'] == 0 && e['sent'] == 0) {
+                    sent += 1;
+                }
             }
-            // } catch (error) {
-            //     console.log(error);
-            // }
             newtab.push(e);
-        });
-        // localStorage.setItem('docta_msg', JSON.stringify(newtab));
-        console.log(newtab);
-        btn_send.attr('disabled', false).html(txt);
+
+            if (tosent > 0) {
+                var perc = `${Math.floor(sent * 100 /tosent)}`;
+                syncbar.css('width', `${perc}%`).html(`Envoi ${perc}%`);
+            }
+        };
+
+        syncdiv.stop();
+        setTimeout(() => {
+            syncdiv.slideUp(function() {
+                syncbar.css('width', `0%`).html('');
+            });
+        }, 1000);
+        localStorage.setItem('docta_msg', JSON.stringify(newtab));
+        lockbtn(false);
         restoreMsg();
     }
+
+    function received() {
+        var msg = getMsg();
+        var mes = msg.filter(function(e) {
+            return e['fromuser'] == 1;
+        });
+        var ids = [];
+        $(mes).each(function(i, e) {
+            ids.push(e['id']);
+        })
+        if (ids.length > 0) {
+            $.ajax({
+                url: '{{ route('api.received') }}',
+                type: 'post',
+                data: {
+                    data: ids.join(',')
+                },
+            });
+        }
+    }
+
+    $('[btnprofile]').click(function() {
+        $('#mdl-pro').modal('show');
+    });
+    $('[btnpfo]').click(function() {
+        $('[divpro]').slideToggle();
+    });
+    $('#f-up').submit(function() {
+        event.preventDefault();
+        var form = $(this);
+        var btn = $(':submit', form);
+        var rep = $('#rep', form);
+        rep.html('');
+        var data = form.serialize();
+        if ($('[name=email]', form).val().trim().length == 0) {
+            data = data.split('email=').join('');
+        }
+        data = data.split('telephone=').join('telephone=+243');
+
+        btn.attr('disabled', true).find('span').removeClass().addClass('spinner-border spinner-border-sm');
+        $.ajax({
+            url: '{{ route('api.profile') }}',
+            type: 'post',
+            data: data,
+            success: function(res) {
+                if (res.success) {
+                    rep.removeClass().addClass('text-success').html(res.message);
+                    localStorage.setItem('docta_uprofile', JSON.stringify({
+                        nom: $('[name=nom]', form).val().trim(),
+                        telephone: $('[name=telephone]', form).val().trim(),
+                        email: $('[name=email]', form).val().trim(),
+                    }));
+                    setTimeout(() => {
+                        location.reload();
+                    }, 3000);
+                } else {
+                    rep.removeClass().addClass('text-danger').html(res.message);
+                }
+            }
+        }).always(function() {
+            btn.attr('disabled', false).find('span').removeClass();
+        });
+    });
+
+    function uprofile() {
+        var p = localStorage.getItem('docta_uprofile');
+        if (p) {
+            p = JSON.parse(p);
+            $('[unom]').html(p.nom);
+            $('[uemail]').html(p.email);
+            $('[utel]').html(p.telephone);
+            var form = $('#f-up');
+
+            $('[name=nom]', form).val(p.nom);
+            $('[name=telephone]', form).val(p.telephone);
+            $('[name=email]', form).val(p.email);
+        }
+    }
+    uprofile();
+
+    $('[btnrech]').click(function() {
+        $('.modal').modal('hide');
+        $('#mdl-rech').modal('show');
+    })
 </script>

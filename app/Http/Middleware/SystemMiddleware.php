@@ -24,7 +24,7 @@ class SystemMiddleware
     {
         $forf = Forfait::first();
         if (!$forf) {
-            $forf = Forfait::create(['cout' => 0.008]);
+            $forf = Forfait::create(['appel' => 0.05, 'sms' => 0.05]);
         }
         $taux = Taux::first();
         if (!$taux) {

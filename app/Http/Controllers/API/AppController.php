@@ -200,6 +200,12 @@ class AppController extends Controller
 
         $userread = Message::where(['chat_id' => @$chat->id, 'fromuser' => 0, 'userread' => 0])->first();
 
+        $solde = $app->soldes()->first();
+        $forf = Forfait::first();
+        $solde = number_format($solde->solde_usd, 3, '.', ' ');
+        $sms = number_format($forf->sms, 3, '.', ' ');
+        $appel = number_format($forf->appel, 3, '.', ' ');
+
         return response()->json([
             'success' => true,
             'message' => '',
@@ -209,6 +215,7 @@ class AppController extends Controller
                 'conseils' => $conseil,
                 'docta' => $docta,
                 'zego' => $zego,
+                ...compact('solde','sms','appel')
             ]
         ]);
     }
