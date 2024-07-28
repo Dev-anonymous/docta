@@ -70,7 +70,7 @@
              </div>
          </section>
 
-         <section id="counts" class="counts">
+         {{-- <section id="counts" class="counts">
              <div class="container">
                  <div class="row">
                      <div class="col-lg-3 col-md-6">
@@ -121,7 +121,8 @@
                  </div>
 
              </div>
-         </section>
+         </section> --}}
+
          <section class="contact pb-0" id="about">
              <div class="container">
                  <div class="section-title">
@@ -129,7 +130,7 @@
                      <p>
                          <i>Docta, ton ami médecin</i> est une plateforme virtuelle d'interaction instantanée avec un
                          médecin
-                         qui a pour but de vous accompagner dans toutes vos questions et préoccupations d'ordre médical
+                         qui a pour but de vous accompagner dans toutes vos questions et préoccupations
                          en ce qui concerne votre santé ou celle de vos proches sans avoir à vous déplacer.
                      </p>
                  </div>

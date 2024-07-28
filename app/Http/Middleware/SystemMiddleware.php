@@ -2,11 +2,14 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\App;
 use App\Models\Forfait;
+use App\Models\Solde;
 use App\Models\Taux;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 
 class SystemMiddleware
 {
@@ -26,6 +29,11 @@ class SystemMiddleware
         $taux = Taux::first();
         if (!$taux) {
             $taux = Taux::create(['cdf_usd' => 0.00037, 'usd_cdf' => 2690]);
+        }
+
+        $app = App::whereNotIn('id', Solde::pluck('app_id')->all())->get();
+        foreach ($app as $el) {
+            $el->soldes()->create(['solde_usd' => 0]);
         }
         completeTrans();
         Artisan::call('sendpush');

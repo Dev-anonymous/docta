@@ -41,6 +41,13 @@
 
 <script src="{{ asset('assets/js/jq.min.js') }}"></script>
 <script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'Accept': 'application/json',
+        }
+    });
     $('#fcont').submit(function() {
         event.preventDefault();
         var form = $(this);
@@ -82,4 +89,17 @@
             location.href = href + '/' + this.hash;
         });
     @endif
+
+    function iOS() {
+        return [
+                'iPad Simulator',
+                'iPhone Simulator',
+                'iPod Simulator',
+                'iPad',
+                'iPhone',
+                'iPod'
+            ].includes(navigator.platform) ||
+            (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+    }
 </script>
+<x-chatbox />

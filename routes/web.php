@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\API\AppController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\PAYController;
 use App\Http\Controllers\WEBController;
@@ -48,3 +49,6 @@ Route::middleware('auth')->group(function () {
         });
     });
 });
+
+Route::post('uid', [AppController::class, 'uid'])->name('web.uid');
+

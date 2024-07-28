@@ -30,17 +30,37 @@ class AppController extends Controller
     public function uid()
     {
         $now = now('Africa/Lubumbashi');
+        $from = request('from');
         $deviceid = request('deviceid');
-        if (!$deviceid) {
-            abort(403);
+        if ($from == 'web') {
+            if (!$deviceid) {
+                $deviceid =  makeRand("ID-");
+                while (1) {
+                    $t = App::where('deviceid', $deviceid)->first();
+                    if ($t) {
+                        $deviceid =  makeRand("ID-");
+                    } else {
+                        break;
+                    }
+                }
+            }
+        } else {
+            if (!$deviceid) {
+                abort(403);
+            }
         }
+
         $uid = request('uid');
         if (!$uid) {
-            $uid =  makeRand("USER-");
+            $prefix = 'USER-';
+            if ($from == 'web') {
+                $prefix = 'BROWSER-';
+            }
+            $uid =  makeRand($prefix);
             while (1) {
                 $t = App::where('uid', $uid)->first();
                 if ($t) {
-                    $uid =  makeRand("USER-");
+                    $uid =  makeRand($prefix);
                 } else {
                     break;
                 }
@@ -56,7 +76,7 @@ class AppController extends Controller
         return response()->json([
             'success' => true,
             'message' => "Welcome $uid",
-            'data' => compact('uid')
+            'data' => compact('uid', 'deviceid')
         ]);
     }
 
@@ -115,7 +135,8 @@ class AppController extends Controller
                 $sms = @$forf->sms;
                 $newsol = (float) @$solde->solde_usd - (float) $sms;
                 if ($newsol < 0) {
-                    abort(403, 'Balance error for SMS');
+                    $newsol = 0;
+                    // can message = true ::: new user
                 };
                 $solde->update(['solde_usd' => $newsol]);
 
@@ -164,7 +185,7 @@ class AppController extends Controller
             $tmp = [];
             foreach ($messages as $el) {
                 $d['id'] = $el->id;
-                $d['date'] = $el->date->format('Y-m-d H:i:s');
+                $d['date'] = $el->date->format('d-m-Y H:i:s');
                 $d['message'] = $el->message;
                 $d['username'] = $el->username;
                 $d['file'] = $el->file;
