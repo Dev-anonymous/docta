@@ -215,7 +215,9 @@ class AppController extends Controller
                 'conseils' => $conseil,
                 'docta' => $docta,
                 'zego' => $zego,
-                ...compact('solde','sms','appel')
+                'solde' => $solde,
+                'sms' => $sms,
+                'appel' => $appel,
             ]
         ]);
     }

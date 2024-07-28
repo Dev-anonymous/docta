@@ -258,7 +258,26 @@
         <div class="modal-content ">
             <div class="modal-body">
                 <div class="p-3 rounded-5" style="background-color: rgba(0, 0, 0, 0.075)">
-                    <h4>Facturation</h4>
+                    <div class="w-100 text-center">
+                        <button alire class="btn btn-outline-danger btn-sm mb-2"
+                            style="stext-transform: none !important; font-size: 10px">
+                            <i class="fa fa-exclamation-triangle">
+                                <span>A lire !</span>
+                            </i>
+                        </button>
+                    </div>
+                    <div alirem class="alert alert-danger" style="display: none">
+                        <i class="fa fa-exclamation-circle"></i>
+                        <b class="">Vous utilisez nos services sur un device iOS? Lors de la suppression des
+                            données en cache de
+                            ce
+                            navigateur, VOUS DEVEZ IGNORER la suppression de données de ce
+                            site(https://www.docta-tam.com) pour permettre d'identifier votre navigateur et de
+                            garder
+                            vos informations (conversation, solde, profil).
+                        </b>
+                    </div>
+                    <h4 class="mt-3">Facturation</h4>
                     <hr>
                     <h6>Appel : <b s-appel></b></h6>
                     <h6>SMS : <b s-sms></b> </h6>
@@ -343,8 +362,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="">Montant de recharche</label>
-                            <input type="number" class="form-control" placeholder="Montant, Ex: 5" name="email">
+                            <label for="">Montant de recharge</label>
+                            <input type="number" required min="0.1" step="0.1" class="form-control"
+                                placeholder="Montant, Ex: 1000" name="amount">
                         </div>
                         <div class="form-group">
                             <label for="">Devise</label>
@@ -353,12 +373,16 @@
                                 <option>USD</option>
                             </select>
                         </div>
-                        <div class="mt-3">
+                        <div class="mt-3 mb-3">
                             <div id="rep"></div>
                         </div>
-                        <button class="btn btn-outline-info mt-3" type="submit">
+                        <button class="btn btn-outline-info" type="submit">
                             <span></span>
                             Valider
+                        </button>
+
+                        <button type="button" class="btn btn-light my-2" id="btncancel"
+                            style="display: none">Annuler
                         </button>
                     </form>
                 </div>
@@ -370,53 +394,77 @@
 
 <script src="{{ asset('assets/js/moment.js') }}"></script>
 <script>
-    var btn_send = $('#btn-send');
-    var ta = $('.textarea');
-
-    $("#btn-chat,.chat-box-toggle").click(function() {
-        $("#btn-chat").toggle();
-        var cb = $("#chat-box");
-        cb.toggle();
-        var zm = $('#zone-msg')
-        var div = zm.closest('.messages');
-        div.stop().animate({
-            scrollTop: div[0].scrollHeight
-        }, 500);
-        received();
-    });
-
-    function mcount() {
-        var n = $('.textarea').val().length;
-        $('[mcounter]').html(`${n}/160`);
+    function iOS() {
+        return [
+                'iPad Simulator',
+                'iPhone Simulator',
+                'iPod Simulator',
+                'iPad',
+                'iPhone',
+                'iPod'
+            ].includes(navigator.platform) ||
+            (navigator.userAgent.includes("Mac") && "ontouchend" in document)
     }
-    ta.keyup(function(e) {
-        mcount();
-        if (e.keyCode == 13) {
+
+    if (iOS()) {
+        $('#dapp').fadeOut();
+        all();
+    } else {
+        $('#dapp').fadeIn();
+    }
+
+    function all() {
+        var btn_send = $('#btn-send');
+        var ta = $('.textarea');
+
+        $('[alire]').click(function() {
+            $('[alirem]').stop().slideToggle();
+        })
+
+        $("#btn-chat,.chat-box-toggle").click(function() {
+            $("#btn-chat").toggle();
+            var cb = $("#chat-box");
+            cb.toggle();
+            var zm = $('#zone-msg')
+            var div = zm.closest('.messages');
+            div.stop().animate({
+                scrollTop: div[0].scrollHeight
+            }, 500);
+            received();
+        });
+
+        function mcount() {
+            var n = $('.textarea').val().length;
+            $('[mcounter]').html(`${n}/160`);
+        }
+        ta.keyup(function(e) {
+            mcount();
+            if (e.keyCode == 13) {
+                return sendMessage();
+            }
+        });
+        btn_send.click(function() {
             return sendMessage();
-        }
-    });
-    btn_send.click(function() {
-        return sendMessage();
-    })
+        })
 
-    function sendMessage() {
-        var msg = ta.val().trim();
-        var d = btn_send.attr('disabled');
-        if (d == 'disabled') {
-            var sp = $('[error]');
-            sp.stop().html("Patientez SVP.");
-            setTimeout(() => {
-                sp.html('');
-            }, 2000);
-            return false;
-        }
-        if (msg.length == 0) {
-            ta.val('');
-            return false;
-        }
+        function sendMessage() {
+            var msg = ta.val().trim();
+            var d = btn_send.attr('disabled');
+            if (d == 'disabled') {
+                var sp = $('[error]');
+                sp.stop().html("Patientez SVP.");
+                setTimeout(() => {
+                    sp.html('');
+                }, 2000);
+                return false;
+            }
+            if (msg.length == 0) {
+                ta.val('');
+                return false;
+            }
 
-        var date = moment().utcOffset('+0200').format('YYYY-MM-DD h:mm:ss');
-        var m = `<div class="message bot">
+            var date = moment().utcOffset('+0200').format('YYYY-MM-DD h:mm:ss');
+            var m = `<div class="message bot">
                     ${msg}</br>
                     <div class='d-flex justify-content-between'>
                         <small style="font-size:10px;"><i>${date}</i></small>
@@ -424,328 +472,451 @@
                     </div>
                 </div>`;
 
-        var zm = $('#zone-msg')
-        zm.append(m);
-        var div = zm.closest('.messages');
-        div.stop().animate({
-            scrollTop: div[0].scrollHeight
-        }, 500);
-        ta.val('');
-        mcount();
-        var tt = Date.now();
-        var rnd = `${Math.random()}`.split('0.').join('');
-        var id = `${tt}-${rnd}`;
-        var mess = {
-            id: id,
-            message: msg,
-            date: date,
-            sent: 0,
-            fromuser: 0,
-        };
-        setMsg(mess);
-        sendlocalmsg();
-    }
-
-    function init() {
-        var uid = localStorage.getItem('docta_uid');
-        var deviceid = localStorage.getItem('docta_deviceid');
-        $.ajax({
-            'url': '{{ route('web.uid') }}',
-            type: "post",
-            data: {
-                from: 'web',
-                uid: uid,
-                deviceid: deviceid,
-            },
-            success: function(rep) {
-                var data = rep.data;
-                if (data.uid && data.deviceid) {
-                    localStorage.setItem('docta_uid', data.uid);
-                    localStorage.setItem('docta_deviceid', data.deviceid);
-                    $("#btn-chat").fadeIn();
-                    $.ajaxSetup({
-                        headers: {
-                            'uid': data.uid,
-                            'deviceid': data.deviceid,
-                        }
-                    });
-                    restoreMsg();
-                    sendlocalmsg();
-                    watchMsg();
-                }
-            },
-            error: function(rep) {
-                setTimeout(() => {
-                    init();
-                }, 3000);
-            }
-        })
-    }
-    init();
-
-    function getMsg() {
-        var msg = localStorage.getItem('docta_msg');
-        if (msg) {
-            msg = JSON.parse(msg);
-            return msg;
+            var zm = $('#zone-msg')
+            zm.append(m);
+            var div = zm.closest('.messages');
+            div.stop().animate({
+                scrollTop: div[0].scrollHeight
+            }, 500);
+            ta.val('');
+            mcount();
+            var tt = Date.now();
+            var rnd = `${Math.random()}`.split('0.').join('');
+            var id = `${tt}-${rnd}`;
+            var mess = {
+                id: id,
+                message: msg,
+                date: date,
+                sent: 0,
+                fromuser: 0,
+            };
+            setMsg(mess);
+            sendlocalmsg();
         }
-        return [];
-    }
 
-    function setMsg(mess) {
-        lockbtn(true);
-        var msg = getMsg();
-        var exist = msg.filter(function(el) {
-            return el.id == mess.id;
-        });
-        if (exist.length == 0) {
-            msg.push(mess);
-        }
-        localStorage.setItem('docta_msg', JSON.stringify(msg));
-        lockbtn(false);
-    }
-
-    function restoreMsg() {
-        var msg = getMsg();
-        var str = '';
-        $(msg).each(function(e, mess) {
-            var isfile = !!mess.file;
-            var icon =
-                '<i class="fa fa-user-doctor" style="margin-left:20px; font-size:15px; color:#02bbff"></i>';
-            if (mess.fromuser == 0) {
-                if (mess.sent == 0) {
-                    icon =
-                        '<i class="fa fa-clock text-danger" style="margin-left:20px; font-size:13px;"></i>';
-                }
-                if (mess.sent == 1) {
-                    icon =
-                        '<i class="fa fa-check text-success" style="margin-left:20px; font-size:13px;"></i>';
-                }
-                if (mess.userread == 1) {
-                    icon =
-                        '<i class="fa fa-check-double text-success" style="margin-left:20px; font-size:13px;"></i>';
-                }
-            }
-            if (isfile) {
-                str +=
-                    `<div class="message ${mess.fromuser != 1 ? 'bot':''}">
-                        ${mess.message}</br>
-                        <div class='d-flex justify-content-between'>
-                            <small style="font-size:10px;"><i>${mess.date}</i></small>
-                            ${icon}
-                        </div>
-
-                    </div>`;
-            } else {
-                str +=
-                    `<div class="message ${mess.fromuser != 1 ? 'bot':''}">
-                        ${mess.message}</br>
-                        <div class='d-flex justify-content-between'>
-                            <small style="font-size:10px;"><i>${mess.date}</i></small>
-                            ${icon}
-                        </div>
-
-                    </div>`;
-            }
-        });
-        var zm = $('#zone-msg')
-        zm.html(str);
-        var div = zm.closest('.messages');
-        div.stop().animate({
-            scrollTop: div[0].scrollHeight
-        }, 500);
-    }
-
-    first = true;
-
-    function watchMsg() {
-        $.ajax({
-            'url': '{{ route('api.message') }}',
-            data: {
-
-            },
-            success: function(rep) {
-                var data = rep.data;
-                if (first) {
-                    first = false;
-                    $("#btn-chat").fadeIn();
-                }
-                var newmsg = data.message.length > 0;
-                var messages = data.message;
-                $(messages).each(function(i, e) {
-                    e.received = 0;
-                    e.fromuser = 1;
-                    setMsg(e);
-                });
-                if (newmsg) {
-                    $('span[unread]').html(messages.length);
-                    new Audio('{{ asset('notify.mp3') }}').play();
-                    restoreMsg();
-                } else {
-                    $('span[unread]').html('');
-                }
-                if ($("#chat-box").is(':visible')) {
-                    received();
-                }
-
-                var solde = data.solde;
-                var sms = data.sms;
-                var appel = data.appel;
-                $('[solde]').html(`Crédit d'appel : ${solde} USD`);
-
-                $('[s-solde]').html(`${solde} USD`);
-                $('[s-appel]').html(`${appel} USD/Séc`);
-                $('[s-sms]').html(`${sms} USD/SMS`);
-            }
-        }).always(function() {
-            setTimeout(function() {
-                watchMsg();
-            }, 3000);
-        })
-    }
-
-    function lockbtn(lock) {
-        var txt = `<i class="fa fa-envelope-circle-check"></i> Envoyer`;
-        var txt2 = `<i class="spinner-border spinner-border-sm"></i> un instant SVP`;
-        btn_send.attr('disabled', lock).html(lock ? txt2 : txt);
-    }
-
-    async function sendlocalmsg() {
-        lockbtn(true);
-        var msg = getMsg();
-
-        var newtab = [];
-        var tosent = msg.filter(function(e) {
-            return e['fromuser'] == 0 && e['sent'] == 0;
-        }).length;
-        var sent = 0;
-
-        var syncdiv = $('[syncdiv]');
-        var syncbar = $('[syncbar]');
-        syncdiv.slideDown();
-
-        for (var i in msg) {
-            var e = msg[i];
-            try {
-                if (e['fromuser'] == 0 && e['sent'] == 0) {
-                    var rep = await $.ajax({
-                        url: '{{ route('api.message') }}',
-                        type: 'post',
-                        data: {
-                            id: e.id,
-                            message: e.message,
-                            file: e.file,
-                            date: e.date,
-                        },
-                    }).then();
-                    e.sent = rep.success == true ? 1 : 0;
-                    sent += 1;
-                }
-            } catch (error) {
-                if (e['fromuser'] == 0 && e['sent'] == 0) {
-                    sent += 1;
-                }
-            }
-            newtab.push(e);
-
-            if (tosent > 0) {
-                var perc = `${Math.floor(sent * 100 /tosent)}`;
-                syncbar.css('width', `${perc}%`).html(`Envoi ${perc}%`);
-            }
-        };
-
-        syncdiv.stop();
-        setTimeout(() => {
-            syncdiv.slideUp(function() {
-                syncbar.css('width', `0%`).html('');
-            });
-        }, 1000);
-        localStorage.setItem('docta_msg', JSON.stringify(newtab));
-        lockbtn(false);
-        restoreMsg();
-    }
-
-    function received() {
-        var msg = getMsg();
-        var mes = msg.filter(function(e) {
-            return e['fromuser'] == 1;
-        });
-        var ids = [];
-        $(mes).each(function(i, e) {
-            ids.push(e['id']);
-        })
-        if (ids.length > 0) {
+        function init() {
+            var uid = localStorage.getItem('docta_uid');
+            var deviceid = localStorage.getItem('docta_deviceid');
             $.ajax({
-                url: '{{ route('api.received') }}',
-                type: 'post',
+                'url': '{{ route('web.uid') }}',
+                type: "post",
                 data: {
-                    data: ids.join(',')
+                    from: 'web',
+                    uid: uid,
+                    deviceid: deviceid,
                 },
-            });
-        }
-    }
-
-    $('[btnprofile]').click(function() {
-        $('#mdl-pro').modal('show');
-    });
-    $('[btnpfo]').click(function() {
-        $('[divpro]').slideToggle();
-    });
-    $('#f-up').submit(function() {
-        event.preventDefault();
-        var form = $(this);
-        var btn = $(':submit', form);
-        var rep = $('#rep', form);
-        rep.html('');
-        var data = form.serialize();
-        if ($('[name=email]', form).val().trim().length == 0) {
-            data = data.split('email=').join('');
-        }
-        data = data.split('telephone=').join('telephone=+243');
-
-        btn.attr('disabled', true).find('span').removeClass().addClass('spinner-border spinner-border-sm');
-        $.ajax({
-            url: '{{ route('api.profile') }}',
-            type: 'post',
-            data: data,
-            success: function(res) {
-                if (res.success) {
-                    rep.removeClass().addClass('text-success').html(res.message);
-                    localStorage.setItem('docta_uprofile', JSON.stringify({
-                        nom: $('[name=nom]', form).val().trim(),
-                        telephone: $('[name=telephone]', form).val().trim(),
-                        email: $('[name=email]', form).val().trim(),
-                    }));
+                success: function(rep) {
+                    var data = rep.data;
+                    if (data.uid && data.deviceid) {
+                        localStorage.setItem('docta_uid', data.uid);
+                        localStorage.setItem('docta_deviceid', data.deviceid);
+                        $("#btn-chat").fadeIn();
+                        $.ajaxSetup({
+                            headers: {
+                                'uid': data.uid,
+                                'deviceid': data.deviceid,
+                            }
+                        });
+                        restoreMsg();
+                        sendlocalmsg();
+                        watchMsg();
+                    }
+                },
+                error: function(rep) {
                     setTimeout(() => {
-                        location.reload();
+                        init();
                     }, 3000);
-                } else {
-                    rep.removeClass().addClass('text-danger').html(res.message);
                 }
-            }
-        }).always(function() {
-            btn.attr('disabled', false).find('span').removeClass();
-        });
-    });
-
-    function uprofile() {
-        var p = localStorage.getItem('docta_uprofile');
-        if (p) {
-            p = JSON.parse(p);
-            $('[unom]').html(p.nom);
-            $('[uemail]').html(p.email);
-            $('[utel]').html(p.telephone);
-            var form = $('#f-up');
-
-            $('[name=nom]', form).val(p.nom);
-            $('[name=telephone]', form).val(p.telephone);
-            $('[name=email]', form).val(p.email);
+            })
         }
-    }
-    uprofile();
+        init();
 
-    $('[btnrech]').click(function() {
-        $('.modal').modal('hide');
-        $('#mdl-rech').modal('show');
-    })
+        function getMsg() {
+            var msg = localStorage.getItem('docta_msg');
+            if (msg) {
+                msg = JSON.parse(msg);
+                return msg;
+            }
+            return [];
+        }
+
+        function setMsg(mess) {
+            lockbtn(true);
+            var msg = getMsg();
+            var exist = msg.filter(function(el) {
+                return el.id == mess.id;
+            });
+            if (exist.length == 0) {
+                msg.push(mess);
+            }
+            localStorage.setItem('docta_msg', JSON.stringify(msg));
+            lockbtn(false);
+        }
+
+        function restoreMsg() {
+            var msg = getMsg();
+            var str = '';
+            $(msg).each(function(e, mess) {
+                var isfile = !!mess.file;
+                var icon =
+                    '<i class="fa fa-user-doctor" style="margin-left:20px; font-size:15px; color:#02bbff"></i>';
+                if (mess.fromuser == 0) {
+                    if (mess.sent == 0) {
+                        icon =
+                            '<i class="fa fa-clock text-danger" style="margin-left:20px; font-size:13px;"></i>';
+                    }
+                    if (mess.sent == 1) {
+                        icon =
+                            '<i class="fa fa-check text-success" style="margin-left:20px; font-size:13px;"></i>';
+                    }
+                    if (mess.userread == 1) {
+                        icon =
+                            '<i class="fa fa-check-double text-success" style="margin-left:20px; font-size:13px;"></i>';
+                    }
+                }
+                if (isfile) {
+                    str +=
+                        `<div class="message ${mess.fromuser != 1 ? 'bot':''}">
+                        ${mess.message}</br>
+                        <div class='d-flex justify-content-between'>
+                            <small style="font-size:10px;"><i>${mess.date}</i></small>
+                            ${icon}
+                        </div>
+
+                    </div>`;
+                } else {
+                    str +=
+                        `<div class="message ${mess.fromuser != 1 ? 'bot':''}">
+                        ${mess.message}</br>
+                        <div class='d-flex justify-content-between'>
+                            <small style="font-size:10px;"><i>${mess.date}</i></small>
+                            ${icon}
+                        </div>
+
+                    </div>`;
+                }
+            });
+            var zm = $('#zone-msg')
+            zm.html(str);
+            var div = zm.closest('.messages');
+            div.stop().animate({
+                scrollTop: div[0].scrollHeight
+            }, 500);
+        }
+
+        first = true;
+
+        function watchMsg() {
+            $.ajax({
+                'url': '{{ route('api.message') }}',
+                data: {
+
+                },
+                success: function(rep) {
+                    var data = rep.data;
+                    if (first) {
+                        first = false;
+                        $("#btn-chat").fadeIn();
+                    }
+                    var newmsg = data.message.length > 0;
+                    var messages = data.message;
+                    $(messages).each(function(i, e) {
+                        e.received = 0;
+                        e.fromuser = 1;
+                        setMsg(e);
+                    });
+                    if (newmsg) {
+                        $('span[unread]').html(messages.length);
+                        new Audio('{{ asset('notify.mp3') }}').play();
+                        restoreMsg();
+                    } else {
+                        $('span[unread]').html('');
+                    }
+                    if ($("#chat-box").is(':visible')) {
+                        received();
+                    }
+
+                    var solde = data.solde;
+                    var sms = data.sms;
+                    var appel = data.appel;
+                    $('[solde]').html(`Crédit d'appel : ${solde} USD`);
+
+                    $('[s-solde]').html(`${solde} USD`);
+                    $('[s-appel]').html(`${appel} USD/Séc`);
+                    $('[s-sms]').html(`${sms} USD/SMS`);
+                }
+            }).always(function() {
+                setTimeout(function() {
+                    watchMsg();
+                }, 3000);
+            })
+        }
+
+        function lockbtn(lock) {
+            var txt = `<i class="fa fa-envelope-circle-check"></i> Envoyer`;
+            var txt2 = `<i class="spinner-border spinner-border-sm"></i> un instant SVP`;
+            btn_send.attr('disabled', lock).html(lock ? txt2 : txt);
+        }
+
+        async function sendlocalmsg() {
+            lockbtn(true);
+            var msg = getMsg();
+
+            var newtab = [];
+            var tosent = msg.filter(function(e) {
+                return e['fromuser'] == 0 && e['sent'] == 0;
+            }).length;
+            var sent = 0;
+
+            var syncdiv = $('[syncdiv]');
+            var syncbar = $('[syncbar]');
+            syncdiv.slideDown();
+
+            for (var i in msg) {
+                var e = msg[i];
+                try {
+                    if (e['fromuser'] == 0 && e['sent'] == 0) {
+                        var rep = await $.ajax({
+                            url: '{{ route('api.message') }}',
+                            type: 'post',
+                            data: {
+                                id: e.id,
+                                message: e.message,
+                                file: e.file,
+                                date: e.date,
+                            },
+                        }).then();
+                        e.sent = rep.success == true ? 1 : 0;
+                        sent += 1;
+                    }
+                } catch (error) {
+                    if (e['fromuser'] == 0 && e['sent'] == 0) {
+                        sent += 1;
+                    }
+                }
+                newtab.push(e);
+
+                if (tosent > 0) {
+                    var perc = `${Math.floor(sent * 100 /tosent)}`;
+                    syncbar.css('width', `${perc}%`).html(`Envoi ${perc}%`);
+                }
+            };
+
+            syncdiv.stop();
+            setTimeout(() => {
+                syncdiv.slideUp(function() {
+                    syncbar.css('width', `0%`).html('');
+                });
+            }, 1000);
+            localStorage.setItem('docta_msg', JSON.stringify(newtab));
+            lockbtn(false);
+            restoreMsg();
+        }
+
+        function received() {
+            var msg = getMsg();
+            var mes = msg.filter(function(e) {
+                return e['fromuser'] == 1 && e['received'] == 0;
+            });
+            var ids = [];
+            $(mes).each(function(i, e) {
+                ids.push(e['id']);
+            })
+            if (ids.length > 0) {
+                $.ajax({
+                    url: '{{ route('api.received') }}',
+                    type: 'post',
+                    data: {
+                        data: ids.join(',')
+                    },
+                    success: function() {
+                        var msg = getMsg();
+                        lockbtn(true);
+                        var tmp = [];
+                        for (var i in msg) {
+                            var find = false;
+                            for (var j in mes) {
+                                if (mes[j].id == msg[i].id) {
+                                    find = true;
+                                    break;
+                                }
+                            }
+                            var m = msg[i];
+                            m.received = find ? 1 : 0;
+                            tmp.push(m);
+                        }
+                        localStorage.setItem('docta_msg', JSON.stringify(tmp));
+                        lockbtn(false);
+                    }
+                });
+            }
+        }
+
+        $('[btnprofile]').click(function() {
+            $('#mdl-pro').modal('show');
+        });
+        $('[btnpfo]').click(function() {
+            $('[divpro]').slideToggle();
+        });
+        $('#f-up').submit(function() {
+            event.preventDefault();
+            var form = $(this);
+            var btn = $(':submit', form);
+            var rep = $('#rep', form);
+            rep.html('');
+            var data = form.serialize();
+            if ($('[name=email]', form).val().trim().length == 0) {
+                data = data.split('email=').join('');
+            }
+            data = data.split('telephone=').join('telephone=+243');
+
+            btn.attr('disabled', true).find('span').removeClass().addClass('spinner-border spinner-border-sm');
+            $.ajax({
+                url: '{{ route('api.profile') }}',
+                type: 'post',
+                data: data,
+                success: function(res) {
+                    if (res.success) {
+                        rep.removeClass().addClass('text-success').html(res.message);
+                        localStorage.setItem('docta_uprofile', JSON.stringify({
+                            nom: $('[name=nom]', form).val().trim(),
+                            telephone: $('[name=telephone]', form).val().trim(),
+                            email: $('[name=email]', form).val().trim(),
+                        }));
+                        setTimeout(() => {
+                            location.reload();
+                        }, 3000);
+                    } else {
+                        rep.removeClass().addClass('text-danger').html(res.message);
+                    }
+                }
+            }).always(function() {
+                btn.attr('disabled', false).find('span').removeClass();
+            });
+        });
+
+        function uprofile() {
+            var p = localStorage.getItem('docta_uprofile');
+            if (p) {
+                p = JSON.parse(p);
+                $('[unom]').html(p.nom);
+                $('[uemail]').html(p.email);
+                $('[utel]').html(p.telephone);
+                var form = $('#f-up');
+
+                $('[name=nom]', form).val(p.nom);
+                $('[name=telephone]', form).val(p.telephone);
+                $('[name=telephone]', $('#f-pay')).val(p.telephone);
+                $('[name=email]', form).val(p.email);
+            }
+        }
+        uprofile();
+
+        $('[btnrech]').click(function() {
+            var p = localStorage.getItem('docta_uprofile');
+            if (!p) {
+                alert("Veuillez renseigner votre nom et numéro de télephone avant de recharger votre compte.");
+                $('[divpro]').slideDown();
+                $('[name=nom]', $('#f-up')).focus();
+                return;
+            }
+            $('.modal').modal('hide');
+            $('#mdl-rech').modal('show');
+        });
+
+
+        CANSHOW = true;
+        var xhr = [];
+        var interv = null;
+
+        var callback = function() {
+            var x =
+                $.ajax({
+                    url: '{{ route('api.check.pay') }}',
+                    data: {
+                        myref: REF,
+                    },
+                    success: function(res) {
+                        var trans = res.transaction;
+                        var status = trans?.status;
+                        if (status === 'success') {
+                            $('#btncancel').hide();
+                            clearInterval(interv);
+                            var form = $('#f-pay');
+                            var btn = $(':submit', form).attr('disabled', false);
+                            btn.html('<span></span> Valider');
+                            rep = $('#rep', form);
+                            rep.html(
+                                `<b>TRANSACTION EFFECTUEE !</b><p>Vous pouvez effectuer un autre paiement ou fermer cette page.</p>`
+                            ).removeClass();
+                            rep.addClass('alert alert-success');
+                            rep.slideDown();
+
+                        } else if (status === 'failed') {
+                            clearInterval(interv);
+                            $('#btncancel').hide();
+                            var form = $('#f-pay');
+                            var btn = $(':submit', form).attr('disabled', false);
+                            btn.html('<span></span> Valider');
+                            var rep = $('#rep', form);
+                            rep.html(
+                                `<b>TRANSACTION ECHOUEE !</b><p>Vous avez peut-être saisi un mauvais Pin. Merci de réessayer.</p>`
+                            ).removeClass();
+                            rep.addClass('alert alert-danger');
+                            $(xhr).each(function(i, e) {
+                                e.abort();
+                            });
+                        }
+                    }
+                });
+            xhr.push(x);
+        }
+        $('#btncancel').click(function() {
+            clearInterval(interv);
+            $(this).hide();
+            var form = $('#f-pay');
+            var btn = $(':submit', form).attr('disabled', false);
+            btn.html('<span></span> Valider');
+            var rep = $('#rep', form);
+            rep.html("Paiement annulé.").removeClass();
+            rep.addClass('alert alert-danger');
+            $(xhr).each(function(i, e) {
+                e.abort();
+            });
+        });
+
+        $('#f-pay').submit(function() {
+            event.preventDefault();
+            var form = $(this);
+            var btn = $(':submit', form);
+            var rep = $('#rep', form);
+            rep.html('').removeClass();
+            var data = form.serialize();
+            data = data.split('telephone=').join('telephone=+243');
+
+            btn.attr('disabled', true).find('span').removeClass().addClass('spinner-border spinner-border-sm');
+            $.ajax({
+                url: '{{ route('api.init.pay') }}',
+                type: 'post',
+                data: data,
+                success: function(res) {
+                    if (res.success) {
+                        rep.html(res.message).removeClass();
+                        rep.addClass('alert alert-success');
+                        btn.html(
+                            '<i class="spinner-border spinner-border-sm"></i> Confirmez votre Pin au téléphone...'
+                        );
+                        btn.attr('disabled', true);
+                        clearInterval(interv);
+                        REF = res.data.myref;
+                        interv = setInterval(callback, 3000);
+                        $('#btncancel').show();
+                    } else {
+                        rep.removeClass().addClass('text-danger').html(res.message);
+                        btn.attr('disabled', false).find('span').removeClass();
+                    }
+                }
+            });
+        });
+    }
 </script>
