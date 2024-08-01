@@ -21,7 +21,7 @@
         <nav id="navbar" class="navbar order-last order-lg-0">
             <ul>
                 <li><a class="nav-link scrollto active" href="#hero">Accueil</a></li>
-                <li><a class="nav-link scrollto" href="#about">Apropos</a></li>
+                <li><a class="nav-link scrollto" href="#about">A propos</a></li>
                 <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
             </ul>
             <i class="bi bi-list mobile-nav-toggle"></i>

@@ -6,7 +6,7 @@
          <div class="container">
              <h1>Bienvenue chez {{ config('app.name') }}</h1>
              <h2>Votre Santé est notre Priorité.</h2>
-             <a href="#contact" class="btn-get-started scrollto">Commencer</a>
+             <a href="#contact" class="btn-get-started scrollto">Contact</a>
          </div>
      </section>
 
@@ -200,26 +200,30 @@
          </section>
 
          <section id="contact" class="contact">
-             <div class="container">
+             {{-- <div class="container">
                  <div class="section-title">
                      <h2>Contact</h2>
                      <p>Besoin de plus d'informations ? n'hésitez pas à nous contacter.</p>
                  </div>
-             </div>
-             <div>
+             </div> --}}
+             {{-- <div>
                  <iframe style="border:0; width: 100%; height: 350px;"
                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d125032.68739457447!2d27.41979049233817!3d-11.675162240022242!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19723ea34874cbd9%3A0xa1c6f5a74f805b2f!2sLubumbashi!5e0!3m2!1sen!2scd!4v1715285465474!5m2!1sen!2scd"
                      allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-             </div>
+             </div> --}}
              <div class="container">
                  <div class="row mt-5">
+                     <div class="section-title">
+                         <h2>Contact</h2>
+                         <p>Besoin de plus d'informations ? n'hésitez pas à nous contacter.</p>
+                     </div>
                      <div class="col-lg-4">
                          <div class="info">
-                             <div class="address">
+                             {{-- <div class="address">
                                  <i class="bi bi-geo-alt"></i>
                                  <h4>Adresse:</h4>
                                  <p>N°465, Av/ kintambo, golf faustin, commune Annexe, Lubumbashi, RDC </p>
-                             </div>
+                             </div> --}}
 
                              <div class="email">
                                  <i class="bi bi-envelope"></i>
@@ -234,9 +238,7 @@
                                      <a href="tel:+243980004002" class="text-muted">+243 98 000 40 02</a>
                                  </p>
                              </div>
-
                          </div>
-
                      </div>
 
                      <div class="col-lg-8 mt-5 mt-lg-0" id="contact-form">

@@ -113,8 +113,8 @@
     .zbot-chatbox .messages .message.bot {
         margin: 0.5rem 0.5rem 0.5rem auto;
         border-radius: 1.125rem 1.125rem 0 1.125rem;
-        background: rgb(32, 46, 84) none repeat scroll 0% 0%;
-        color: rgb(188, 196, 211);
+        background: #62c8ec none repeat scroll 0% 0%;
+        color: #000;
     }
 
     .zbot-chatbox .box {
@@ -191,6 +191,17 @@
         bottom: 30px;
         right: 30px;
     }
+
+
+    audio {
+        -moz-box-shadow: 2px 2px 4px 0px var(--zbotColor);
+        -webkit-box-shadow: 2px 2px 4px 0px var(--zbotColor);
+        box-shadow: 2px 2px 4px 0px var(--zbotColor);
+        -moz-border-radius: 7px 7px 7px 7px;
+        -webkit-border-radius: 7px 7px 7px 7px;
+        border-radius: 7px 7px 7px 7px;
+        width: 150px;
+    }
 </style>
 
 <div class="zbot-btn" id="btn-chat" style="display: none">
@@ -241,8 +252,10 @@
             </span>
         </div>
         <div class="box2">
-            <div class="">
-
+            <div class="pl-2">
+                <small>Image</small> <br>
+                <input id="file" accept=".jpg,.jpeg,.png" type="file" style="display: none">
+                <label for="file" class="btn btn-outline-dark btn-sm"><i class="fa fa-paperclip"></i></label>
             </div>
             <div class="">
                 <button id="btn-send" class="zbot-btn2">
@@ -259,8 +272,7 @@
             <div class="modal-body">
                 <div class="p-3 rounded-5" style="background-color: rgba(0, 0, 0, 0.075)">
                     <div class="w-100 text-center">
-                        <button alire class="btn btn-outline-danger btn-sm mb-2"
-                            style="font-size: 10px">
+                        <button alire class="btn btn-outline-danger btn-sm mb-2" style="font-size: 10px">
                             <i class="fa fa-exclamation-triangle">
                                 <span>A lire !</span>
                             </i>
@@ -406,12 +418,12 @@
             (navigator.userAgent.includes("Mac") && "ontouchend" in document)
     }
 
-    if (iOS()) {
-        $('#dapp').fadeOut();
-        all();
-    } else {
-        $('#dapp').fadeIn();
-    }
+    // if (iOS()) {
+    $('#dapp').fadeOut();
+    all();
+    // } else {
+    //     $('#dapp').fadeIn();
+    // }
 
     function all() {
         var btn_send = $('#btn-send');
@@ -431,7 +443,75 @@
                 scrollTop: div[0].scrollHeight
             }, 500);
             received();
+            if (cb.is(':visible')) {
+                ta.focus();
+            }
         });
+
+        function convertFileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+            });
+        }
+
+        $('#file').change(async function() {
+            lockbtn(true);
+            try {
+                var field = $(this);
+                var size = this.files[0].size / 1024 / 1024;
+                if (size > 1) {
+                    var sp = $('[error]');
+                    sp.stop().html("La taille maximale du fichier est de 1Mo.");
+                    setTimeout(() => {
+                        sp.html('');
+                    }, 3000);
+                    return false;
+                }
+
+                var fileName = field[0].value;
+                var idxDot = fileName.lastIndexOf(".") + 1;
+                var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+                if (!(extFile == "jpg" || extFile == "jpeg" || extFile == "png")) {
+                    var sp = $('[error]');
+                    sp.stop().html("Seuls les formats png, jpg et jpeg sont autorisés.");
+                    setTimeout(() => {
+                        sp.html('');
+                    }, 3000);
+                    return false;
+                }
+
+                const base64 = await convertFileToBase64(field[0].files[0]);
+                var date = moment().utcOffset('+0200').format('YYYY-MM-DD h:mm:ss');
+                var rnd = `${Math.random()}`.split('0.').join('');
+                var tt = Date.now();
+                var id = `${tt}-${rnd}`;
+
+                var fname = field.val().replace(/C:\\fakepath\\/i, '')
+                var mess = {
+                    id: id,
+                    message: fname,
+                    file: base64,
+                    date: date,
+                    sent: 0,
+                    fromuser: 0,
+                };
+                setMsg(mess);
+                restoreMsg();
+                sendlocalmsg();
+
+            } catch (error) {
+                var sp = $('[error]');
+                sp.stop().html("Oops, echec d'envoi du fichier.");
+                setTimeout(() => {
+                    sp.html('');
+                }, 3000);
+            }
+            lockbtn(false);
+
+        })
 
         function mcount() {
             var n = $('.textarea').val().length;
@@ -553,7 +633,7 @@
             lockbtn(false);
         }
 
-        function restoreMsg() {
+        function restoreMsg(scroll = true) {
             var msg = getMsg();
             var str = '';
             $(msg).each(function(e, mess) {
@@ -575,15 +655,33 @@
                     }
                 }
                 if (isfile) {
-                    str +=
-                        `<div class="message ${mess.fromuser != 1 ? 'bot':''}">
-                        ${mess.message}</br>
-                        <div class='d-flex justify-content-between'>
-                            <small style="font-size:10px;"><i>${mess.date}</i></small>
-                            ${icon}
-                        </div>
+                    var file = mess.file;
+                    if (file.includes('data:image')) {
+                        str +=
+                            `<div class="message ${mess.fromuser != 1 ? 'bot':''}">
+                                <a href="${file}"><img class="img-thumbnail" src="${file}" /></a></br>
+                                <div class='d-flex justify-content-between'>
+                                    <small style="font-size:10px;"><i>${mess.date}</i></small>
+                                    ${icon}
+                                </div>
+                            </div>`;
+                    } else if (file.includes('data:audio')) {
+                        str +=
+                            `<div class="message ${mess.fromuser != 1 ? 'bot':''}">
+                                <small>${mess.message}</small>
+                                <audio controls >
+                                    <source src="${file}" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                                <div class='d-flex justify-content-between'>
+                                    <small style="font-size:10px;"><i>${mess.date}</i></small>
+                                    ${icon}
+                                </div>
+                            </div>`;
+                    } else {
 
-                    </div>`;
+                    }
+
                 } else {
                     str +=
                         `<div class="message ${mess.fromuser != 1 ? 'bot':''}">
@@ -598,10 +696,13 @@
             });
             var zm = $('#zone-msg')
             zm.html(str);
-            var div = zm.closest('.messages');
-            div.stop().animate({
-                scrollTop: div[0].scrollHeight
-            }, 500);
+            if (scroll) {
+                var div = zm.closest('.messages');
+                div.stop().animate({
+                    scrollTop: div[0].scrollHeight
+                }, 500);
+            }
+
         }
 
         first = true;
@@ -620,6 +721,8 @@
                     }
                     var newmsg = data.message.length > 0;
                     var messages = data.message;
+                    var markread = data.markhasread;
+
                     $(messages).each(function(i, e) {
                         e.received = 0;
                         e.fromuser = 1;
@@ -634,6 +737,10 @@
                     }
                     if ($("#chat-box").is(':visible')) {
                         received();
+                    }
+
+                    if (markread == true) {
+                        markhasread(false);
                     }
 
                     var solde = data.solde;
@@ -750,6 +857,22 @@
                     }
                 });
             }
+        }
+
+        function markhasread(scroll = false) {
+            lockbtn(true);
+            var msg = getMsg();
+            var tmp = [];
+            for (var i in msg) {
+                var m = msg[i];
+                if (m.fromuser == 0) {
+                    m.userread = 1;
+                }
+                tmp.push(m);
+            }
+            localStorage.setItem('docta_msg', JSON.stringify(tmp));
+            lockbtn(false);
+            restoreMsg(scroll);
         }
 
         $('[btnprofile]').click(function() {
