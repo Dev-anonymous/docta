@@ -418,12 +418,12 @@
             (navigator.userAgent.includes("Mac") && "ontouchend" in document)
     }
 
-    // if (iOS()) {
-    $('#dapp').fadeOut();
-    all();
-    // } else {
-    //     $('#dapp').fadeIn();
-    // }
+    if (iOS()) {
+        $('#dapp').fadeOut();
+        all();
+    } else {
+        $('#dapp').fadeIn();
+    }
 
     function all() {
         var btn_send = $('#btn-send');
