@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -71,12 +72,28 @@ class AuthController extends Controller
         $user = auth()->user();
         $user->update(['derniere_connexion' => now('Africa/Lubumbashi')]);
 
+        $chat = $user->chats()->orderBy('id', 'desc')->with('app');
+
+        $chatClone = clone $chat;
+        $chatid = $chatClone->pluck('id')->all();
+        $chats = $chat->get();
+
+        $messages = [];
+        $d = Message::whereIn('chat_id', $chatid)->get();
+        foreach ($d as $dd) {
+            $mm = $dd->toArray();
+            $mm['date'] = $dd->date->format('Y-m-d H:i:s');
+            $messages[] = $mm;
+        }
+
         return response()->json([
             'success' => true,
             'message' => "Connexion reussi",
             'data' => [
                 'token' => $user->createToken('token_' . time())->plainTextToken,
-                'user' => $user
+                'user' => $user,
+                'chats' => $chats,
+                'messages' => $messages,
             ]
         ]);
     }
