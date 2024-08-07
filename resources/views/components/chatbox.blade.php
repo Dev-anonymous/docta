@@ -18,14 +18,13 @@
 
     .zbot-btn {
         position: fixed;
-        bottom: 80px !important;
+        bottom: 100px !important;
         right: 20px !important;
         background: var(--zbotColor);
         border-radius: 50%;
         color: white;
-        padding: 10px;
+        padding: 20px;
         cursor: pointer;
-
         display: inherit;
         -moz-box-align: center;
         align-items: center;
@@ -205,8 +204,10 @@
 </style>
 
 <div class="zbot-btn" id="btn-chat" style="display: none">
-    <i class="fa fa-envelope"></i>
-    <span unread class='ml-3 badge badge-danger'></span>
+    <div>
+        <span unread class='badge bg-danger' style="right: 5px; top: 15px ; position: absolute;"></span>
+        <i class="fa fa-envelope fa-2x"></i>
+    </div>
 </div>
 
 <div id="chat-box" class="zbot-chatbox" style="display: none">
@@ -251,12 +252,27 @@
                     mcounter>0/160</strong>
             </span>
         </div>
+        <div style="margin-left: 10px">
+            <b audiotime class="text-danger"></b>
+        </div>
         <div class="box2">
-            <div class="pl-2">
-                <small>Image</small> <br>
-                <input id="file" accept=".jpg,.jpeg,.png" type="file" style="display: none">
-                <label for="file" class="btn btn-outline-dark btn-sm"><i class="fa fa-paperclip"></i></label>
+            <div class="pl-2 d-flex">
+                <div class="">
+                    <input id="file" accept=".jpg,.jpeg,.png" type="file" style="display: none">
+                    <label for="file"><i class="btn btn-outline-dark fa fa-image"></i></label>
+                </div>
+                <div style="margin-right: 5px; margin-left: 5px">
+                    <i class="btn btn-outline-info fa fa-microphone startrec"></i>
+                </div>
+                <div style="margin-right: 5px; display: none">
+                    <i class="btn btn-outline-danger fa fa-times-circle cancelrec"></i>
+                </div>
+                <div style="margin-left: 10px; cursor: pointer;">
+                    <i class="fa fa-exclamation-triangle text-danger"
+                        title="La taille limite de l'audio est de 2 minutes" data-toggle="tooltip"></i>
+                </div>
             </div>
+
             <div class="">
                 <button id="btn-send" class="zbot-btn2">
                     <i class="fa fa-envelope-circle-check"></i> Envoyer
@@ -1041,5 +1057,260 @@
                 }
             });
         });
+
+
+        function initAudio() {
+            const startButton = $('.startrec');
+            const cancelButton = $('.cancelrec');
+            let audioRecorder;
+            let audioChunks = [];
+            let isrec = false;
+            let sendfi = false;
+            var audiotime = $('[audiotime]');
+            var intervalfunc = null;
+            var isinit = false;
+
+            var totalSeconds = 0;
+
+            function setTime() {
+                ++totalSeconds;
+                var sec = pad(totalSeconds % 60);
+                var m = pad(parseInt(totalSeconds / 60));
+                audiotime.html(`${m}:${sec}`);
+                if (totalSeconds > 120) {
+                    clearInterval(intervalfunc);
+                    intervalfunc = null;
+                    startButton.removeClass('fa-stop btn-outline-success');
+                    startButton.addClass('fa-microphone btn-outline-info');
+                    audioRecorder.stop();
+                    cancelButton.closest('div').toggle();
+                }
+            }
+
+            function pad(val) {
+                var valString = val + "";
+                if (valString.length < 2) {
+                    return "0" + valString;
+                } else {
+                    return valString;
+                }
+            }
+
+            startButton.click(function() {
+                navigator.mediaDevices
+                    .getUserMedia({
+                        audio: true
+                    })
+                    .then((stream) => {
+                        if (!isinit) {
+                            isinit = true;
+                            initEevent(stream);
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        alert("Veuillez autoriser l'accès à votre micro pour envoyer un message audio.")
+                    });
+            });
+
+            function initEevent(stream) {
+                audioRecorder = new MediaRecorder(stream);
+                audioRecorder.addEventListener('dataavailable', e => {
+                    audioChunks.push(e.data);
+                    let reader = new FileReader()
+                    reader.onloadend = () => {
+                        isrec = false;
+                        if (sendfi) {
+                            var file = reader.result;
+
+                            var date = moment().utcOffset('+0200').format('YYYY-MM-DD h:mm:ss');
+                            var tt = Date.now();
+                            var rnd = `${Math.random()}`.split('0.').join('');
+                            var id = `${tt}-${rnd}`;
+                            var mess = {
+                                id: id,
+                                message: `Audio(${audiotime.html()})`,
+                                file: file,
+                                date: date,
+                                sent: 0,
+                                fromuser: 0,
+                            };
+                            setMsg(mess);
+                            restoreMsg();
+                            sendlocalmsg();
+                        }
+                        audiotime.html('');
+                    }
+                    reader.readAsDataURL(e.data);
+                });
+
+                startButton.off('click').on('click', () => {
+                    sendfi = true;
+                    if (isrec) {
+                        audioRecorder.stop();
+                        isrec = false;
+                        startButton.removeClass('fa-stop btn-outline-success');
+                        startButton.addClass('fa-microphone btn-outline-info');
+                        totalSeconds = 0;
+                        clearInterval(intervalfunc);
+                        intervalfunc = null;
+                    } else {
+                        isrec = true;
+                        audioChunks = [];
+                        audioRecorder.start();
+                        startButton.removeClass('fa-microphone btn-outline-info');
+                        startButton.addClass('fa-stop btn-outline-success');
+
+                        totalSeconds = 0;
+                        clearInterval(intervalfunc);
+                        intervalfunc = null;
+                        intervalfunc = setInterval(setTime, 1000);
+                    }
+                    cancelButton.closest('div').toggle();
+                });
+                cancelButton.off('click').on('click', () => {
+                    sendfi = false;
+                    clearInterval(intervalfunc);
+                    intervalfunc = null;
+                    startButton.removeClass('fa-stop btn-outline-success');
+                    startButton.addClass('fa-microphone btn-outline-info');
+                    audioRecorder.stop();
+                    cancelButton.closest('div').toggle();
+                });
+
+                startButton.click();
+            }
+            // navigator.mediaDevices.getUserMedia({
+            //         audio: true
+            //     })
+            //     .then(stream => {
+            //         audioRecorder = new MediaRecorder(stream);
+            //         audioRecorder.addEventListener('dataavailable', e => {
+            //             audioChunks.push(e.data);
+            //             let reader = new FileReader()
+            //             reader.onloadend = () => {
+            //                 if (sendfi) {
+            //                     var file = reader.result;
+
+            //                     var date = moment().utcOffset('+0200').format('YYYY-MM-DD h:mm:ss');
+            //                     var tt = Date.now();
+            //                     var rnd = `${Math.random()}`.split('0.').join('');
+            //                     var id = `${tt}-${rnd}`;
+            //                     var mess = {
+            //                         id: id,
+            //                         message: `Audio(${audiotime.html()})`,
+            //                         file: file,
+            //                         date: date,
+            //                         sent: 0,
+            //                         fromuser: 0,
+            //                     };
+            //                     setMsg(mess);
+            //                     restoreMsg();
+            //                     sendlocalmsg();
+            //                     audiotime.html('')
+            //                 }
+            //             }
+            //             reader.readAsDataURL(e.data);
+            //         });
+
+            //         startButton[0].addEventListener('click', () => {
+            //             sendfi = true;
+            //             if (isrec) {
+            //                 audioRecorder.stop();
+            //                 isrec = false;
+            //                 startButton.addClass('fa-microphone btn-outline-info').removeClass(
+            //                     'fa-stop btn-outline-success');
+            //                 totalSeconds = 0;
+            //                 clearInterval(intervalfunc);
+
+            //             } else {
+            //                 isrec = true;
+            //                 audioChunks = [];
+            //                 audioRecorder.start();
+            //                 startButton.removeClass('fa-microphone btn-outline-info').addClass(
+            //                     'fa-stop btn-outline-success');
+
+            //                 totalSeconds = 0;
+            //                 clearInterval(intervalfunc);
+            //                 intervalfunc = setInterval(setTime, 1000);
+
+            //             }
+            //             cancelButton.closest('div').toggle();
+            //         });
+
+            //         cancelButton[0].addEventListener('click', () => {
+            //             sendfi = false;
+            //             startButton.addClass('fa-microphone btn-outline-info').removeClass(
+            //                 'fa-stop btn-outline-success');
+            //             audioRecorder.stop();
+            //             cancelButton.closest('div').toggle();
+            //         });
+            //     }).catch(err => {
+            //         console.log('Error: ' + err);
+            //     });
+
+
+
+        }
+
+        initAudio();
     }
+
+    console.log('OK');
+</script>
+<script type="module">
+    // } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+    import {
+        initializeApp
+    } from "/firebase-app.js";
+
+    import {
+        getMessaging,
+        getToken,
+        onMessage
+    } from "/firebase-messaging.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyABketxjkmblvbnz4FszSjGVQtAKZnai-A",
+        authDomain: "docta-2907c.firebaseapp.com",
+        projectId: "docta-2907c",
+        storageBucket: "docta-2907c.appspot.com",
+        messagingSenderId: "919308488854",
+        appId: "1:919308488854:web:5abdd3ec7d4268229fb2b7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const messaging = getMessaging(app);
+    messaging.onMessage((payload) => {
+        console.log('Message received. ', payload);
+        // ...
+    });
+    messaging.onBackgroundMessage((payload) => {
+        console.log(
+            '[firebase-messaging-sw.js] Received background message ',
+            payload
+        );
+        const notificationTitle = 'Background Message Title';
+        const notificationOptions = {
+            body: 'Background Message body.',
+            icon: '/firebase-logo.png'
+        };
+        self.registration.showNotification(notificationTitle, notificationOptions);
+    });
+
+    getToken(messaging, {
+            vapidKey: "BNNh_E3fLYSjaaFIg7SeQpW95cVbILgYGB9y7twxvVgv-oJ_Er5CEBNa9rJ4GdaJJiJ81zVzhKI4WK8z3Q3SOKk"
+        })
+        .then((t) => {
+            console.log(t);
+        })
+        .catch(function(err) {
+
+            console.log("Didn't get notification permission", err);
+        });
+
+    onMessage(messaging, (payload) => {
+        console.log("Message received. ", payload);
+    });
 </script>

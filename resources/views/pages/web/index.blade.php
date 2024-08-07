@@ -123,7 +123,7 @@
              </div>
          </section> --}}
 
-         <section class="contact pb-0" id="about">
+         <section class="contact py-0" id="about">
              <div class="container">
                  <div class="section-title">
                      <h2>Docta, qu'est ce ?</h2>
@@ -199,7 +199,7 @@
              </div>
          </section>
 
-         <section id="contact" class="contact">
+         <section id="contact" class="contact py-0">
              {{-- <div class="container">
                  <div class="section-title">
                      <h2>Contact</h2>
