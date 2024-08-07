@@ -17,8 +17,12 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <h4 class="card-title">Docta (<span nb></span>)</h4>
-                                <button class="btn btn-default" data-toggle="modal" data-target="#addmdl">Nouveau
-                                    Docta</button>
+                                <div class="">
+                                    <a class="btn btn-danger" href="{{ asset('docta-admin.apk') }}">
+                                        <i class="fa fa-download"></i> App Mobile Docta Admin</a>
+                                    <button class="btn btn-default" data-toggle="modal" data-target="#addmdl">
+                                        Nouveau Docta</button>
+                                </div>
                             </div>
                             <div class="table-responsive">
                                 <table table class="table table-striped table-hover table-condensed">
@@ -134,7 +138,8 @@
                                 minlength="10" "[0-9]" placeholder="Ex : 099xxxxxxx" required>
                         </div>
                         <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">Mot de passe de connexion(optionnel)</label>
+                            <label for="recipient-name" class="col-form-label">Mot de passe de
+                                connexion(optionnel)</label>
                             <input type="password" class="form-control" name="pass">
                         </div>
                         <div class="form-group">
