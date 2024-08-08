@@ -39,7 +39,7 @@ class AuthController extends Controller
         $login = $data['login'];
         if (filter_var($login, FILTER_VALIDATE_EMAIL)) {
             $_ = ['password' => $data['password'], 'email' => $login];
-            if (Auth::attempt($_, request('remember') ? true : false)) {
+            if (Auth::attempt($_, true)) {
                 $success = true;
             }
         } else if (is_numeric($login)) {
