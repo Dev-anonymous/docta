@@ -462,6 +462,11 @@
             if (cb.is(':visible')) {
                 ta.focus();
             }
+            try {
+                window.requestPerm();
+            } catch (error) {
+                console.log(error);
+            }
         });
 
         function convertFileToBase64(file) {
@@ -727,7 +732,7 @@
             $.ajax({
                 'url': '{{ route('api.message') }}',
                 data: {
-
+                    fcmtoken: localStorage.getItem('fcmtoken'),
                 },
                 success: function(rep) {
                     var data = rep.data;
@@ -1255,21 +1260,17 @@
 
         initAudio();
     }
-
-    console.log('OK');
 </script>
 <script type="module">
-    // } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
     import {
         initializeApp
-    } from "/firebase-app.js";
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
 
     import {
         getMessaging,
         getToken,
         onMessage
-    } from "/firebase-messaging.js";
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-messaging.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyABketxjkmblvbnz4FszSjGVQtAKZnai-A",
@@ -1280,37 +1281,79 @@
         appId: "1:919308488854:web:5abdd3ec7d4268229fb2b7"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const messaging = getMessaging(app);
-    messaging.onMessage((payload) => {
-        console.log('Message received. ', payload);
-        // ...
-    });
-    messaging.onBackgroundMessage((payload) => {
-        console.log(
-            '[firebase-messaging-sw.js] Received background message ',
-            payload
-        );
-        const notificationTitle = 'Background Message Title';
-        const notificationOptions = {
-            body: 'Background Message body.',
-            icon: '/firebase-logo.png'
-        };
-        self.registration.showNotification(notificationTitle, notificationOptions);
-    });
+    window.fbInit = false;
 
-    getToken(messaging, {
-            vapidKey: "BNNh_E3fLYSjaaFIg7SeQpW95cVbILgYGB9y7twxvVgv-oJ_Er5CEBNa9rJ4GdaJJiJ81zVzhKI4WK8z3Q3SOKk"
-        })
-        .then((t) => {
-            console.log(t);
-        })
-        .catch(function(err) {
+    window.requestPerm = function requestPerm(showmess = true) {
+        Notification.requestPermission().then((permission) => {
+            if (permission === "granted") {
+                if (window.fbInit == true) {
+                    return true;
+                }
+                const app = initializeApp(firebaseConfig);
+                const messaging = getMessaging(app);
 
-            console.log("Didn't get notification permission", err);
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.register('{{ asset('sw.js') }}')
+                        .then((registration) => {
+                            getToken(messaging, {
+                                    serviceWorkerRegistration: registration,
+                                    vapidKey: "BNNh_E3fLYSjaaFIg7SeQpW95cVbILgYGB9y7twxvVgv-oJ_Er5CEBNa9rJ4GdaJJiJ81zVzhKI4WK8z3Q3SOKk",
+                                })
+                                .then((fcmtoken) => {
+                                    if (fcmtoken) {
+                                        localStorage.setItem('fcmtoken', fcmtoken);
+                                        console.log(fcmtoken);
+                                        window.fbInit = true;
+                                    }
+                                })
+                                .catch(function(err) {
+                                    console.log("Error ==> ", err);
+                                });
+                            // messaging.onBackgroundMessage((payload) => {
+                            //     console.log(
+                            //         '[firebase-messaging-sw.js] Received background message ',
+                            //         payload
+                            //     );
+                            //     const notificationTitle = 'Background Message Title';
+                            //     const notificationOptions = {
+                            //         body: 'Background Message body.',
+                            //         icon: '/firebase-logo.png'
+                            //     };
+                            //     self.registration.showNotification(notificationTitle,
+                            //         notificationOptions);
+                            // });
+
+                            // messaging.onMessage((payload) => {
+                            //     console.log(
+                            //         '[firebase-messaging-sw.js] Received background message ',
+                            //         payload
+                            //     );
+                            //     const notificationTitle = '###Message Title';
+                            //     const notificationOptions = {
+                            //         body: 'Normal Message body.',
+                            //         icon: '/firebase-logo.png'
+                            //     };
+                            //     self.registration.showNotification(notificationTitle,
+                            //         notificationOptions);
+                            // });
+                        }).catch(function(err) {
+                            console.error(err);
+                        });
+                };
+
+            } else {
+                if (showmess) {
+                    alert(
+                        "Pour une meilleure experience utilisateur, veuillez autoriser l'accès aux notifications."
+                    )
+                }
+            }
         });
+    }
 
-    onMessage(messaging, (payload) => {
-        console.log("Message received. ", payload);
-    });
+    if (iOS()) {
+        try {
+            window.requestPerm(false);
+        } catch (error) {}
+    }
 </script>
