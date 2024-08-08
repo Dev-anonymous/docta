@@ -49,7 +49,7 @@ class AuthController extends Controller
             }
             $login = "+" . $login;
             $_ = ['password' => $data['password'], 'phone' => $login];
-            if (Auth::attempt($_, request('remember') ? true : false)) {
+            if (Auth::attempt($_,  true)) {
                 $success = true;
             }
         } else {
