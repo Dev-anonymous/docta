@@ -26,6 +26,7 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Log</th>
+                                            <th>Date</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -33,6 +34,7 @@
                                             <tr>
                                                 <th>{{ $i + 1 }}</th>
                                                 <td>{{ $el->data }}</td>
+                                                <td>{{ $el->date?->format('d-m-Y H:i:s') }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
