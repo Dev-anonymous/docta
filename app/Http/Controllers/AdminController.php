@@ -84,6 +84,10 @@ class AdminController extends Controller
 
     public function log()
     {
+        $action = request('action');
+        if ('del' == $action) {
+            Errorlog::orderBy('id')->delete();
+        }
         $data = Errorlog::orderBy('id', 'desc')->get();
         return view('pages.admin.log', compact('data'));
     }

@@ -43,11 +43,12 @@ class AuthController extends Controller
                 $success = true;
             }
         } else if (is_numeric($login)) {
-            $login = (float) $login;
-            if ("243" != substr($login . 0, 3)) {
-                $login = "243$login";
-            }
-            $login = "+" . $login;
+            // $login = (float) $login;
+            // if ("243" != substr($login . 0, 3)) {
+            //     $login = "243$login";
+            // }
+            // $login = "+" . $login;
+            // $login = "0" . $login;
             $_ = ['password' => $data['password'], 'phone' => $login];
             if (Auth::attempt($_,  true)) {
                 $success = true;

@@ -35,7 +35,7 @@
                                     @csrf
                                     <div class="form-group">
                                         <label for="login">Email ou Tel.</label>
-                                        <input required type="email" class="form-control" name="login"
+                                        <input required class="form-control" name="login"
                                             id="login" placeholder="Ex: 099xxxx ou email@docta.com">
                                     </div>
                                     <div class="form-group">

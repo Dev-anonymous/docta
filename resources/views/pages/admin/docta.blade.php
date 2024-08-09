@@ -70,7 +70,7 @@
                         </div>
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Mot de passe de connexion</label>
-                            <input type="password" class="form-control" required name="pass">
+                            <input type="password" role="presentation" autocomplete="off" class="form-control" required name="pass">
                         </div>
                         <div class="form-group">
                             <div id="rep"></div>
@@ -140,7 +140,7 @@
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Mot de passe de
                                 connexion(optionnel)</label>
-                            <input type="password" class="form-control" name="pass">
+                            <input type="password" role="presentation" autocomplete="off" class="form-control" name="pass">
                         </div>
                         <div class="form-group">
                             <div id="rep"></div>
