@@ -34,7 +34,7 @@
                                             <tr>
                                                 <th>{{ $i + 1 }}</th>
                                                 <td>{{ $el->data }}</td>
-                                                <td>{{ $el->date?->format('d-m-Y H:i:s') }}</td>
+                                                <td class="text-nowrap">{{ $el->date?->format('d-m-Y H:i:s') }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
