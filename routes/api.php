@@ -44,6 +44,8 @@ Route::prefix('v1')->group(function () {
         Route::post('/chat', [AppController::class, 'postmessage']);
         Route::post('user/message/received', [AppController::class, 'received2']);
         Route::post('user/chat/received', [AppController::class, 'chatreceived']);
+        Route::get('getallmessage-admin', [AppController::class, 'getallmessageadmin']);
+
     });
 });
 

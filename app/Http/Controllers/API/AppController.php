@@ -237,6 +237,34 @@ class AppController extends Controller
         ]);
     }
 
+    function getallmessageadmin() {
+        /** @var \App\Models\User $user **/
+        $user = auth()->user();
+
+        $chat = $user->chats()->orderBy('id', 'desc')->with('app');
+
+        $chatClone = clone $chat;
+        $chatid = $chatClone->pluck('id')->all();
+        $chats = $chat->get();
+
+        $messages = [];
+        $d = Message::whereIn('chat_id', $chatid)->get();
+        foreach ($d as $dd) {
+            $mm = $dd->toArray();
+            $mm['date'] = $dd->date->format('Y-m-d H:i:s');
+            $messages[] = $mm;
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => "",
+            'data' => [
+                'chats' => $chats,
+                'messages' => $messages,
+            ]
+        ]);
+    }
+
     function getallmessage()
     {
         $app = userapp();
