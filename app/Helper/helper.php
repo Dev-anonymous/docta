@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\App;
+use App\Models\Forfait;
 use App\Models\Gopay;
 use App\Models\Paiement;
 use App\Models\Taux;
@@ -155,12 +156,17 @@ function canmessage()
     if ($chat) {
         $n = $chat->messages()->where('fromuser', 0)->whereNull('file')->count();
         $sold = $app->soldes()->first()->solde_usd;
-        if ($n > 5 && $sold <= 0) {
+        $forf = Forfait::first();
+
+        $sms = (float) @$forf->sms;
+        // $appel = (float) @$forf->appel;
+
+        if ($n > 5 && $sold <= 0 && $sms > 0) {
             abort(403, 'Balance error for SMS');
         }
         $n = $chat->messages()->where('fromuser', 0)->whereNotNull('file')->count();
         $sold = $app->soldes()->first()->solde_usd;
-        if ($n > 1 && $sold <= 0) {
+        if ($n > 1 && $sold <= 0 && $sms > 0) {
             abort(403, 'Balance error for FILE');
         }
     }

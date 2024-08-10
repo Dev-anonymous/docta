@@ -64,12 +64,12 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Appel : Prix par sec</label>
-                            <input type="number" min="0.0001" step="0.0001" value="{{ $data->appel }}"
+                            <input type="number" min="0" step="0.001" value="{{ $data->appel }}"
                                 class="form-control" name="appel" required>
                         </div>
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">SMS : Prix par message</label>
-                            <input type="number" min="0.0001" step="0.0001" value="{{ $data->sms }}"
+                            <input type="number" min="0" step="0.001" value="{{ $data->sms }}"
                                 class="form-control" name="sms" required>
                         </div>
                         <div class="form-group">

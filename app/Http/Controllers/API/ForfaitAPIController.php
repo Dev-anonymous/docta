@@ -51,8 +51,8 @@ class ForfaitAPIController extends Controller
     public function update(Request $request, Forfait $forfait)
     {
         $validator = Validator::make(request()->all(), [
-            'appel' => 'required|numeric|min:0.001',
-            'sms' => 'required|numeric|min:0.001',
+            'appel' => 'required|numeric',
+            'sms' => 'required|numeric',
         ]);
 
         if ($validator->fails()) {
