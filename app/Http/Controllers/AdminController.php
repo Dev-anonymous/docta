@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\App;
+use App\Models\Appversion;
 use App\Models\Contact;
 use App\Models\Errorlog;
 use App\Models\Forfait;
@@ -90,5 +91,11 @@ class AdminController extends Controller
         }
         $data = Errorlog::orderBy('id', 'desc')->get();
         return view('pages.admin.log', compact('data'));
+    }
+
+    public function app()
+    {
+        $data = Appversion::first();
+        return view('pages.admin.app', compact('data'));
     }
 }

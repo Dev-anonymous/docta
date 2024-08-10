@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\App;
+use App\Models\Appversion;
 use App\Models\Chat;
 use App\Models\Conseilmedical;
 use App\Models\Errorlog;
@@ -27,6 +28,20 @@ class AppController extends Controller
             Errorlog::create(['date' => $now, 'data' => $err]);
         }
     }
+
+    function appversion()
+    {
+        $appversion = Appversion::first();
+
+        if ($appversion) {
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $appversion,
+        ]);
+    }
+
     public function uid()
     {
         $now = now('Africa/Lubumbashi');

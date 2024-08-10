@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AppController;
+use App\Http\Controllers\API\AppVersionAPIController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\ConseilAPIController;
 use App\Http\Controllers\API\ConseilMedicalAPIController;
@@ -22,6 +23,7 @@ Route::prefix('v1')->group(function () {
     Route::post('/applog', [AppController::class, 'error']);
 
     Route::get('uid', [AppController::class, 'uid']);
+    Route::get('appversion', [AppController::class, 'appversion']);
 
     Route::middleware('uid.mdwl')->group(function () {
         Route::get('message', [AppController::class, 'getmessage'])->name('api.message');
@@ -52,4 +54,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('taux', TauxAPIController::class);
     Route::resource('zego', ZegocloudController::class);
     Route::resource('site', SiteAPIController::class);
+    Route::resource('appversion', AppVersionAPIController::class);
 });

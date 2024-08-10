@@ -45,6 +45,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('zegocloud', 'zegocloud')->name('admin.zegocloud');
                 Route::get('site', 'site')->name('admin.site');
                 Route::get('log', 'log')->name('admin.log');
+                Route::get('app', 'app')->name('admin.app');
             });
         });
     });
