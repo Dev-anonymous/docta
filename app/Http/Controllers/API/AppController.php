@@ -237,6 +237,51 @@ class AppController extends Controller
         ]);
     }
 
+    function getallmessage()
+    {
+        $app = userapp();
+        $chat = $app->chats()->first();
+
+        $messages = [];
+        if ($chat) {
+            $messages = $chat->messages()->get();
+            $tmp = [];
+            foreach ($messages as $el) {
+                $d['id'] = $el->id;
+                $d['date'] = $el->date->format('d-m-Y H:i:s');
+                $d['message'] = $el->message;
+                $d['username'] = $el->username;
+                $d['file'] = $el->file;
+                $tmp[] = $d;
+            }
+            $messages = $tmp;
+        }
+
+        $conseil = Conseilmedical::orderBy('id')->get();
+        $docta = User::where('user_role', 'docta')->orderBy('derniere_connexion', 'desc')->pluck('id')->all();
+        $zego = Zego::first();
+
+        $solde = $app->soldes()->first();
+        $forf = Forfait::first();
+        $solde = number_format($solde->solde_usd, 3, '.', ' ');
+        $sms = number_format($forf->sms, 3, '.', ' ');
+        $appel = number_format($forf->appel, 3, '.', ' ');
+
+        return response()->json([
+            'success' => true,
+            'message' => '',
+            'data' => [
+                'message' => $messages,
+                'conseils' => $conseil,
+                'docta' => $docta,
+                'zego' => $zego,
+                'solde' => $solde,
+                'sms' => $sms,
+                'appel' => $appel,
+            ]
+        ]);
+    }
+
     public function received()
     {
         $data = explode(',', request('data'));

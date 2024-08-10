@@ -26,6 +26,7 @@ Route::prefix('v1')->group(function () {
     Route::get('appversion', [AppController::class, 'appversion']);
 
     Route::middleware('uid.mdwl')->group(function () {
+        Route::get('getallmessage', [AppController::class, 'getallmessage']);
         Route::get('message', [AppController::class, 'getmessage'])->name('api.message');
         Route::post('message', [AppController::class, 'message']);
         Route::post('message/received', [AppController::class, 'received'])->name('api.received');
