@@ -135,7 +135,7 @@ class DoctaAPIController extends Controller
         $users = User::whereIn('id', $notifuser)->get();
         foreach ($users as $user) {
             $title = 'Nouvelle Conversion';
-            $pushno = json_encode(['token' => $user->fcmtoken, 'title' => $title, 'message' => "Vous avez des conversations qui vous ont été assignées automatiquement."]);
+            $pushno = json_encode(['token' => $user->fcmtoken, 'title' => $title, 'message' => "Vous avez des conversations qui vous ont été assignées automatiquement. Veuillez vous reconnecter de l'application."]);
             Pushnotification::create([
                 'data' => $pushno
             ]);
