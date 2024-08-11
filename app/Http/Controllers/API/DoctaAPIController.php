@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Message;
+use App\Models\Pushnotification;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -115,10 +118,40 @@ class DoctaAPIController extends Controller
      */
     public function destroy(User $docta)
     {
+        // $oth = User::where('user_role', 'docta')->where('id', '!=', $docta->id)->first();
+
+        $chat = $docta->chats()->get();
+
+        DB::beginTransaction();
+        $notifuser = [];
+        $users = User::where('user_role', 'docta')->where('id', '!=', $docta->id)->pluck('id')->all();
+        foreach ($chat as $el) {
+            $u = $users[array_rand($users)];
+            $el->update(['users_id' => $u, 'sent' => 0]);
+            Message::where('chat_id', $el->id)->update(['senttouser' => 0]);
+            $notifuser[] = $u;
+        }
+
+        $users = User::whereIn('id', $notifuser)->get();
+        foreach ($users as $user) {
+            $title = 'Nouvelle Conversion';
+            $pushno = json_encode(['token' => $user->fcmtoken, 'title' => $title, 'message' => "Vous avez des conversations qui vous ont été assignées automatiquement."]);
+            Pushnotification::create([
+                'data' => $pushno
+            ]);
+        }
         $docta->delete();
+        DB::commit();
+
+        if (count($chat)) {
+            $m =   "Compte supprimé avec succès. Les conversations de ce compte ont été assignées automatiquement aux autres comptes Docta.";
+        } else {
+            $m =   "Compte supprimé avec succès.";
+        }
+
         return response([
             'success' => true,
-            'message' => "Compte supprimé avec succès."
+            'message' => $m
         ]);
     }
 }

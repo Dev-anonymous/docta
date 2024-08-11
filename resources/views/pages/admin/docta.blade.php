@@ -18,9 +18,9 @@
                             <div class="d-flex justify-content-between">
                                 <h4 class="card-title">Docta (<span nb></span>)</h4>
                                 <div class="">
-                                    <a class="btn btn-danger" href="{{ asset('docta-admin.apk') }}">
+                                    <a class="mb-2 btn btn-danger" href="{{ asset('docta-admin.apk') }}">
                                         <i class="fa fa-download"></i> App Mobile Docta Admin</a>
-                                    <button class="btn btn-default" data-toggle="modal" data-target="#addmdl">
+                                    <button class="mb-2 btn btn-default" data-toggle="modal" data-target="#addmdl">
                                         Nouveau Docta</button>
                                 </div>
                             </div>
@@ -220,7 +220,7 @@
                             getdocta();
                             setTimeout(() => {
                                 $('.modal').modal('hide');
-                            }, 2000);
+                            }, 10000);
                         } else {
                             rep.removeClass().addClass('alert alert-danger');
                         }
