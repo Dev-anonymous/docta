@@ -241,7 +241,7 @@
                          </div>
                      </div>
 
-                     <div class="col-lg-8 mt-5 mt-lg-0" id="contact-form">
+                     <div class="col-lg-8 mt-5 mt-lg-0 mb-5" id="contact-form">
 
                          <form id="fcont" action="#" class="php-email-form">
                              @csrf
