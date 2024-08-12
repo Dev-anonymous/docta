@@ -2,7 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Models\App;
 use App\Models\Pushnotification;
+use App\Models\User;
 use Illuminate\Console\Command;
 
 class SendPush extends Command
@@ -36,7 +38,17 @@ class SendPush extends Command
                 $data = json_decode($push->data);
                 $ok = false;
                 try {
-                    $ok = sendMessage($data->token, $data->title, $data->message);
+                    $ob = null;
+                    $to = $data->to;
+                    if (@$to[0] == 'user') {
+                        $ob = User::where('id', @$to[1])->first();
+                    }
+                    if (@$to[0] == 'app') {
+                        $ob = App::where('id', @$to[1])->first();
+                    }
+                    if ($ob) {
+                        $ok = sendMessage(@$ob->fcmtoken, $data->title, $data->message);
+                    }
                 } catch (\Throwable $th) {
                     // dd($th);
                 }

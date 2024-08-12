@@ -120,26 +120,12 @@ class DoctaAPIController extends Controller
     {
         // $oth = User::where('user_role', 'docta')->where('id', '!=', $docta->id)->first();
 
-        $chat = $docta->chats()->get();
+
 
         DB::beginTransaction();
         $notifuser = [];
-        $users = User::where('user_role', 'docta')->where('id', '!=', $docta->id)->pluck('id')->all();
-        foreach ($chat as $el) {
-            $u = $users[array_rand($users)];
-            $el->update(['users_id' => $u, 'sent' => 0]);
-            Message::where('chat_id', $el->id)->update(['senttouser' => 0]);
-            $notifuser[] = $u;
-        }
-
-        $users = User::whereIn('id', $notifuser)->get();
-        foreach ($users as $user) {
-            $title = 'Nouvelle Conversion';
-            $pushno = json_encode(['token' => $user->fcmtoken, 'title' => $title, 'message' => "Vous avez des conversations qui vous ont été assignées automatiquement. Veuillez vous reconnecter de l'application."]);
-            Pushnotification::create([
-                'data' => $pushno
-            ]);
-        }
+        $chat = $docta->chats()->get();
+        assignchat($chat, $docta->id);
         $docta->delete();
         DB::commit();
 

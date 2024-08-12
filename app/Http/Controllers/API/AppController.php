@@ -161,7 +161,7 @@ class AppController extends Controller
                 $user = $chat->user;
                 if ($user) {
                     $title = $app->nom ? ucfirst($app->nom) : $app->uid;
-                    $pushno = json_encode(['token' => $user->fcmtoken, 'title' => $title, 'message' => $message]);
+                    $pushno = json_encode(['to' => ['user', $user->id], 'title' => $title, 'message' => $message]);
                     Pushnotification::create([
                         'data' => $pushno
                     ]);
@@ -433,12 +433,7 @@ class AppController extends Controller
             }
         }
 
-        $emptychat = Chat::whereNull('users_id')->get();
-        $users = User::where('user_role', 'docta')->pluck('id')->all();
-        foreach ($emptychat as $el) {
-            $u = $users[array_rand($users)];
-            $el->update(['users_id' => $u]);
-        }
+        assignchat();
 
         /** @var $user App\Models\Usere **/
         $user = auth()->user();
@@ -569,7 +564,7 @@ class AppController extends Controller
                 $app = $chat->app;
                 if ($app) {
                     $title = 'Docta';
-                    $pushno = json_encode(['token' => $app->fcmtoken, 'title' => $title, 'message' => $message]);
+                    $pushno = json_encode(['to' => ['app', $app->id], 'title' => $title, 'message' => $message]);
                     Pushnotification::create([
                         'data' => $pushno
                     ]);

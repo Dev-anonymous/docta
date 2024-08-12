@@ -680,7 +680,7 @@
                     if (file.includes('data:image')) {
                         str +=
                             `<div class="message ${mess.fromuser != 1 ? 'bot':''}">
-                                <a href="${file}"><img class="img-thumbnail" src="${file}" /></a></br>
+                                <a href="${file}" target="_blank"><img class="img-thumbnail" src="${file}" /></a></br>
                                 <div class='d-flex justify-content-between'>
                                     <small style="font-size:10px;"><i>${mess.date}</i></small>
                                     ${icon}

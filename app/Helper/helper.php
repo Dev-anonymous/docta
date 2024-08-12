@@ -1,10 +1,14 @@
 <?php
 
 use App\Models\App;
+use App\Models\Chat;
 use App\Models\Forfait;
 use App\Models\Gopay;
+use App\Models\Message;
 use App\Models\Paiement;
+use App\Models\Pushnotification;
 use App\Models\Taux;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Google\Client;
 
@@ -239,4 +243,46 @@ function sendMessage($token, $title, $body)
         // throw $th;
     }
     return $ok;
+}
+
+function assignchat($chats = [], $skipeuser = 0)
+{
+    DB::beginTransaction();
+    if (!count($chats)) {
+        $chats =  Chat::whereNull('users_id')->get();
+    }
+
+    $notify = [];
+    foreach ($chats as $el) {
+        $uchat = [];
+        $doc = User::where('user_role', 'docta');
+        if ($skipeuser) {
+            $doc = $doc->where('id', '!=', $skipeuser);
+        }
+        $doc = $doc->get();
+
+        foreach ($doc as $do) {
+            $uchat[$do->id] = $do->chats()->count();
+        }
+        asort($uchat);
+        if (count($uchat)) {
+            $key = array_key_first($uchat);
+            $el->update(['users_id' => $key,  'sent' => 0]);
+            Message::where('chat_id', $el->id)->update(['senttouser' => 0]);
+            $notify[] = $key;
+        }
+    }
+
+    $notify = array_unique($notify);
+
+    foreach ($notify as $iduser) {
+        $user = User::where('id', $iduser)->first();
+        $title = 'Nouvelle Conversation';
+        $pushno = json_encode(['to' => ['user', $user->id], 'title' => $title, 'message' => "Vous avez des conversations qui vous ont été assignées automatiquement. Veuillez vous reconnecter de l'application."]);
+        Pushnotification::create([
+            'data' => $pushno
+        ]);
+        $user->tokens()->delete();
+    }
+    DB::commit();
 }
