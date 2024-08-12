@@ -228,7 +228,7 @@
                              <div class="email">
                                  <i class="bi bi-envelope"></i>
                                  <h4>Email:</h4>
-                                 <p>contac@docta-tam.com</p>
+                                 <p><a href="mailto:contact@docta-tam.com" class="text-muted">contact@docta-tam.com</a></p>
                              </div>
 
                              <div class="phone">
