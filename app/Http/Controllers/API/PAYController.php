@@ -78,7 +78,7 @@ class PAYController extends Controller
                 'methode' => 'mobile_money',
             ]),
         ]);
-        $r =   gopay_init_payment($amount, $devise, $tel, $myref);
+        $r = gopay_init_payment($amount, $devise, $tel, $myref);
 
         $ref = null;
         if ($r->success) {

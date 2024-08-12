@@ -31,10 +31,12 @@ class SystemMiddleware
             $taux = Taux::create(['cdf_usd' => 0.00037, 'usd_cdf' => 2690]);
         }
 
-        $app = App::whereNotIn('id', Solde::pluck('app_id')->all())->get();
-        foreach ($app as $el) {
-            $el->soldes()->create(['solde_usd' => 0]);
+        foreach (App::all() as $el) {
+            if (!$el->soldes()->first()) {
+                $el->soldes()->create(['solde_usd' => 0]);
+            }
         }
+        
         completeTrans();
         Artisan::call('sendpush');
         return $next($request);

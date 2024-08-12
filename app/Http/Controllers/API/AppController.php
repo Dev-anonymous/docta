@@ -81,9 +81,12 @@ class AppController extends Controller
                 }
             }
         }
-        $app = App::where('deviceid', $deviceid)->first();
+        $app = App::where('uid', $uid)->first();
         if (!$app) {
+            DB::beginTransaction();
             $app = App::create(['deviceid' => $deviceid, 'uid' => $uid, 'date' => $now, 'last_login' => $now]);
+            Solde::create(['solde_usd' => 0, 'app_id' => $app->id]);
+            DB::commit();
         } else {
             $app->update(['last_login' => $now]);
         }
@@ -237,7 +240,8 @@ class AppController extends Controller
         ]);
     }
 
-    function getallmessageadmin() {
+    function getallmessageadmin()
+    {
         /** @var \App\Models\User $user **/
         $user = auth()->user();
 
