@@ -6,7 +6,7 @@
          <div class="container">
              <h1>Bienvenue chez {{ config('app.name') }}</h1>
              <h2>Votre Santé est notre Priorité.</h2>
-             <a href="#contact" class="btn-get-started scrollto">Contact</a>
+             {{-- <a href="#contact" class="btn-get-started scrollto">Contact</a> --}}
          </div>
      </section>
 

@@ -53,6 +53,24 @@ class ContactAPIController extends Controller
 
         $data = $validator->validated();
 
+        $text = strtolower(request('message'));
+        $subject = strtolower(request('subject'));
+
+        if (
+            strpos($text, ' seo') != false  || strpos($text, ' rank') != false || strpos($text, ' ranks') != false ||
+            strpos($text, ' online') != false || strpos($text, ' optimization') != false || strpos($text, ' improve') != false || strpos($text, ' visibility') != false
+            || strpos($text, ' backlinks') != false || strpos($text, ' backlink') != false ||
+
+            strpos($subject, ' seo') != false  || strpos($subject, ' rank') != false || strpos($subject, ' ranks') != false ||
+            strpos($subject, ' online') != false || strpos($subject, ' optimization') != false || strpos($subject, ' improve') != false || strpos($subject, ' visibility') != false
+            || strpos($subject, ' backlinks') != false || strpos($subject, ' backlink') != false
+
+        ) {
+            return response([
+                'message' => "We can't accept this message."
+            ]);
+        }
+
         try {
             $m['user'] = "{$data['name']} {$data['email']}";
             $m['msg'] = "{$data['message']}\n\n\n";
