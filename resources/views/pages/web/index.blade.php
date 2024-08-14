@@ -164,10 +164,10 @@
              </div>
              <div class="container">
                  <div class="section-title">
-                     <h2>Facturation</h2>
+                     <h2>Paiement</h2>
                      <div class="d-flex justify-content-center">
                          <ul class="text-start">
-                             <li><i class="fa fa-check-circle text-success"></i> Online banking via carte bancaire</li>
+                             {{-- <li><i class="fa fa-check-circle text-success"></i> Online banking via carte bancaire</li> --}}
                              <li><i class="fa fa-check-circle text-success"></i> Mobile money pour les résidants de la
                                  République démocratique du Congo : Airtel money, Orange money, M-pesa, Afrimoney</li>
                          </ul>
