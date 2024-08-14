@@ -39,13 +39,14 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::group(['middleware' => ['auth:sanctum']], function () {
-        Route::post('/auth/logout', [AuthController::class, 'logout']);
-        Route::get('/chat', [AppController::class, 'getchat']);
-        Route::post('/chat', [AppController::class, 'postmessage']);
-        Route::post('user/message/received', [AppController::class, 'received2']);
-        Route::post('user/chat/received', [AppController::class, 'chatreceived']);
-        Route::get('getallmessage-admin', [AppController::class, 'getallmessageadmin']);
-
+        Route::middleware('docta.mdwl')->group(function () {
+            Route::post('/auth/logout', [AuthController::class, 'logout']);
+            Route::get('/chat', [AppController::class, 'getchat']);
+            Route::post('/chat', [AppController::class, 'postmessage']);
+            Route::post('user/message/received', [AppController::class, 'received2']);
+            Route::post('user/chat/received', [AppController::class, 'chatreceived']);
+            Route::get('getallmessage-admin', [AppController::class, 'getallmessageadmin']);
+        });
     });
 });
 
