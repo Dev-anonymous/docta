@@ -18,7 +18,7 @@ class DoctaMiddleware
     {
         $user = auth()->user();
         if ('docta' != $user->user_role) {
-            auth()->logout($user);
+            auth('api')->logout($user);
             abort(401, "Docta Only");
         }
         return $next($request);
