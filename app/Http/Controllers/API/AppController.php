@@ -81,11 +81,12 @@ class AppController extends Controller
                 }
             }
         }
+        
         $app = App::where('uid', $uid)->first();
         if (!$app) {
             $app = App::where('deviceid', $deviceid)->first();
         }
-        
+
         if (!$app) {
             DB::beginTransaction();
             $app = App::create(['deviceid' => $deviceid, 'uid' => $uid, 'date' => $now, 'last_login' => $now]);
