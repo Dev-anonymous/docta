@@ -457,7 +457,7 @@
                         <h5>Besoin de parler à un médecin ? vous êtes au bon endroit, cliquez sur le
                             <b class="text-danger"> bouton rond en bas</b>
                             de votre écran et adressez-vous directement à un docteur qualifié en toute discrétion et
-                            confidentialité. !
+                            confidentialité!
                         </h5>
                         <br>
                         <h5>Pour recharger votre compte, cliquez sur le solde.</h5>
