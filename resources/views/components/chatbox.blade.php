@@ -454,8 +454,8 @@
                         <img src="{{ asset('images/logo.png') }}" alt="" width="150px">
                     </div>
                     <div class="mt-4">
-                        <h5>Besoin de parler à un médecin ? vous êtes au bon endroit, cliquez sur le
-                            <b class="text-danger"> bouton rond en bas</b>
+                        <h5>Besoin de parler à un médecin ? vous êtes au bon endroit, cliquez sur l'icône message
+                            <b class="text-info"> en blue </b>
                             de votre écran et adressez-vous directement à un docteur qualifié en toute discrétion et
                             confidentialité.
                         </h5>
