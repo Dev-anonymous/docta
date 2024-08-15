@@ -191,6 +191,23 @@
         right: 30px;
     }
 
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(2);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    .pulse2 {
+        animation: pulse 1s infinite;
+    }
 
     audio {
         -moz-box-shadow: 2px 2px 4px 0px var(--zbotColor);
@@ -203,7 +220,7 @@
     }
 </style>
 
-<div class="zbot-btn" id="btn-chat" style="display: none">
+<div class="zbot-btn pulse2" id="btn-chat" style="display: none">
     <div>
         <span unread class='badge bg-danger' style="right: 5px; top: 15px ; position: absolute;"></span>
         <i class="fa fa-envelope fa-2x"></i>
@@ -223,11 +240,13 @@
                     </span>
                 </span>
             </div>
-            <div class="w-100 appcolor">
-                <span class="badge bg-secondary" btnprofile style="cursor: pointer">
+            <div class="w-100 appcolor ">
+                <span class="badge bg-secondary pulse2" btnprofile style="cursor: pointer">
                     <i class="fa fa-info-circle text-muted"></i>
                     <span solde></span>
                 </span>
+
+                <a href="#" style="margin-left: 20px" data-bs-toggle="modal" data-bs-target="#mdl-welcome"><i class="pulse2 fa fa-exclamation-circle text-warning"></i></a>
             </div>
         </div>
     </div>
@@ -282,7 +301,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="mdl-pro" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+<div class="modal fade" id="mdl-pro" tabindex="-1" role="dialog" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content ">
             <div class="modal-body">
@@ -364,7 +383,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="mdl-rech" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+<div class="modal fade" id="mdl-rech" tabindex="-1" role="dialog" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content ">
             <div class="modal-body">
@@ -415,13 +434,50 @@
                     </form>
                 </div>
             </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark my-2" data-bs-dismiss="modal">
+                    Fermer
+                </button>
+            </div>
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="mdl-welcome" tabindex="-1" role="dialog" aria-hidden="true"
+    data-bs-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content ">
+            <div class="modal-body">
+                <div class="p-3 rounded-5" style="background-color: rgba(0, 0, 0, 0.075)">
+                    <div class="d-flex justify-content-between">
+                        <h4>Bienvenue</h4>
+                        <img src="{{ asset('images/logo.png') }}" alt="" width="150px">
+                    </div>
+                    <div class="mt-4">
+                        <h5>Besoin de parler à un médecin ? vous étés au bon endroit, cliquez sur le
+                            <b class="text-danger"> bouton rond en bas</b>
+                            de votre écran et adressez-vous directement à un docteur qualifié en toute discrétion et
+                            confidentialité. !
+                        </h5>
+                        <br>
+                        <h5>Pour recharger votre compte, cliquez sur le solde.</h5>
+                    </div>
+                    <button type="button" class="btn btn-outline-dark my-2" data-bs-dismiss="modal">
+                        Fermer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="{{ asset('assets/js/moment.js') }}"></script>
+<script src="{{ asset('assets/js/wow.js') }}"></script>
+<link rel="stylesheet" href="{{ asset('assets/css/animate.css') }}">
+
 <script>
+    new WOW().init();
+
     function iOS() {
         return [
                 'iPad Simulator',
@@ -434,7 +490,7 @@
             (navigator.userAgent.includes("Mac") && "ontouchend" in document)
     }
 
-    if (iOS()) {
+    if (iOS() || 1 == 1) {
         $('#dapp').fadeOut();
         all();
     } else {
@@ -621,6 +677,7 @@
                         restoreMsg();
                         sendlocalmsg();
                         watchMsg();
+                        welcome();
                     }
                 },
                 error: function(rep) {
@@ -1259,6 +1316,21 @@
         }
 
         initAudio();
+
+        function welcome() {
+            var mdl = $('#mdl-welcome');
+            var ok = Number(localStorage.getItem('docta_ios_welcome'));
+            if (ok < 3) {
+                console.log(ok);
+                mdl.modal('show');
+            }
+
+            mdl.on('hide.bs.modal', function() {
+                var ok = Number(localStorage.getItem('docta_ios_welcome'));
+                ok += 1;
+                localStorage.setItem('docta_ios_welcome', ok);
+            });
+        }
     }
 </script>
 <script type="module">
