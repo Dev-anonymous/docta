@@ -491,7 +491,7 @@
             (navigator.userAgent.includes("Mac") && "ontouchend" in document)
     }
 
-    if (iOS() || 1 == 1) {
+    if (iOS()) {
         $('#dapp').fadeOut();
         all();
     } else {
