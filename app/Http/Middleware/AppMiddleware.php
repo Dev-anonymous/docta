@@ -23,20 +23,22 @@ class AppMiddleware
         $app = App::where('uid', $uid)->first();
         if ($app) {
             if ($uid) {
-                $app->update(['deviceid' => $deviceid]);
+                if ($deviceid) {
+                    $app->update(['deviceid' => $deviceid]);
+                }
             }
         } else {
-            // $app = App::where('uid', $uid)->first();
-            // if ($app) {
-            //     if ($deviceid) {
-            //         $app->update(['deviceid' => $deviceid]);
-            //     }
-            // } else {
-            if (request()->wantsJson()) {
-                return response(["message" => "Nah"], 403);
+            $app = App::where('deviceid', $deviceid)->first();
+            if ($app) {
+                if ($uid) {
+                    $app->update(['uid' => $uid]);
+                }
+            } else {
+                if (request()->wantsJson()) {
+                    return response(["message" => "Nah"], 403);
+                }
+                abort(403);
             }
-            abort(403);
-            // }
         }
         $now = now('Africa/Lubumbashi');
         $app->update(['last_login' => $now]);
