@@ -214,7 +214,7 @@ class AppController extends Controller
             $messages = $tmp;
             $user = $chat->user;
             if ($user) {
-                $docta[] = $$user->id;
+                $docta[] = $user->id;
             }
         }
 
