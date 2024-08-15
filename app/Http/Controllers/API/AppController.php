@@ -198,6 +198,8 @@ class AppController extends Controller
         $chat = $app->chats()->first();
 
         $messages = [];
+        $docta = [];
+
         if ($chat) {
             $messages = $chat->messages()->where(['fromuser' => 1, 'sent' => 0])->get();
             $tmp = [];
@@ -210,10 +212,13 @@ class AppController extends Controller
                 $tmp[] = $d;
             }
             $messages = $tmp;
+            $user = $chat->user;
+            if ($user) {
+                $docta[] = $$user->id;
+            }
         }
 
         $conseil = Conseilmedical::orderBy('id')->get();
-        $docta = User::where('user_role', 'docta')->orderBy('derniere_connexion', 'desc')->pluck('id')->all();
         $zego = Zego::first();
 
         $userread = Message::where(['chat_id' => @$chat->id, 'fromuser' => 0, 'userread' => 0])->first();
