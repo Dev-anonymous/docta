@@ -246,7 +246,8 @@
                     <span solde></span>
                 </span>
 
-                <a href="#" style="margin-left: 20px" data-bs-toggle="modal" data-bs-target="#mdl-welcome"><i class="pulse2 fa fa-exclamation-circle text-warning"></i></a>
+                <a href="#" style="margin-left: 20px" data-bs-toggle="modal" data-bs-target="#mdl-welcome"><i
+                        class="fa fa-exclamation-circle text-warning fa-spin"></i></a>
             </div>
         </div>
     </div>
@@ -329,7 +330,7 @@
                     <h6>Appel : <b s-appel></b></h6>
                     <h6>SMS : <b s-sms></b> </h6>
                     <hr>
-                    <h4>Crédit d'appel</h4>
+                    <h4>Crédit</h4>
                     <h6>Solde : <b s-solde></b></h6>
                     <button class="btn btn-outline-info btn-sm mt-3" btnrech type="button">
                         Recharger
@@ -389,7 +390,7 @@
             <div class="modal-body">
                 <div class="p-3 rounded-5" style="background-color: rgba(0, 0, 0, 0.075)">
                     <div class="d-flex justify-content-between">
-                        <h4>Recharge crédit d'appel</h4>
+                        <h4>Recharge crédit</h4>
                         <i class="fa fa-lock text-success fa-2x"></i>
                     </div>
                     <hr>
@@ -455,7 +456,7 @@
                     </div>
                     <div class="mt-4">
                         <h5>Besoin de parler à un médecin ? vous êtes au bon endroit, cliquez sur l'icône message
-                            <b class="text-info"> en blue </b>
+                            <b class="text-info"> en bleu </b>
                             de votre écran et adressez-vous directement à un docteur qualifié en toute discrétion et
                             confidentialité.
                         </h5>
@@ -617,6 +618,19 @@
             }
             if (msg.length == 0) {
                 ta.val('');
+                return false;
+            }
+
+            var spa = $('[solde]');
+            var solde = Number(spa.attr('solde'));
+            var facsms = Number(spa.attr('sms'));
+
+            if ((solde == 0 && facsms > 0)) {
+                var sp = $('[error]');
+                sp.stop().html("Veuillez recharger votre solde SVP.");
+                setTimeout(() => {
+                    sp.html('');
+                }, 2000);
                 return false;
             }
 
@@ -824,7 +838,9 @@
                     var solde = data.solde;
                     var sms = data.sms;
                     var appel = data.appel;
-                    $('[solde]').html(`Crédit d'appel : ${solde} USD`);
+                    $('[solde]').html(`Crédit : ${solde} USD`);
+                    $('[solde]').attr('sms', sms);
+                    $('[solde]').attr('solde', solde);
 
                     $('[s-solde]').html(`${solde} USD`);
                     $('[s-appel]').html(`${appel} USD/Séc`);
