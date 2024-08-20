@@ -256,7 +256,7 @@
     </div>
     <div class="">
         <div class="box">
-            <textarea maxlength="160" class="textarea" placeholder="Message ..."></textarea>
+            <textarea maxlength="300" class="textarea" placeholder="Message au docteur ..."></textarea>
         </div>
         <div class="w-100">
             <div syncdiv class="progress w-100" style="display:none">
@@ -269,7 +269,7 @@
         <div class="d-flex justify-content-end ">
             <span>
                 <strong class="text-muted" style="font-size: 10px; padding-right: 20px; font-weight: 900;"
-                    mcounter>0/160</strong>
+                    mcounter>0/300</strong>
             </span>
         </div>
         <div style="margin-left: 10px">
@@ -593,7 +593,7 @@
 
         function mcount() {
             var n = $('.textarea').val().length;
-            $('[mcounter]').html(`${n}/160`);
+            $('[mcounter]').html(`${n}/300`);
         }
         ta.keyup(function(e) {
             mcount();
