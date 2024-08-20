@@ -316,7 +316,7 @@
                     </div>
                     <div alirem class="alert alert-danger" style="display: none">
                         <i class="fa fa-exclamation-circle"></i>
-                        <b class="">Vous utilisez nos services sur un device iOS? Lors de la suppression des
+                        <b class="">Vous utilisez nos services sur un navigateur? Lors de la suppression des
                             données en cache de
                             ce
                             navigateur, VOUS DEVEZ IGNORER la suppression de données de ce
@@ -491,12 +491,12 @@
             (navigator.userAgent.includes("Mac") && "ontouchend" in document)
     }
 
-    if (iOS()) {
-        $('#dapp').fadeOut();
+    // if (iOS()) {
+        // $('#dapp').fadeOut();
         all();
-    } else {
+    // } else {
         $('#dapp').fadeIn();
-    }
+    // }
 
     function all() {
         var btn_send = $('#btn-send');
@@ -1155,7 +1155,7 @@
                 var sec = pad(totalSeconds % 60);
                 var m = pad(parseInt(totalSeconds / 60));
                 audiotime.html(`${m}:${sec}`);
-                if (totalSeconds > 120) {
+                if (totalSeconds > 90) {
                     clearInterval(intervalfunc);
                     intervalfunc = null;
                     startButton.removeClass('fa-stop btn-outline-success');

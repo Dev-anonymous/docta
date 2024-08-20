@@ -5,7 +5,7 @@
      <section id="hero" class="d-flex align-items-center">
          <div class="container">
              <h1>Bienvenue chez {{ config('app.name') }}</h1>
-             <h2>Votre bien-être est notre Satisfaction</h2>
+             <h2>Votre Bien-être est notre Priorité</h2>
              {{-- <a href="#contact" class="btn-get-started scrollto">Contact</a> --}}
          </div>
      </section>
