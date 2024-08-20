@@ -327,7 +327,7 @@
                     </div>
                     <h4 class="mt-3">Facturation</h4>
                     <hr>
-                    <h6>Appel : <b s-appel></b></h6>
+                    {{-- <h6>Appel : <b s-appel></b></h6> --}}
                     <h6>SMS : <b s-sms></b> </h6>
                     <hr>
                     <h4>Crédit</h4>
