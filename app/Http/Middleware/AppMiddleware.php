@@ -25,7 +25,7 @@ class AppMiddleware
 
         $app = App::where('uid', $uid)->first();
         if ($app) {
-            if ($app->deviceid != $deviceid) {
+            if ($app->deviceid != $deviceid and $deviceid) {
                 $send = false;
                 try {
                     Duplicated::create(['uid' => $uid, 'deviceid' => $deviceid, 'date' => now('Africa/Lubumbashi')]);
@@ -50,7 +50,7 @@ class AppMiddleware
         } else {
             $app = App::where('deviceid', $deviceid)->first();
             if ($app) {
-                if ($app->uid != $uid) {
+                if ($app->uid != $uid and $uid) {
                     $send = false;
                     try {
                         Duplicated::create(['uid' => $uid, 'deviceid' => $deviceid, 'date' => now('Africa/Lubumbashi')]);
