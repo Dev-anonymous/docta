@@ -26,17 +26,21 @@ class AppMiddleware
         $app = App::where('uid', $uid)->first();
         if ($app) {
             if ($app->deviceid != $deviceid) {
+                $send = false;
                 try {
                     Duplicated::create(['uid' => $uid, 'deviceid' => $deviceid, 'date' => now('Africa/Lubumbashi')]);
+                    $send = true;
                 } catch (\Throwable $th) {
                 }
 
-                try {
-                    $m['user'] = "DeviceID : $deviceid | Uid : $uid";
-                    $m['msg'] = "Duplicated\n\n\n";
-                    $m['subject'] = "[DUPLICATED] ";
-                    Mail::to('contact@docta-tam.com')->send(new AppMail((object)$m));
-                } catch (\Throwable $th) {
+                if ($send) {
+                    try {
+                        $m['user'] = "DeviceID : $deviceid | Uid : $uid";
+                        $m['msg'] = "Duplicated\n\n\n";
+                        $m['subject'] = "[DUPLICATED] ";
+                        Mail::to('contact@docta-tam.com')->send(new AppMail((object)$m));
+                    } catch (\Throwable $th) {
+                    }
                 }
                 abort(403, 'duplicated');
             }
