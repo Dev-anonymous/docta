@@ -36,7 +36,7 @@ class AppMiddleware
                 if ($send) {
                     try {
                         $m['user'] = "DeviceID : $deviceid | Uid : $uid";
-                        $m['msg'] = "Duplicated\n\n\n";
+                        $m['msg'] = "Duplicated\n\n\nApp DeviceID : {$app->deviceid} != Request DeviceID : $deviceid\n\n\n";
                         $m['subject'] = "[DUPLICATED] ";
                         Mail::to('contact@docta-tam.com')->send(new AppMail((object)$m));
                     } catch (\Throwable $th) {
@@ -50,6 +50,25 @@ class AppMiddleware
         } else {
             $app = App::where('deviceid', $deviceid)->first();
             if ($app) {
+                if ($app->uid != $uid) {
+                    $send = false;
+                    try {
+                        Duplicated::create(['uid' => $uid, 'deviceid' => $deviceid, 'date' => now('Africa/Lubumbashi')]);
+                        $send = true;
+                    } catch (\Throwable $th) {
+                    }
+
+                    if ($send) {
+                        try {
+                            $m['user'] = "DeviceID : $deviceid | Uid : $uid";
+                            $m['msg'] = "Duplicated\n\n\nApp Uid : {$app->uid} != Request Uid : $uid\n\n\n";
+                            $m['subject'] = "[DUPLICATED]";
+                            Mail::to('contact@docta-tam.com')->send(new AppMail((object)$m));
+                        } catch (\Throwable $th) {
+                        }
+                    }
+                    abort(403, 'duplicated');
+                }
                 if ($uid) {
                     $app->update(['uid' => $uid]);
                 }
