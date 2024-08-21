@@ -81,7 +81,7 @@ class AppController extends Controller
                 }
             }
         }
-        
+
         $app = App::where('uid', $uid)->first();
         if (!$app) {
             $app = App::where('deviceid', $deviceid)->first();
@@ -93,7 +93,7 @@ class AppController extends Controller
             Solde::create(['solde_usd' => 0, 'app_id' => $app->id]);
             DB::commit();
         } else {
-            $app->update(['last_login' => $now]);
+            $app->update(['last_login' => $now, 'uid' => $uid, 'deviceid' => $deviceid]);
         }
 
         return response()->json([
