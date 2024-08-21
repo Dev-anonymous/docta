@@ -25,6 +25,7 @@
                                 <table class="table table-striped table-bordered zero-configuration">
                                     <thead>
                                         <tr>
+                                            <th></th>
                                             <th>UID / DEVICE ID</th>
                                             <th>SOLDE D'APPEL</th>
                                             <th>EMAIL/TEL</th>
@@ -34,7 +35,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($app as $el)
+                                        @foreach ($app as $k => $el)
                                             @php
                                                 $actif = '';
                                                 if ($el->last_login) {
@@ -46,6 +47,7 @@
                                                 }
                                             @endphp
                                             <tr class="text-nowrap">
+                                                <td>{{ $k + 1 }}</td>
                                                 <td>{{ $el->uid }} <br> {{ $el->deviceid }}</td>
                                                 <td>
                                                     <span class="badge badge-danger font-weight-bold"
