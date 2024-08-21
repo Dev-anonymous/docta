@@ -2,9 +2,12 @@
 
 namespace App\Http\Middleware;
 
+use App\Mail\AppMail;
 use App\Models\App;
+use App\Models\Duplicated;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class AppMiddleware
 {
@@ -22,10 +25,23 @@ class AppMiddleware
 
         $app = App::where('uid', $uid)->first();
         if ($app) {
-            if ($uid) {
-                if ($deviceid) {
-                    $app->update(['deviceid' => $deviceid]);
+            if ($app->deviceid != $deviceid) {
+                try {
+                    Duplicated::create(['uid' => $uid, 'deviceid' => $deviceid, 'date' => now('Africa/Lubumbashi')]);
+                } catch (\Throwable $th) {
                 }
+
+                try {
+                    $m['user'] = "DeviceID : $deviceid | Uid : $uid";
+                    $m['msg'] = "Duplicated\n\n\n";
+                    $m['subject'] = "[DUPLICATED] ";
+                    Mail::to('contact@docta-tam.com')->send(new AppMail((object)$m));
+                } catch (\Throwable $th) {
+                }
+                abort(403, 'duplicated');
+            }
+            if ($deviceid) {
+                $app->update(['deviceid' => $deviceid]);
             }
         } else {
             $app = App::where('deviceid', $deviceid)->first();
