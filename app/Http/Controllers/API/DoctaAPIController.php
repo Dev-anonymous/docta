@@ -30,8 +30,8 @@ class DoctaAPIController extends Controller
             $actif = "<b style='cursor:pointer' class='badge badge-danger text-white'> <i class='fa fa-wifi'></i> DECONNECTE</b>";
 
             if ($el->derniere_connexion) {
-                $n = now('Africa/Lubumbashi')->diffInDays($el->derniere_connexion);
-                $l = now('Africa/Lubumbashi')->diffForHumans($el->derniere_connexion);
+                $n = now()->diffInDays($el->derniere_connexion);
+                $l = now()->diffForHumans($el->derniere_connexion);
 
                 if ($n <= 7) {
                     $label = "Dernière connexion : $l";
