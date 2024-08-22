@@ -26,10 +26,7 @@ class AdminController extends Controller
 
     public function clients()
     {
-        $app = App::orderBy('last_login', 'desc')->get();
-        $solde = Solde::sum('solde_usd');
-        $solde = number_format($solde, 2, '.', ' ');
-        return view('pages.admin.clients', compact('solde', 'app'));
+        return view('pages.admin.clients');
     }
 
     public function docta()

@@ -12,6 +12,7 @@ use App\Http\Controllers\API\PAYController;
 use App\Http\Controllers\API\SiteAPIController;
 use App\Http\Controllers\API\TauxAPIController;
 use App\Http\Controllers\API\ZegocloudController;
+use App\Http\Controllers\ClientAPIController;
 use App\Models\Conseilmedical;
 use Illuminate\Support\Facades\Route;
 
@@ -59,4 +60,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('zego', ZegocloudController::class);
     Route::resource('site', SiteAPIController::class);
     Route::resource('appversion', AppVersionAPIController::class);
+    Route::resource('clients', ClientAPIController::class);
 });

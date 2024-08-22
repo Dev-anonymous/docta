@@ -17,15 +17,15 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
-                                <h4 class="card-title">Clients ({{ count($app) }})</h4>
-                                <h4 class="card-title">Total Solde : <span style="font-size: 18px"
-                                        class="badge badge-dark">{{ "$ $solde" }}</span></h4>
+                                <h4 class="card-title">Clients (<span clients></span>)</h4>
+                                <h4 class="card-title">Total Solde : <span style="font-size: 18px" class="badge badge-dark"
+                                        solde></span></h4>
                             </div>
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered zero-configuration">
+                                <table tclient class="table table-striped table-bordered">
                                     <thead>
                                         <tr>
-                                            <th></th>
+                                            <th><span loader><i class="fa fa-spinner fa-spin"></i></span></th>
                                             <th>UID / DEVICE ID</th>
                                             <th>SOLDE</th>
                                             <th>EMAIL/TEL</th>
@@ -34,46 +34,7 @@
                                             <th>DATE CREATION</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        @foreach ($app as $k => $el)
-                                            @php
-                                                $actif = '';
-                                                $tt = '';
-                                                if ($el->last_login) {
-                                                    $n = now('Africa/Lubumbashi')->diffInDays($el->last_login);
-                                                    $l = now('Africa/Lubumbashi')->diffForHumans($el->last_login);
-
-                                                    if ($n <= 7) {
-                                                        $tt = "Dernière connexion : $l";
-                                                        $actif =
-                                                            "<b style='cursor:pointer' class='badge badge-info'> <i class='fa fa-check-circle'></i> ACTIF</b>";
-                                                    }
-
-                                                    if (isconnected($el->last_login)) {
-                                                        $tt = 'Utilisateur connecté';
-                                                        $actif =
-                                                            "<b style='cursor:pointer' class='badge badge-success text-white'> <i class='fa fa-check-circle'></i> CONNECTE</b>";
-                                                    }
-                                                }
-                                            @endphp
-                                            <tr class="text-nowrap">
-                                                <td>{{ $k + 1 }}</td>
-                                                <td>{{ $el->uid }} <br> {{ $el->deviceid }}</td>
-                                                <td>
-                                                    <span class="badge badge-danger font-weight-bold"
-                                                        style="min-width: 120px; font-size: 18px">
-                                                        {{ "$ " . number_format($el->soldes()->first()->solde_usd, 2, '.', ' ') }}
-                                                    </span>
-                                                </td>
-                                                <td>{!! "$el->email<br>$el->telephone" !!}</td>
-                                                <td>{{ $el->nom ?? '-' }}</td>
-                                                <td title='{{ $tt }}' data-toggle='tooltip'>
-                                                    {{ $el->last_login?->format('d-m-Y H:i:s') }} {!! $actif !!}
-                                                </td>
-                                                <td>{{ $el->date?->format('d-m-Y H:i:s') }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
+                                    <tbody></tbody>
                                 </table>
                             </div>
                         </div>
@@ -91,7 +52,54 @@
     <script src="{{ asset('plugins/tables/js/datatable-init/datatable-basic.min.js') }}"></script>
     <script>
         $(function() {
+            function getdata() {
+                $("[loader]").html('<i class="fa fa-spinner fa-spin"></i>');
+                $.getJSON('{{ route('clients.index') }}', function(d) {
+                    var str = '';
+                    var data = d.data;
+                    $.each(data.clients, function(i, e) {
+                        str += `
+                        <tr>
+                            <td>${i+1}</td>
+                            <td>
+                                 ${e.uid} <br> ${e.deviceid}
+                            </td>
+                            <td>
+                                 ${e.solde}
+                            </td>
+                            <td>
+                                 ${e.telephone} <br> ${e.email}
+                            </td>
+                            <td>
+                                 ${e.nom}
+                            </td>
+                            <td title='${e.label}' data-toggle='tooltip'>
+                                 ${e.last_login} ${e.actif}
+                            </td>
+                            <td>
+                                 ${e.date}
+                            </td>
+                        </tr>
+                        `;
+                    });
+                    var table = $('[tclient]');
+                    $('[clients]').html(data.clients.length);
+                    $('[solde]').html(data.solde);
+                    table.DataTable().destroy();
+                    table.find('tbody').html(str);
+                    $("[data-toggle='tooltip']").off('tooltip').tooltip();
+                    table.DataTable({
+                        stateSave: true
+                    });
+                }).always(function() {
+                    $("[loader]").html('');
+                    setTimeout(() => {
+                        getdata();
+                    }, 3000);
+                })
+            }
 
+            getdata();
         })
     </script>
 @endsection
