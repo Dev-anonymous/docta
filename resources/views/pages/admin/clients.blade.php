@@ -18,7 +18,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <h4 class="card-title">Clients ({{ count($app) }})</h4>
-                                <h4 class="card-title">Total Solde appel : <span style="font-size: 18px"
+                                <h4 class="card-title">Total Solde : <span style="font-size: 18px"
                                         class="badge badge-dark">{{ "$ $solde" }}</span></h4>
                             </div>
                             <div class="table-responsive">
@@ -27,7 +27,7 @@
                                         <tr>
                                             <th></th>
                                             <th>UID / DEVICE ID</th>
-                                            <th>SOLDE D'APPEL</th>
+                                            <th>SOLDE</th>
                                             <th>EMAIL/TEL</th>
                                             <th>NOM</th>
                                             <th>DERNIERE CONNEXION</th>
@@ -40,18 +40,20 @@
                                                 $actif = '';
                                                 if ($el->last_login) {
                                                     $n = now('Africa/Lubumbashi')->diffInDays($el->last_login);
+                                                    $l = now('Africa/Lubumbashi')->diffForHumans($el->last_login);
+
+                                                    $tt = '';
                                                     if ($n <= 7) {
+                                                        $tt = "Dernière connexion : $l";
                                                         $actif =
-                                                            '<b style="cursor:pointer" title="Utilisateur actif" data-toggle="tooltip" class="badge badge-info"> <i class="fa fa-check-circle"></i> ACTIF</b>';
+                                                            "<b style='cursor:pointer' class='badge badge-info'> <i class='fa fa-check-circle'></i> ACTIF</b>";
                                                     }
 
-                                                    $n = now('Africa/Lubumbashi')->diffInMinutes($el->last_login);
-                                                    if ($n <= 3) {
+                                                    if (isconnected($el->last_login)) {
+                                                        $tt = 'Utilisateur connecté';
                                                         $actif =
-                                                            '<b style="cursor:pointer" title="Utilisateur connecté" data-toggle="tooltip" class="badge badge-success"> <i class="fa fa-check-circle"></i> CONNECTE</b>';
+                                                            "<b style='cursor:pointer' class='badge badge-success text-white'> <i class='fa fa-check-circle'></i> CONNECTE</b>";
                                                     }
-
-                                                    $actif .= $n;
                                                 }
                                             @endphp
                                             <tr class="text-nowrap">
@@ -65,7 +67,8 @@
                                                 </td>
                                                 <td>{!! "$el->email<br>$el->telephone" !!}</td>
                                                 <td>{{ $el->nom ?? '-' }}</td>
-                                                <td>{{ $el->last_login?->format('d-m-Y H:i:s') }} {!! $actif !!}
+                                                <td title='{{ $tt }}' data-toggle='tooltip'>
+                                                    {{ $el->last_login?->format('d-m-Y H:i:s') }} {!! $actif !!}
                                                 </td>
                                                 <td>{{ $el->date?->format('d-m-Y H:i:s') }}</td>
                                             </tr>

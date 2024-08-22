@@ -286,3 +286,10 @@ function assignchat($chats = [], $skipeuser = 0)
     }
     DB::commit();
 }
+
+
+function isconnected($last_login)
+{
+    $n = (time() + 3600 * 2) - strtotime($last_login->format('Y-m-d H:i:s'));
+    return ($n / 60) <= 3;
+}
