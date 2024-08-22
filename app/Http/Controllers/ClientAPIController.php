@@ -20,27 +20,28 @@ class ClientAPIController extends Controller
         $tab = [];
 
         foreach ($app as $el) {
-            $actif = '';
-            $label = '';
-            if ($el->last_login) {
-                $n = now('Africa/Lubumbashi')->diffInDays($el->last_login);
-                $l = now('Africa/Lubumbashi')->diffForHumans($el->last_login);
+            $label = 'déconnecté';
+            $actif = "<b style='cursor:pointer' class='badge badge-danger text-white'> <i class='fa fa-wifi'></i> DECONNECTE</b>";
 
-                if ($n <= 7) {
-                    $label = "Dernière connexion : $l";
-                    $actif =
-                        "<b style='cursor:pointer' class='badge badge-info'> <i class='fa fa-check-circle'></i> ACTIF</b>";
-                }
+            if ($el->last_login) {
+                $n = $el->last_login->diffInDays();
+                $l = $el->last_login->diffForHumans();
 
                 if (isconnected($el->last_login)) {
-                    $label = 'Utilisateur connecté';
+                    $label = 'connecté';
                     $actif =
-                        "<b style='cursor:pointer' class='badge badge-success text-white'> <i class='fa fa-check-circle'></i> CONNECTE</b>";
+                        "<b style='cursor:pointer' class='badge badge-success text-white'> <i class='fa fa-wifi'></i> CONNECTE</b>";
+                } else {
+                    if ($n <= 7) {
+                        $label = "Dernière connexion : $l";
+                        $actif =
+                            "<b style='cursor:pointer' class='badge badge-info'> <i class='fa fa-check-circle'></i> ACTIF</b>";
+                    }
                 }
             }
 
             $o = (object) $el->toArray();
-            $o->solde = "$ ". number_format($el->soldes()->first()->solde_usd, 2, '.', ' ');
+            $o->solde = "$ " . number_format($el->soldes()->first()->solde_usd, 2, '.', ' ');
             $o->nom = $el->nom ?? '';
             $o->email = $el->email ?? '';
             $o->telephone = $el->telephone ?? '';

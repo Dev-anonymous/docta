@@ -73,7 +73,7 @@
                             <td>
                                  ${e.nom}
                             </td>
-                            <td title='${e.label}' data-toggle='tooltip'>
+                            <td title='${e.label}'>
                                  ${e.last_login} ${e.actif}
                             </td>
                             <td>
@@ -87,8 +87,6 @@
                     $('[solde]').html(data.solde);
                     table.DataTable().destroy();
                     table.find('tbody').html(str);
-                    $("[data-toggle='tooltip']").tooltip('dispose');
-                    $("[data-toggle='tooltip']").off('tooltip').tooltip();
                     table.DataTable({
                         stateSave: true
                     });
