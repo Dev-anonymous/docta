@@ -22,6 +22,7 @@ class DoctaMiddleware
             $user->tokens()->delete();
             abort(401, "Docta Only");
         }
+        $user->update(['derniere_connexion' => now('Africa/Lubumbashi')]);
         return $next($request);
     }
 }
