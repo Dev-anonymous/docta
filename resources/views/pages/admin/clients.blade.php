@@ -87,6 +87,7 @@
                     $('[solde]').html(data.solde);
                     table.DataTable().destroy();
                     table.find('tbody').html(str);
+                    $("[data-toggle='tooltip']").tooltip('dispose');
                     $("[data-toggle='tooltip']").off('tooltip').tooltip();
                     table.DataTable({
                         stateSave: true
