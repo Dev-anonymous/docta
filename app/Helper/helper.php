@@ -238,7 +238,7 @@ function sendMessage($token, $title, $body)
     curl_close($ch);
     try {
         $result = json_decode($result);
-        dd($result);
+        // dd($result);
         $ok = (bool) @$result->name;
     } catch (\Throwable $th) {
         // throw $th;
