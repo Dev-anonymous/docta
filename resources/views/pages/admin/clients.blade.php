@@ -42,7 +42,13 @@
                                                     $n = now()->diffInDays($el->last_login);
                                                     if ($n <= 7) {
                                                         $actif =
-                                                            '<b style="cursor:pointer" title="Utilisateur actif" data-toggle="tooltip" class="badge badge-success"> <i class="fa fa-check-circle"></i> ACTIF</b>';
+                                                            '<b style="cursor:pointer" title="Utilisateur actif" data-toggle="tooltip" class="badge badge-info"> <i class="fa fa-check-circle"></i> ACTIF</b>';
+                                                    }
+
+                                                    $n = now()->diffInMinutes($el->last_login);
+                                                    if ($n <= 3) {
+                                                        $actif =
+                                                            '<b style="cursor:pointer" title="Utilisateur connecté" data-toggle="tooltip" class="badge badge-success"> <i class="fa fa-check-circle"></i> CONNECTE</b>';
                                                     }
                                                 }
                                             @endphp
