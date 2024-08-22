@@ -32,7 +32,7 @@ class SendPush extends Command
     public function handle()
     {
         DB::transaction(function () {
-            $pend = Pushnotification::lockForUpdate()->all();
+            $pend = Pushnotification::lockForUpdate()->get();
             foreach ($pend as $push) {
                 if ($push->retry > 500) {
                     $push->delete();
