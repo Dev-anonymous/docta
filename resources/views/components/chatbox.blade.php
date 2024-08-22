@@ -289,7 +289,7 @@
                 </div>
                 <div style="margin-left: 10px; cursor: pointer;">
                     <i class="fa fa-exclamation-triangle text-danger"
-                        title="La taille limite de l'audio est de 2 minutes" data-toggle="tooltip"></i>
+                        title="La taille limite de l'audio est de 1min30sec" data-toggle="tooltip"></i>
                 </div>
             </div>
 
@@ -490,12 +490,15 @@
             ].includes(navigator.platform) ||
             (navigator.userAgent.includes("Mac") && "ontouchend" in document)
     }
+    $(function() {
+        $("[data-toggle='tooltip']").tooltip();
+    })
 
     // if (iOS()) {
-        // $('#dapp').fadeOut();
-        all();
+    // $('#dapp').fadeOut();
+    all();
     // } else {
-        $('#dapp').fadeIn();
+    $('#dapp').fadeIn();
     // }
 
     function all() {
@@ -1390,7 +1393,6 @@
                                 .then((fcmtoken) => {
                                     if (fcmtoken) {
                                         localStorage.setItem('fcmtoken', fcmtoken);
-                                        console.log(fcmtoken);
                                         window.fbInit = true;
                                     }
                                 })
@@ -1439,9 +1441,11 @@
         });
     }
 
-    if (iOS()) {
-        try {
-            window.requestPerm(false);
-        } catch (error) {}
+    // if (iOS()) {
+    try {
+        window.requestPerm(false);
+    } catch (error) {
+        console.log(error);
     }
+    // }
 </script>
