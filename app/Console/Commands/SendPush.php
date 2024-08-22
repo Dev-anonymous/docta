@@ -6,6 +6,7 @@ use App\Models\App;
 use App\Models\Pushnotification;
 use App\Models\User;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class SendPush extends Command
 {
