@@ -216,7 +216,7 @@ function sendMessage($token, $title, $body)
             'notification' => [
                 'title' => $title,
                 'body' => $body,
-                // 'icon' => asset('images/icon.png'),
+                'icon' => asset('images/icon.png'),
                 // 'image' => asset('images/icon.png'),
             ],
         ],
@@ -238,7 +238,7 @@ function sendMessage($token, $title, $body)
     curl_close($ch);
     try {
         $result = json_decode($result);
-        // dd($result);
+        dd($result);
         $ok = (bool) @$result->name;
     } catch (\Throwable $th) {
         // throw $th;
