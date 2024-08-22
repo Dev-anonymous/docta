@@ -65,7 +65,7 @@
                                  ${e.uid} <br> ${e.deviceid}
                             </td>
                             <td>
-                                 ${e.solde}
+                                 <span class="badge bg-secondary text-white font-weight-bold">${e.solde}</span>
                             </td>
                             <td>
                                  ${e.telephone} <br> ${e.email}
