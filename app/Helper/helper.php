@@ -216,7 +216,8 @@ function sendMessage($token, $title, $body)
             'notification' => [
                 'title' => $title,
                 'body' => $body,
-                'image' => asset('images/icon.png')
+                'icon' => asset('images/icon.png'),
+                // 'image' => asset('images/icon.png'),
             ],
         ],
     ];
