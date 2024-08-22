@@ -38,11 +38,11 @@
                                         @foreach ($app as $k => $el)
                                             @php
                                                 $actif = '';
+                                                $tt = '';
                                                 if ($el->last_login) {
                                                     $n = now('Africa/Lubumbashi')->diffInDays($el->last_login);
                                                     $l = now('Africa/Lubumbashi')->diffForHumans($el->last_login);
 
-                                                    $tt = '';
                                                     if ($n <= 7) {
                                                         $tt = "Dernière connexion : $l";
                                                         $actif =
