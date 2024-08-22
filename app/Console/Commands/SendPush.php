@@ -30,35 +30,38 @@ class SendPush extends Command
      */
     public function handle()
     {
-        $pend = Pushnotification::all();
-        foreach ($pend as $push) {
-            if ($push->retry > 500) {
-                $push->delete();
-            } else {
-                $data = json_decode($push->data);
-                $ok = false;
-                try {
-                    $ob = null;
-                    $to = $data->to;
-                    if (@$to[0] == 'user') {
-                        $ob = User::where('id', @$to[1])->first();
-                    }
-                    if (@$to[0] == 'app') {
-                        $ob = App::where('id', @$to[1])->first();
-                    }
-                    if ($ob) {
-                        $ok = sendMessage(@$ob->fcmtoken, $data->title, $data->message);
-                    }
-                } catch (\Throwable $th) {
-                    // dd($th);
-                }
-                if ($ok) {
+        DB::transaction(function () {
+            $pend = Pushnotification::lockForUpdate()->all();
+            foreach ($pend as $push) {
+                if ($push->retry > 500) {
                     $push->delete();
                 } else {
-                    $push->increment('retry');
+                    $data = json_decode($push->data);
+                    $ok = false;
+                    try {
+                        $ob = null;
+                        $to = $data->to;
+                        if (@$to[0] == 'user') {
+                            $ob = User::where('id', @$to[1])->first();
+                        }
+                        if (@$to[0] == 'app') {
+                            $ob = App::where('id', @$to[1])->first();
+                        }
+                        if ($ob) {
+                            $ok = sendMessage(@$ob->fcmtoken, $data->title, $data->message);
+                        }
+                    } catch (\Throwable $th) {
+                        // dd($th);
+                    }
+                    if ($ok) {
+                        $push->delete();
+                    } else {
+                        $push->increment('retry');
+                    }
                 }
             }
-        }
+        });
+
         return Command::SUCCESS;
     }
 }
