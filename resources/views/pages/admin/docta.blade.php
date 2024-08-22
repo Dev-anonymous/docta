@@ -28,8 +28,10 @@
                                 <table table class="table table-striped table-hover table-condensed">
                                     <thead>
                                         <tr>
+                                            <th><span loader><i class="fa fa-spinner fa-spin"></i></span></th>
                                             <th>NOM</th>
                                             <th>EMAIL/TEL</th>
+                                            <th>STATUS</th>
                                             <th>DERNIERE CONNEXION</th>
                                             <th></th>
                                         </tr>
@@ -277,13 +279,16 @@
             var table = $('[table]');
 
             function getdocta() {
+                $("[loader]").html('<i class="fa fa-spinner fa-spin"></i>');
                 $.getJSON('{{ route('doctas.index') }}', function(data) {
                     var str = '';
                     $.each(data, function(i, e) {
                         str += `
                         <tr>
+                            <td>${i+1}</td>
                             <td>${e.name}</td>
                             <td>${e.email}<br>${e.phone}</td>
+                            <td title="${e.label}">${e.actif}</td>
                             <td>${e.derniere_connexion}</td>
                             <td>
                                 <div class='d-flex'>
@@ -296,7 +301,6 @@
                     });
                     $('[nb]').html(data.length);
                     table.DataTable().destroy();
-                    table.find('tbody').html(str);
                     $('.bdel').off('click').click(function() {
                         var id = this.value;
                         var cmpt = $(this).attr('user');
@@ -315,11 +319,24 @@
                         $('[name=phone]', mdl).val(cmpt.phone);
                         mdl.modal('show');
                     })
-                    table.DataTable();
+
+                    table.find('tbody').html(str);
+                    $("[data-toggle='tooltip']").tooltip('dispose');
+                    $("[data-toggle='tooltip']").off('tooltip').tooltip();
+                    table.DataTable({
+                        stateSave: true
+                    });
+                }).always(function() {
+                    $("[loader]").html('');
+                    setTimeout(() => {
+                        getdocta();
+                    }, 3000);
                 })
             }
 
             getdocta();
+
+
         })
     </script>
 @endsection
