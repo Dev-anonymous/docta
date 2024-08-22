@@ -50,6 +50,8 @@
                                                         $actif =
                                                             '<b style="cursor:pointer" title="Utilisateur connecté" data-toggle="tooltip" class="badge badge-success"> <i class="fa fa-check-circle"></i> CONNECTE</b>';
                                                     }
+
+                                                    $actif .= $n;
                                                 }
                                             @endphp
                                             <tr class="text-nowrap">
