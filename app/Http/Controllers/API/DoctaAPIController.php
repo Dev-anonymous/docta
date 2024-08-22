@@ -33,16 +33,16 @@ class DoctaAPIController extends Controller
                 $n = now()->diffInDays($el->derniere_connexion);
                 $l = now()->diffForHumans($el->derniere_connexion);
 
-                if ($n <= 7) {
-                    $label = "Dernière connexion : $l";
-                    $actif =
-                        "<b style='cursor:pointer' class='badge badge-info'> <i class='fa fa-check-circle'></i> ACTIF</b>";
-                }
-
                 if (isconnected($el->derniere_connexion)) {
                     $label = 'connecté';
                     $actif =
                         "<b style='cursor:pointer' class='badge badge-success text-white'> <i class='fa fa-wifi'></i> CONNECTE</b>";
+                } else {
+                    if ($n <= 7) {
+                        $label = "Dernière connexion : $l";
+                        $actif =
+                            "<b style='cursor:pointer' class='badge badge-info'> <i class='fa fa-check-circle'></i> ACTIF</b>";
+                    }
                 }
             }
             $o->label = $label;
