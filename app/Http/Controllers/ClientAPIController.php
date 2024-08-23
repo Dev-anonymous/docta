@@ -27,7 +27,7 @@ class ClientAPIController extends Controller
                 $n = $el->last_login->diffInDays();
                 $l = $el->last_login->diffForHumans();
 
-                $isco = isconnected($el->derniere_connexion);
+                $isco = isconnected($el->last_login);
                 $label .= " : $isco->label";
 
                 if ($isco->ok) {
