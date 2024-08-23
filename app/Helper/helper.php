@@ -157,22 +157,25 @@ function canmessage()
 {
     $app = userapp();
     $chat = $app->chats()->first();
-    if ($chat) {
-        // $n = $chat->messages()->where('fromuser', 0)->whereNull('file')->count();
-        $sold = $app->soldes()->first()->solde_usd;
-        $forf = Forfait::first();
-
-        $sms = (float) @$forf->sms;
-
-        if ($sold <= 0 && $sms > 0) {
-            abort(403, 'Balance error for SMS');
-        }
-        // $n = $chat->messages()->where('fromuser', 0)->whereNotNull('file')->count();
-        $sold = $app->soldes()->first()->solde_usd;
-        if ($sold <= 0 && $sms > 0) {
-            abort(403, 'Balance error for FILE');
-        }
+    if (!$chat) {
+        abort(403, 'No chat');
     }
+    // $n = $chat->messages()->where('fromuser', 0)->whereNull('file')->count();
+    $sold = $app->soldes()->first()->solde_usd;
+    $forf = Forfait::first();
+
+    $sms = (float) @$forf->sms;
+    $can = $sold >= $sms;
+
+    if (!$can) {
+        abort(403, 'Balance error for SMS');
+    }
+    // $n = $chat->messages()->where('fromuser', 0)->whereNotNull('file')->count();
+    // $sold = $app->soldes()->first()->solde_usd;
+    // if ($sold <= 0 && $sms > 0) {
+    //     abort(403, 'Balance error for FILE');
+    // }
+
 }
 
 function fcmtoken()
