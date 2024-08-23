@@ -158,19 +158,18 @@ function canmessage()
     $app = userapp();
     $chat = $app->chats()->first();
     if ($chat) {
-        $n = $chat->messages()->where('fromuser', 0)->whereNull('file')->count();
+        // $n = $chat->messages()->where('fromuser', 0)->whereNull('file')->count();
         $sold = $app->soldes()->first()->solde_usd;
         $forf = Forfait::first();
 
         $sms = (float) @$forf->sms;
-        // $appel = (float) @$forf->appel;
 
-        if ($n > 5 && $sold <= 0 && $sms > 0) {
+        if ($sold <= 0 && $sms > 0) {
             abort(403, 'Balance error for SMS');
         }
-        $n = $chat->messages()->where('fromuser', 0)->whereNotNull('file')->count();
+        // $n = $chat->messages()->where('fromuser', 0)->whereNotNull('file')->count();
         $sold = $app->soldes()->first()->solde_usd;
-        if ($n > 1 && $sold <= 0 && $sms > 0) {
+        if ($sold <= 0 && $sms > 0) {
             abort(403, 'Balance error for FILE');
         }
     }

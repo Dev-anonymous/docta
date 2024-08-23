@@ -26,8 +26,8 @@ class StatistiqueAPIController extends Controller
         $telechargement = [];
 
         foreach (range(1, 12) as $m) {
-            $visites[] = (int)  Visite::whereMonth('date', $m)->groupBy('ip')->sum('nb');
-            $telechargement[] = (int)  Download::whereMonth('date', $m)->groupBy('ip')->sum('nb');
+            $visites[] = (int)  Visite::whereMonth('date', $m)->sum('nb');
+            $telechargement[] = (int)  Download::whereMonth('date', $m)->sum('nb');
         }
 
         return response([
