@@ -64,7 +64,7 @@
                             <div class="card">
                                 <div class="card-body pb-0 d-flex justify-content-between">
                                     <div>
-                                        <h4 class="mb-1">Statistique de télécharment</h4>
+                                        <h4 class="mb-1">Statistique de téléchargement</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">
