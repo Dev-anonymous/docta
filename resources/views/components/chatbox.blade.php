@@ -634,7 +634,7 @@
                 setTimeout(() => {
                     sp.html('');
                 }, 2000);
-                // return false;
+                return false;
             }
 
             var date = moment().utcOffset('+0200').format('YYYY-MM-DD h:mm:ss');
