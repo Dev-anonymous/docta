@@ -7,6 +7,7 @@ use App\Models\App;
 use App\Models\Appversion;
 use App\Models\Chat;
 use App\Models\Conseilmedical;
+use App\Models\Download;
 use App\Models\Errorlog;
 use App\Models\Forfait;
 use App\Models\Message;
@@ -101,6 +102,20 @@ class AppController extends Controller
             'message' => "Welcome $uid",
             'data' => compact('uid', 'deviceid')
         ]);
+    }
+
+    function dl()
+    {
+        $ip = request()->ip();
+        $usera = request()->userAgent();
+        $date = now('Africa/Lubumbashi');
+        $ex = Download::where(['ip' => $ip, 'useragent' => $usera])->first();
+        if ($ex) {
+            $ex->increment('nb');
+            $ex->update(['date' => $date]);
+        } else {
+            Download::create(['ip' => $ip, 'nb' => 1, 'useragent' => $usera, 'date' => $date]);
+        }
     }
 
     public function message()

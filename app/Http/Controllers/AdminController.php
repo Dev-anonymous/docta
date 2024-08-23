@@ -11,17 +11,14 @@ use App\Models\Site;
 use App\Models\Solde;
 use App\Models\Taux;
 use App\Models\User;
+use App\Models\Visite;
 use App\Models\Zego;
 
 class AdminController extends Controller
 {
     public function index()
     {
-        $docta = User::where('user_role', 'docta')->count();
-        $client = App::count();
-        $min_date = now('Africa/Lubumbashi')->subDays(8)->format("Y-m-d H:i:s");
-        $clientactif = App::whereDate('last_login', '>=', $min_date)->count();
-        return view('pages.admin.index', compact('docta', 'client', 'clientactif'));
+        return view('pages.admin.index');
     }
 
     public function clients()

@@ -15,15 +15,22 @@
             </li>
             <li>
                 <a menulabel class="has-arrow" href="javascript:void()" aria-expanded="false">
+                    <i class="fa fa-android menu-icon"></i><span class="nav-text">Application</span>
+                </a>
+                <ul aria-expanded="true">
+                    <li><a href="{{ route('admin.app') }}">App Version</a></li>
+                    <li><a href="{{ route('admin.log') }}">Logs</a></li>
+                    <li><a href="{{ route('admin.zegocloud') }}">Zegocloud</a></li>
+                </ul>
+            </li>
+            <li>
+                <a menulabel class="has-arrow" href="javascript:void()" aria-expanded="false">
                     <i class="icon-settings menu-icon"></i><span class="nav-text">Paramètres</span>
                 </a>
                 <ul aria-expanded="true">
                     <li><a href="{{ route('admin.facturation') }}">Facturation</a></li>
                     <li><a href="{{ route('admin.taux') }}">Taux</a></li>
-                    <li><a href="{{ route('admin.zegocloud') }}">Zegocloud</a></li>
                     <li><a href="{{ route('admin.site') }}">Site</a></li>
-                    <li><a href="{{ route('admin.app') }}">App Version</a></li>
-                    <li><a href="{{ route('admin.log') }}">Logs</a></li>
                 </ul>
             </li>
         </ul>

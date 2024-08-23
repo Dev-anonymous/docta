@@ -11,7 +11,7 @@
                             <div class="card-body">
                                 <h3 class="card-title text-white">Clients</h3>
                                 <div class="d-inline-block">
-                                    <h2 class="text-white">{{ $client }}</h2>
+                                    <h2 class="text-white" clients></h2>
                                 </div>
                                 <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
                             </div>
@@ -24,7 +24,7 @@
                             <div class="card-body">
                                 <h3 class="card-title text-white">Clients Actifs</h3>
                                 <div class="d-inline-block">
-                                    <h2 class="text-white">{{ $clientactif }}</h2>
+                                    <h2 class="text-white" clientactifs></h2>
                                 </div>
                                 <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
                             </div>
@@ -37,7 +37,7 @@
                             <div class="card-body">
                                 <h3 class="card-title text-white">Docta</h3>
                                 <div class="d-inline-block">
-                                    <h2 class="text-white">{{ $docta }}</h2>
+                                    <h2 class="text-white" docta></h2>
                                 </div>
                                 <span class="float-right display-5 opacity-5"><i class="fa fa-user-md"></i></span>
                             </div>
@@ -60,6 +60,30 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body pb-0 d-flex justify-content-between">
+                                    <div>
+                                        <h4 class="mb-1">Statistique de télécharment</h4>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div id="chart0"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body pb-0 d-flex justify-content-between">
+                                    <div>
+                                        <h4 class="mb-1">Statistique de visite</h4>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div id="chart1"></div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body pb-0 d-flex justify-content-between">
@@ -68,7 +92,7 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <div id="chart1"></div>
+                                    <div id="chart2"></div>
                                 </div>
                             </div>
                         </div>
@@ -83,10 +107,10 @@
 
     <script>
         $(function() {
-            var options = {
+            var options0 = {
                 series: [{
-                    name: "Appels traités",
-                    data: [350, 200, 100, 10, 10, 30, 500, 200, 100, 40, 210, 300],
+                    name: "Téléchargements",
+                    data: [],
                 }],
                 colors: ['#02BBFF'],
                 chart: {
@@ -114,8 +138,101 @@
                 }
             };
 
-            var chart = new ApexCharts(document.querySelector("#chart1"), options);
-            chart.render();
+            var chart0 = new ApexCharts(document.querySelector("#chart0"), options0);
+            chart0.render();
+
+            var options1 = {
+                series: [{
+                    name: "Visites",
+                    data: [],
+                }],
+                colors: ['#02BBFF'],
+                chart: {
+                    type: 'area',
+                    height: 350,
+                    zoom: {
+                        enabled: false
+                    },
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    curve: 'smooth',
+                    width: 2,
+                },
+                labels: [
+                    'Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre',
+                    'Octobre', 'Novembre',
+                    'Decembre'
+                ],
+
+                legend: {
+                    horizontalAlign: 'left'
+                }
+            };
+
+            var chart1 = new ApexCharts(document.querySelector("#chart1"), options1);
+            chart1.render();
+
+            var options2 = {
+                series: [{
+                    name: "Appels",
+                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                }],
+                colors: ['#02BBFF'],
+                chart: {
+                    type: 'area',
+                    height: 350,
+                    zoom: {
+                        enabled: false
+                    },
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    curve: 'smooth',
+                    width: 2,
+                },
+                labels: [
+                    'Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre',
+                    'Octobre', 'Novembre',
+                    'Decembre'
+                ],
+
+                legend: {
+                    horizontalAlign: 'left'
+                }
+            };
+
+            var chart2 = new ApexCharts(document.querySelector("#chart2"), options2);
+            chart2.render();
+
+            function stat() {
+                $.ajax({
+                    url: '{{ route('stat.index') }}',
+                    success: function(r) {
+                        $('[clients]').html(r.clients);
+                        $('[clientactifs]').html(r.clientactifs);
+                        $('[docta]').html(r.docta);
+
+                        chart0.updateSeries([{
+                            data: r.telechargement,
+                        }]);
+                        chart1.updateSeries([{
+                            data: r.visites,
+                        }])
+
+                    }
+                }).always(function() {
+                    setTimeout(() => {
+                        stat();
+                    }, 3000);
+                })
+            }
+
+            stat();
         })
     </script>
 @endsection

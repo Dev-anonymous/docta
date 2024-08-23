@@ -35,7 +35,20 @@
 <script>
     document.getElementById("dapp").addEventListener("click", function() {
         event.preventDefault();
-        location.assign('{{ asset('docta.apk') }}');
+        var el = $(this);
+        var ht = el.html();
+        el.html("<i class='spinner-border spinner-border-sm'></i>");
+        $.ajax({
+            url: '{{ route('dl') }}',
+            success: function() {
+                location.assign('{{ asset('docta.apk') }}');
+            },
+            error: function() {
+                alert("Echec de connexion, veuillez relancer le téléchargement SVP.")
+            }
+        }).always(function() {
+            el.html(ht);
+        });
     });
 </script>
 
@@ -89,6 +102,5 @@
             location.href = href + '/' + this.hash;
         });
     @endif
-
 </script>
 <x-chatbox />

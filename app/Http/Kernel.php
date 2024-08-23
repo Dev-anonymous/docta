@@ -67,5 +67,6 @@ class Kernel extends HttpKernel
         'uid.mdwl' => \App\Http\Middleware\AppMiddleware::class,
         'admin.mdwl' => \App\Http\Middleware\AdminMiddleware::class,
         'docta.mdwl' => \App\Http\Middleware\DoctaMiddleware::class,
+        'visite.mdwl' => \App\Http\Middleware\VisiteMIddleWare::class,
     ];
 }

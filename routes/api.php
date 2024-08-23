@@ -13,6 +13,7 @@ use App\Http\Controllers\API\SiteAPIController;
 use App\Http\Controllers\API\TauxAPIController;
 use App\Http\Controllers\API\ZegocloudController;
 use App\Http\Controllers\ClientAPIController;
+use App\Http\Controllers\StatistiqueAPIController;
 use App\Models\Conseilmedical;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +25,7 @@ Route::prefix('v1')->group(function () {
     Route::post('/applog', [AppController::class, 'error']);
 
     Route::get('uid', [AppController::class, 'uid']);
+    Route::get('dl', [AppController::class, 'dl'])->name('dl');
     Route::get('appversion', [AppController::class, 'appversion']);
 
     Route::middleware('uid.mdwl')->group(function () {
@@ -61,4 +63,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('site', SiteAPIController::class);
     Route::resource('appversion', AppVersionAPIController::class);
     Route::resource('clients', ClientAPIController::class);
+    Route::resource('stat', StatistiqueAPIController::class);
 });
