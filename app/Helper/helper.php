@@ -291,6 +291,6 @@ function assignchat($chats = [], $skipeuser = 0)
 function isconnected($last_login)
 {
     if (!$last_login) return false;
-    $m = $last_login->diffInMinutes();
+    $m = ( (time() + 3600 * 2) - strtotime($last_login->format('Y-m-d H:i:s'))) / 60;
     return $m <= 3;
 }
