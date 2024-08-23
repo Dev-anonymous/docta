@@ -64,7 +64,7 @@
                             <div class="card">
                                 <div class="card-body pb-0 d-flex justify-content-between">
                                     <div>
-                                        <h4 class="mb-1">Statistique de téléchargement</h4>
+                                        <h4 class="mb-1">Statistique de téléchargements</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -76,7 +76,7 @@
                             <div class="card">
                                 <div class="card-body pb-0 d-flex justify-content-between">
                                     <div>
-                                        <h4 class="mb-1">Statistique de visite</h4>
+                                        <h4 class="mb-1">Statistique de visites</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">
