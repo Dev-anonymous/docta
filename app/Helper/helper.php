@@ -291,7 +291,7 @@ function assignchat($chats = [], $skipeuser = 0)
 function isconnected($last_login)
 {
     if (!$last_login) return (object) ['ok' => false, 'lastlogin' => '', 'label' => '', 'days' => ''];
-    $m = ((time() + 3600 * 2) - strtotime($last_login->format('Y-m-d H:i:s'))) / 60;
+    $m = ((time()) - strtotime($last_login->format('Y-m-d H:i:s'))) / 60;
     $l = $last_login->diffForHumans();
     $days = $m / 1440;
     return (object) ['ok' =>  $m <= 3, 'lastlogin' => $m, 'label' => "Dernière connexion : $l", 'days' => $days];
