@@ -20,16 +20,18 @@ class ClientAPIController extends Controller
         $tab = [];
 
         foreach ($app as $el) {
-            $label = 'déconnecté';
+            $label = 'Déconnecté';
             $actif = "<b style='cursor:pointer' class='badge badge-danger text-white'> <i class='fa fa-wifi'></i> DECONNECTE</b>";
 
             if ($el->last_login) {
                 $n = $el->last_login->diffInDays();
                 $l = $el->last_login->diffForHumans();
-                
+
                 $isco = isconnected($el->derniere_connexion);
+                $label .= " : $isco->label";
+
                 if ($isco->ok) {
-                    $label = 'connecté';
+                    $label = 'Connecté';
                     $actif =
                         "<b style='cursor:pointer' class='badge badge-success text-white'> <i class='fa fa-wifi'></i> CONNECTE</b>";
                 } else {

@@ -26,15 +26,17 @@ class DoctaAPIController extends Controller
         foreach ($t as $el) {
             $o = (object) $el->toArray();
             $o->derniere_connexion = $el->derniere_connexion?->format('d-m-Y H:i:s') ?? '-';
-            $label = 'déconnecté';
+            $label = 'Déconnecté';
             $actif = "<b style='cursor:pointer' class='badge badge-danger text-white'> <i class='fa fa-wifi'></i> DECONNECTE</b>";
 
             if ($el->derniere_connexion) {
                 $n = $el->derniere_connexion->diffInDays();
-                
+
                 $isco = isconnected($el->derniere_connexion);
+                $label .= " : $isco->label";
+
                 if ($isco->ok) {
-                    $label = 'connecté';
+                    $label = 'Connecté';
                     $actif =
                         "<b style='cursor:pointer' class='badge badge-success text-white'> <i class='fa fa-wifi'></i> CONNECTE</b>";
                 } else {
