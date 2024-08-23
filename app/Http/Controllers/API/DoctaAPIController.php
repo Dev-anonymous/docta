@@ -31,15 +31,15 @@ class DoctaAPIController extends Controller
 
             if ($el->derniere_connexion) {
                 $n = $el->derniere_connexion->diffInDays();
-                $l = $el->derniere_connexion->diffForHumans();
-
-                if (isconnected($el->derniere_connexion)) {
+                
+                $isco = isconnected($el->derniere_connexion);
+                if ($isco->ok) {
                     $label = 'connecté';
                     $actif =
                         "<b style='cursor:pointer' class='badge badge-success text-white'> <i class='fa fa-wifi'></i> CONNECTE</b>";
                 } else {
-                    if ($n <= 7) {
-                        $label = "Dernière connexion : $l";
+                    if ($isco->days >= 8) {
+                        $label = $isco->label;
                         $actif =
                             "<b style='cursor:pointer' class='badge badge-info'> <i class='fa fa-check-circle'></i> ACTIF</b>";
                     }
