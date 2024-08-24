@@ -73,8 +73,8 @@
                             <td>
                                  ${e.nom}
                             </td>
-                            <td title='${e.label}'>
-                                 ${e.last_login} ${e.actif}
+                            <td>
+                                 ${e.last_login??''} ${e.actif}
                             </td>
                             <td>
                                  ${e.date}

@@ -28,7 +28,6 @@ class ClientAPIController extends Controller
                 $l = $el->last_login->diffForHumans();
 
                 $isco = isconnected($el->last_login);
-                $label .= " : $isco->label";
 
                 if ($isco->ok) {
                     $label = 'Connecté';
@@ -41,6 +40,7 @@ class ClientAPIController extends Controller
                             "<b style='cursor:pointer' class='badge badge-info'> <i class='fa fa-check-circle'></i> ACTIF</b>";
                     }
                 }
+                $actif .= "<br><i>$isco->label</i>";
             }
 
             $o = (object) $el->toArray();
@@ -51,7 +51,6 @@ class ClientAPIController extends Controller
             $o->last_login = $el->last_login?->format('d-m-Y H:i:s');
             $o->date = $el->date?->format('d-m-Y H:i:s');
             $o->actif = $actif;
-            $o->label = $label;
             $tab[] = $o;
         }
 

@@ -297,5 +297,5 @@ function isconnected($last_login)
     $m = ((time()) - strtotime($last_login->format('Y-m-d H:i:s'))) / 60;
     $l = $last_login->diffForHumans();
     $days = $m / 1440;
-    return (object) ['ok' =>  $m <= 3, 'lastlogin' => $m, 'label' => "Dernière connexion : $l", 'days' => $days];
+    return (object) ['ok' =>  $m <= 3, 'lastlogin' => $m, 'label' => $l, 'days' => $days];
 }

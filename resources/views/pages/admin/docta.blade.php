@@ -288,7 +288,7 @@
                             <td>${i+1}</td>
                             <td>${e.name}</td>
                             <td>${e.email}<br>${e.phone}</td>
-                            <td title="${e.label}">${e.actif}</td>
+                            <td>${e.actif}</td>
                             <td>${e.derniere_connexion}</td>
                             <td>
                                 <div class='d-flex'>

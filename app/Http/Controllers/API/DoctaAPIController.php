@@ -33,7 +33,6 @@ class DoctaAPIController extends Controller
                 $n = $el->derniere_connexion->diffInDays();
 
                 $isco = isconnected($el->derniere_connexion);
-                $label .= " : $isco->label";
 
                 if ($isco->ok) {
                     $label = 'Connecté';
@@ -46,6 +45,7 @@ class DoctaAPIController extends Controller
                             "<b style='cursor:pointer' class='badge badge-info'> <i class='fa fa-check-circle'></i> ACTIF</b>";
                     }
                 }
+                $actif .= "<br><i>$isco->label</i>";
             }
             $o->label = $label;
             $o->actif = $actif;
