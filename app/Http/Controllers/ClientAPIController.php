@@ -44,7 +44,9 @@ class ClientAPIController extends Controller
             }
 
             $o = (object) $el->toArray();
-            $o->solde = "$ " . number_format($el->soldes()->first()->solde_usd, 2, '.', ' ');
+            $sold = $el->soldes()->first()->solde_usd;
+            $o->solde = "$ " . number_format($sold, 2, '.', ' ');
+            $o->solde_classe = $sold > 0 ? 'success' : 'secondary';
             $o->nom = $el->nom ?? '';
             $o->email = $el->email ?? '';
             $o->telephone = $el->telephone ?? '';
