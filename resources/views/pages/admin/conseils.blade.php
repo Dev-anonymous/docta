@@ -25,7 +25,7 @@
                                 <table table class="table table-striped table-hover table-condensed">
                                     <thead>
                                         <tr>
-                                            <th style="max-width: 20px"></th>
+                                            <th style="width: 10px"></th>
                                             <th></th>
                                             <th style="width: 100px !important"></th>
                                         </tr>

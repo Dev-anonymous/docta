@@ -23,7 +23,7 @@
                                 <table class="table table-striped table-bordered zero-configuration">
                                     <thead>
                                         <tr>
-                                            <th style="max-width: 20px"></th>
+                                            <th style="width: 10px"></th>
                                             <th>NOM</th>
                                             <th>EMAIL/TEL</th>
                                             <th>SUJET</th>

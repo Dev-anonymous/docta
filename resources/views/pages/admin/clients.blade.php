@@ -25,7 +25,7 @@
                                 <table tclient class="table table-striped table-bordered">
                                     <thead>
                                         <tr>
-                                            <th><span loader><i class="fa fa-spinner fa-spin"></i></span></th>
+                                            <th style="width: 10px"><span loader><i class="fa fa-spinner fa-spin"></i></span></th>
                                             <th>UID / DEVICE ID</th>
                                             <th>SOLDE</th>
                                             <th>EMAIL/TEL</th>

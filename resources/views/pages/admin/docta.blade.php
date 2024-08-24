@@ -28,7 +28,7 @@
                                 <table table class="table table-striped table-hover table-condensed">
                                     <thead>
                                         <tr>
-                                            <th><span loader><i class="fa fa-spinner fa-spin"></i></span></th>
+                                            <th style="width: 10px"><span loader><i class="fa fa-spinner fa-spin"></i></span></th>
                                             <th>NOM</th>
                                             <th>EMAIL/TEL</th>
                                             <th>STATUS</th>
