@@ -23,6 +23,7 @@
                                 <table class="table table-striped table-bordered zero-configuration">
                                     <thead>
                                         <tr>
+                                            <th style="max-width: 20px"></th>
                                             <th>NOM</th>
                                             <th>EMAIL/TEL</th>
                                             <th>SUJET</th>
@@ -31,8 +32,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($data as $el)
+                                        @foreach ($data as $k => $el)
                                             <tr>
+                                                <td>{{ $k + 1 }}</td>
                                                 <td>{{ $el->name }}</td>
                                                 <td>{{ $el->email }}</td>
                                                 <td>{{ $el->subject }}</td>

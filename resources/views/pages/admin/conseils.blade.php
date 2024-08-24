@@ -25,6 +25,7 @@
                                 <table table class="table table-striped table-hover table-condensed">
                                     <thead>
                                         <tr>
+                                            <th style="max-width: 20px"></th>
                                             <th></th>
                                             <th style="width: 100px !important"></th>
                                         </tr>
@@ -250,6 +251,7 @@
                     $.each(data, function(i, e) {
                         str += `
                         <tr>
+                            <td>${i+1}</td>
                             <td>${e.conseil}</td>
                             <td>
                                 <div class='d-flex'>
