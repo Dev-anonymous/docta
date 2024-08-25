@@ -89,7 +89,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="">Message</label>
-                                <textarea name="pushmessage" id="" rows="3" class="form-control"></textarea>
+                                <textarea name="pushmessage" id="" rows="10" class="form-control"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
