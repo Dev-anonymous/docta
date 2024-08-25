@@ -461,6 +461,8 @@
                             confidentialité.
                         </h5>
                         <br>
+                        <h5 class="text-danger">Docta vous offre un message gratuit.</h5>
+                        <br>
                         <h5>Pour recharger votre compte, cliquez sur le solde.</h5>
                     </div>
                     <button type="button" class="btn btn-outline-dark my-2" data-bs-dismiss="modal">
