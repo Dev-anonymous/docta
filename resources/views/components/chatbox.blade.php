@@ -628,13 +628,20 @@
             var solde = Number(spa.attr('solde'));
             var facsms = Number(spa.attr('sms'));
 
-            if ((solde == 0 && facsms > 0)) {
-                var sp = $('[error]');
-                sp.stop().html("Veuillez recharger votre solde SVP.");
-                setTimeout(() => {
-                    sp.html('');
-                }, 2000);
-                return false;
+            var localmsg = getMsg();
+            localmsg = localmsg.filter(function(mes) {
+                return mes.fromuser == 0;
+            });
+            var n = localmsg.length;
+            if (n > 0) {
+                if ((solde == 0 && facsms > 0)) {
+                    var sp = $('[error]');
+                    sp.stop().html("Veuillez recharger votre solde SVP.");
+                    setTimeout(() => {
+                        sp.html('');
+                    }, 2000);
+                    return false;
+                }
             }
 
             var date = moment().utcOffset('+0200').format('YYYY-MM-DD h:mm:ss');
@@ -1189,7 +1196,6 @@
                         }
                     })
                     .catch((err) => {
-                        console.log(err);
                         alert("Veuillez autoriser l'accès à votre micro pour envoyer un message audio.")
                     });
             });
@@ -1339,8 +1345,7 @@
         function welcome() {
             var mdl = $('#mdl-welcome');
             var ok = Number(localStorage.getItem('docta_ios_welcome'));
-            if (ok < 3) {
-                console.log(ok);
+            if (ok < 2) {
                 mdl.modal('show');
             }
 

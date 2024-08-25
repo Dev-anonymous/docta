@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\App;
 use App\Models\Appversion;
+use App\Models\Pushnotification;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class AppVersionAPIController extends Controller
@@ -47,11 +51,36 @@ class AppVersionAPIController extends Controller
         $data['requiredadmin'] = request()->has('requiredadmin');
         $data['requiredclient'] = request()->has('requiredclient');
 
+        $adminv = $data['versionadmin'];
+        $clientv = $data['versionclient'];
+
+        DB::beginTransaction();
         if (!$appversion) {
             Appversion::create($data);
         } else {
+            if ($adminv != $appversion->versionadmin) {
+                foreach (User::where('user_role', 'docta')->get() as $user) {
+                    $title = "Docta-Admin V$adminv";
+                    $message = "Une nouvelle mise à jour est disponible! ouvrez l'application pour la mettre à jour.";
+                    $pushno = json_encode(['to' => ['user', $user->id], 'title' => $title, 'message' => $message]);
+                    Pushnotification::create([
+                        'data' => $pushno
+                    ]);
+                }
+            }
+            if ($clientv != $appversion->versionclient) {
+                foreach (App::all() as $app) {
+                    $title = "Docta V$clientv";
+                    $message = "Une nouvelle mise à jour est disponible! ouvrez l'application pour la mettre à jour.";
+                    $pushno = json_encode(['to' => ['app', $app->id], 'title' => $title, 'message' => $message]);
+                    Pushnotification::create([
+                        'data' => $pushno
+                    ]);
+                }
+            }
             $appversion->update($data);
         }
+        DB::commit();
         return response()->json([
             'success' => true,
             'message' => "Données mises à jour.",

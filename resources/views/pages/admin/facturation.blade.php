@@ -59,7 +59,7 @@
                             aria-hidden="true">X</span>
                     </button>
                 </div>
-                <form id="fedit">
+                <form id="fedit" class="was-validated">
                     <input type="hidden" name="id" value="{{ $data->id }}">
                     <div class="modal-body">
                         <div class="form-group">
@@ -71,6 +71,26 @@
                             <label for="recipient-name" class="col-form-label">SMS : Prix par message</label>
                             <input type="number" min="0" step="0.001" value="{{ $data->sms }}"
                                 class="form-control" name="sms" required>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="sendpush" checked
+                                    id="flexCheckDefault233">
+                                <label class="form-check-label text-dark" for="flexCheckDefault233">
+                                    Envoyer une push notification aux clients
+                                </label>
+                            </div>
+                        </div>
+                        <div class="pushdiv">
+                            <h3>Push notification</h3>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Titre</label>
+                                <input class="form-control" value="Nouvelle tarification Docta" name="pushtitle">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Message</label>
+                                <textarea name="pushmessage" id="" rows="3" class="form-control"></textarea>
+                            </div>
                         </div>
                         <div class="form-group">
                             <div id="rep"></div>
@@ -129,6 +149,55 @@
                     $(':input', form).attr('disabled', false);
                 })
             });
+
+            var sendpush = $('[name=sendpush]');
+            var appel = $('[name=appel]');
+            var sms = $('[name=sms]');
+            var pushmessage = $('[name=pushmessage]');
+
+            var div = $('.pushdiv');
+
+            function toggle() {
+                if (sendpush.is(':checked')) {
+                    div.stop().slideDown();
+                    $('[name=pushtitle]').attr('required', true);
+                    $('[name=pushmessage]').attr('required', true);
+                } else {
+                    div.stop().slideUp();
+                    $('[name=pushtitle]').attr('required', false);
+                    $('[name=pushmessage]').attr('required', false);
+                }
+            }
+            sendpush.change(function() {
+                toggle();
+            })
+            toggle();
+
+            var template =
+                "Vous pouvez désormais discuter avec un médecin grâce à la nouvelle tarification : \nTMESSAGETAPPEL";
+
+            function mess() {
+                var fappel = Number(appel.val()) ?? 0;
+                var fsms = Number(sms.val()) ?? 0;
+                var m = template.split('TMESSAGE').join(`Message : ${fsms} USD/SMS`);
+                if (fappel > 0) {
+                    m = m.split('TAPPEL').join(`\nAppel : ${fappel} USD/Sec`);
+                } else {
+                    m = m.split('TAPPEL').join('');
+                }
+
+                m += "\n\nDocta Ton ami médecin"
+                pushmessage.val(m);
+            }
+
+            mess();
+
+            sms.change(function() {
+                mess();
+            });
+            appel.change(function() {
+                mess();
+            })
 
         })
     </script>
