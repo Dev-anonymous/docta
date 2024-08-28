@@ -36,7 +36,7 @@ class SystemMiddleware
                 $el->soldes()->create(['solde_usd' => 0]);
             }
         }
-        
+        assignchat();
         completeTrans();
         Artisan::call('sendpush');
         return $next($request);
