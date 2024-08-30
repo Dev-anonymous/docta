@@ -69,7 +69,7 @@
                                             <div class="datetime"
                                                 style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; border-radius: 10px;">
                                                 <i class="fa fa-calendar"></i>&nbsp;
-                                                <span></span> <i class="fa fa-caret-down"></i>
+                                                <span downloaddate></span> <i class="fa fa-caret-down"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -82,8 +82,15 @@
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-body pb-0 d-flex justify-content-between">
-                                    <div>
+                                    <div class="d-flex justify-content-between">
                                         <h4 class="mb-1">Statistique de visites</h4>
+                                        <div class="ml-2">
+                                            <div class="datetime"
+                                                style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; border-radius: 10px;">
+                                                <i class="fa fa-calendar"></i>&nbsp;
+                                                <span visitedate></span> <i class="fa fa-caret-down"></i>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -111,7 +118,6 @@
 @endsection
 @section('js-code')
     <script src="{{ asset('js/apexchart.js') }}"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
@@ -136,7 +142,7 @@
             $('.datetime').daterangepicker({
                 startDate: start,
                 endDate: end,
-                maxDate: '{{ now()->format('F d, Y') }}',
+                // maxDate: '{{ now()->format('F d, Y') }}',
                 ranges: {
                     'Today': [moment(), moment()],
                     'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -147,7 +153,7 @@
                         'month').endOf('month')]
                 }
             }, cb);
-            console.log('{{ now()->format('F d, Y') }}');
+
             cb(start, end);
 
             var options0 = {
@@ -255,6 +261,10 @@
             function stat() {
                 $.ajax({
                     url: '{{ route('stat.index') }}',
+                    data: {
+                        'downloaddate': $('[downloaddate]').html(),
+                        'visitedate': $('[visitedate]').html(),
+                    },
                     success: function(r) {
                         $('[clients]').html(r.clients);
                         $('[clientactifs]').html(r.clientactifs);
