@@ -63,8 +63,15 @@
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-body pb-0 d-flex justify-content-between">
-                                    <div>
+                                    <div class="d-flex justify-content-between">
                                         <h4 class="mb-1">Statistique de téléchargements</h4>
+                                        <div class="ml-2 d-flex justify-content-end">
+                                            <div class="datetime"
+                                                style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; border-radius: 10px;">
+                                                <i class="fa fa-calendar"></i>&nbsp;
+                                                <span></span> <i class="fa fa-caret-down"></i>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -104,9 +111,44 @@
 @endsection
 @section('js-code')
     <script src="{{ asset('js/apexchart.js') }}"></script>
-
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <script>
         $(function() {
+
+            // $('.datetime').daterangepicker({
+            //     startDate: moment().startOf('hour'),
+            //     endDate: moment().startOf('hour').add(32, 'hour'),
+            //     locale: {
+            //         format: 'M/DD hh:mm A'
+            //     }
+            // });
+
+            var start = moment().subtract(29, 'days');
+            var end = moment();
+
+            function cb(start, end) {
+                $('.datetime span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+            }
+
+            $('.datetime').daterangepicker({
+                startDate: start,
+                endDate: end,
+                ranges: {
+                    'Today': [moment(), moment()],
+                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,
+                        'month').endOf('month')]
+                }
+            }, cb);
+
+            cb(start, end);
+
             var options0 = {
                 series: [{
                     name: "Téléchargements",

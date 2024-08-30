@@ -271,9 +271,10 @@
                              </div>
                              <div class="alert alert-warning">
                                  <b class="text-danger">
-                                     <i class="fa fa-exclamation-triangle "></i> Le message que vous envoyez via ce
-                                     formulaire N'EST TRANSFER&Eacute; A AUCUN DOCTEUR, si vous souhaitez vous adressez directement à un docteur,
-                                     CLIQUEZ SUR LE BOUTON <span class="text-info">BLUE</span> EN BAS DE LA PAGE.
+                                     <i class="fa fa-exclamation-triangle "></i>
+                                     Le message que vous envoyez via ce formulaire N'EST TRANSFÉRÉ À AUCUN DOCTEUR mais
+                                     plutôt à l'entreprise, si vous souhaitez vous adresser à un docteur, Cliquez sur
+                                     l'icône message en <span class="text-info">BLUE</span> en bas de la page.
                                  </b>
                              </div>
                              <div class="text-center"><button type="submit"><span></span> Envoyer</button></div>
