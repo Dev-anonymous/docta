@@ -23,12 +23,16 @@ class VisiteMIddleWare
         $date = now('Africa/Lubumbashi');
         $url = request()->path();
 
-        $ex = Visite::where(['ip' => $ip, 'url' => $url])->first();
-        if ($ex) {
-            $ex->increment('nb');
-            $ex->update(['date' => $date]);
-        } else {
-            Visite::create(['ip' => $ip, 'nb' => 1, 'useragent' => $usera, 'url' => $url, 'date' => $date]);
+        $ua = strtolower($usera);
+
+        if (!(strpos($ua, 'www.facebook.com') !== false or strpos($ua, 'googlebot') !== false)) {
+            $ex = Visite::where(['ip' => $ip, 'url' => $url])->first();
+            if ($ex) {
+                $ex->increment('nb');
+                $ex->update(['date' => $date]);
+            } else {
+                Visite::create(['ip' => $ip, 'nb' => 1, 'useragent' => $usera, 'url' => $url, 'date' => $date]);
+            }
         }
         return $next($request);
     }
