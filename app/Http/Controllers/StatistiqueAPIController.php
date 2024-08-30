@@ -26,16 +26,30 @@ class StatistiqueAPIController extends Controller
         $telechargement = [];
 
         foreach (range(1, 12) as $m) {
-            $visites[] = (int)  Visite::whereMonth('date', $m)->sum('nb');
-            $telechargement[] = (int)  Download::whereMonth('date', $m)->sum('nb');
+            $visites[] =   Visite::whereMonth('date', $m)->sum('nb');
+            $telechargement[] =   Download::whereMonth('date', $m)->sum('nb');
         }
+
+        $visitejournaliere =  Visite::whereDate('date', now())->sum('nb');
+        $visitehier =  Visite::whereDate('date', now()->subDay())->sum('nb');
+        $visitehebdomadaire =  Visite::whereDate('date', '>=', date('Y-m-d', strtotime('monday this week')))->whereDate('date', '<=', date('Y-m-d', strtotime('sunday this week')))->sum('nb');
+
+        $telechargementjournaliere =  Download::whereDate('date', now())->sum('nb');
+        $telechargementhier =  Download::whereDate('date', now()->subDay())->sum('nb');
+        $telechargementhebdomadaire =  Download::whereDate('date', '>=', date('Y-m-d', strtotime('monday this week')))->whereDate('date', '<=', date('Y-m-d', strtotime('sunday this week')))->sum('nb');
 
         return response([
             'docta' => $docta,
             'clients' => $clients,
             'clientactifs' => $clientactifs,
             'visites' => $visites,
+            'visitehier' => $visitehier,
+            'visitejournaliere' => $visitejournaliere,
+            'visitehebdomadaire' => $visitehebdomadaire,
             'telechargement' => $telechargement,
+            'telechargementhier' => $telechargementhier,
+            'telechargementjournaliere' => $telechargementjournaliere,
+            'telechargementhebdomadaire' => $telechargementhebdomadaire,
         ]);
     }
 

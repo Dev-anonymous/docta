@@ -65,47 +65,69 @@
                                 <div class="card-body pb-0">
                                     <div class="d-flex justify-content-between">
                                         <h4 class="mb-1">Statistique de téléchargements</h4>
-                                        <div class="ml-2">
-                                            <div class="datetime"
-                                                style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; border-radius: 10px;">
-                                                <i class="fa fa-calendar"></i>&nbsp;
-                                                <span downloaddate></span> <i class="fa fa-caret-down"></i>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body pb-0 pt-0">
                                     <div id="chart0"></div>
+                                </div>
+                                <div class="card-footer">
+                                    <h4>Statistiques</h4>
+                                    <p class="font-weight-bold m-0">
+                                        <i class="fa fa-check-circle"></i> Téléchargements journalièrs :
+                                        <span class="badge badge-success badge-pill font-weight-bold text-white"
+                                            style="font-size: 13px" telechargementjournaliere></span>
+                                    </p>
+                                    <p class="font-weight-bold m-0">
+                                        <i class="fa fa-check-circle"></i> Téléchargements d'hier :
+                                        <span class="badge badge-danger badge-pill font-weight-bold" style="font-size: 13px"
+                                            telechargementhier></span>
+                                    </p>
+                                    <p class="font-weight-bold m-0">
+                                        <i class="fa fa-check-circle"></i> Téléchargements hebdomadaires :
+                                        <span class="badge badge-info badge-pill font-weight-bold" style="font-size: 13px"
+                                            telechargementhebdomadaire></span>
+                                    </p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="card">
-                                <div class="card-body pb-0 d-flex justify-content-between">
+                                <div class="card-body pb-0">
                                     <div class="d-flex justify-content-between">
                                         <h4 class="mb-1">Statistique de visites</h4>
-                                        <div class="ml-2">
-                                            <div class="datetime"
-                                                style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; border-radius: 10px;">
-                                                <i class="fa fa-calendar"></i>&nbsp;
-                                                <span visitedate></span> <i class="fa fa-caret-down"></i>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body pb-0 pt-0">
                                     <div id="chart1"></div>
+                                </div>
+                                <div class="card-footer">
+                                    <h4>Statistiques</h4>
+                                    <p class="font-weight-bold m-0">
+                                        <i class="fa fa-check-circle"></i> Visites journalières :
+                                        <span class="badge badge-success badge-pill font-weight-bold text-white"
+                                            style="font-size: 13px" visitejournaliere></span>
+                                    </p>
+                                    <p class="font-weight-bold m-0">
+                                        <i class="fa fa-check-circle"></i> Visites d'hier :
+                                        <span class="badge badge-danger badge-pill font-weight-bold" style="font-size: 13px"
+                                            visitehier></span>
+                                    </p>
+                                    <p class="font-weight-bold m-0">
+                                        <i class="fa fa-check-circle"></i> Visites hebdomadaires :
+                                        <span class="badge badge-info badge-pill font-weight-bold" style="font-size: 13px"
+                                            visitehebdomadaire></span>
+                                    </p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="card">
-                                <div class="card-body pb-0 d-flex justify-content-between">
+                                <div class="card-body pb-0">
                                     <div>
                                         <h4 class="mb-1">Statistique des appels</h4>
                                     </div>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body pb-0 pt-0">
                                     <div id="chart2"></div>
                                 </div>
                             </div>
@@ -118,44 +140,8 @@
 @endsection
 @section('js-code')
     <script src="{{ asset('js/apexchart.js') }}"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <script>
         $(function() {
-
-            // $('.datetime').daterangepicker({
-            //     startDate: moment().startOf('hour'),
-            //     endDate: moment().startOf('hour').add(32, 'hour'),
-            //     locale: {
-            //         format: 'M/DD hh:mm A'
-            //     }
-            // });
-
-            var start = moment().subtract(29, 'days');
-            var end = moment();
-
-            function cb(start, end) {
-                $('.datetime span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-            }
-
-            $('.datetime').daterangepicker({
-                startDate: start,
-                endDate: end,
-                // maxDate: '{{ now()->format('F d, Y') }}',
-                ranges: {
-                    'Today': [moment(), moment()],
-                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                    'This Month': [moment().startOf('month'), moment().endOf('month')],
-                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,
-                        'month').endOf('month')]
-                }
-            }, cb);
-
-            cb(start, end);
-
             var options0 = {
                 series: [{
                     name: "Téléchargements",
@@ -269,6 +255,13 @@
                         $('[clients]').html(r.clients);
                         $('[clientactifs]').html(r.clientactifs);
                         $('[docta]').html(r.docta);
+
+                        $('[visitejournaliere]').html(r.visitejournaliere);
+                        $('[visitehier]').html(r.visitehier);
+                        $('[visitehebdomadaire]').html(r.visitehebdomadaire);
+                        $('[telechargementjournaliere]').html(r.telechargementjournaliere);
+                        $('[telechargementhier]').html(r.telechargementhier);
+                        $('[telechargementhebdomadaire]').html(r.telechargementhebdomadaire);
 
                         chart0.updateSeries([{
                             data: r.telechargement,
