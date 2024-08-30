@@ -274,7 +274,7 @@
                                      <i class="fa fa-exclamation-triangle "></i>
                                      Le message que vous envoyez via ce formulaire N'EST TRANSFÉRÉ À AUCUN DOCTEUR mais
                                      plutôt à l'entreprise, si vous souhaitez vous adresser à un docteur, Cliquez sur
-                                     l'icône message en <span class="text-info">BLUE</span> en bas de la page.
+                                     l'icône message en <span class="text-info">BLEU</span> en bas de la page.
                                  </b>
                              </div>
                              <div class="text-center"><button type="submit"><span></span> Envoyer</button></div>

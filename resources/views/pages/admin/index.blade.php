@@ -62,10 +62,10 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="card">
-                                <div class="card-body pb-0 d-flex justify-content-between">
+                                <div class="card-body pb-0">
                                     <div class="d-flex justify-content-between">
                                         <h4 class="mb-1">Statistique de téléchargements</h4>
-                                        <div class="ml-2 d-flex justify-content-end">
+                                        <div class="ml-2">
                                             <div class="datetime"
                                                 style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; border-radius: 10px;">
                                                 <i class="fa fa-calendar"></i>&nbsp;
@@ -136,6 +136,7 @@
             $('.datetime').daterangepicker({
                 startDate: start,
                 endDate: end,
+                maxDate: '{{ now()->format('F d, Y') }}',
                 ranges: {
                     'Today': [moment(), moment()],
                     'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -146,7 +147,7 @@
                         'month').endOf('month')]
                 }
             }, cb);
-
+            console.log('{{ now()->format('F d, Y') }}');
             cb(start, end);
 
             var options0 = {
