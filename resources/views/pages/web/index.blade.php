@@ -269,6 +269,13 @@
                              <div class="my-3">
                                  <div id="rep" class="loading"></div>
                              </div>
+                             <div class="alert alert-warning">
+                                 <b class="text-danger">
+                                     <i class="fa fa-exclamation-triangle "></i> Le message que vous envoyez via ce
+                                     formulaire N'EST TRANSFER&Eacute; A AUCUN DOCTEUR, si vous souhaitez vous adressez directement à un docteur,
+                                     CLIQUEZ SUR LE BOUTON <span class="text-info">BLUE</span> EN BAS DE LA PAGE.
+                                 </b>
+                             </div>
                              <div class="text-center"><button type="submit"><span></span> Envoyer</button></div>
                          </form>
 
