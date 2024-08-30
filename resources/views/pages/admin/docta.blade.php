@@ -28,10 +28,10 @@
                                 <table table class="table table-striped table-hover table-condensed">
                                     <thead>
                                         <tr>
-                                            <th style="width: 10px"><span loader><i class="fa fa-spinner fa-spin"></i></span></th>
+                                            <th><span loader><i class="fa fa-spinner fa-spin"></i></span></th>
                                             <th>NOM</th>
                                             <th>EMAIL/TEL</th>
-                                            <th>STATUS</th>
+                                            <th>MESSAGE</th>
                                             <th>DERNIERE CONNEXION</th>
                                             <th></th>
                                         </tr>
@@ -285,11 +285,14 @@
                     $.each(data, function(i, e) {
                         str += `
                         <tr>
-                            <td>${i+1}</td>
+                            <td style="width: 10px">${i+1}</td>
                             <td>${e.name}</td>
                             <td>${e.email}<br>${e.phone}</td>
-                            <td>${e.actif}</td>
-                            <td>${e.derniere_connexion}</td>
+                            <td>
+                                <b>Chats : <span class='badge badge-dark badge-pill'>${e.conversation}</span></b></br>
+                                <b>Messages : <span class='badge badge-dark badge-pill'>${e.message}</span></b>
+                            </td>
+                            <td>${e.derniere_connexion} ${e.actif}</td>
                             <td>
                                 <div class='d-flex'>
                                     <button user="${escape(e.name)}" value='${e.id}' class='bdel btn btn-outline-danger btn-sm m-1'><i class='fa fa-trash'></i></button>
