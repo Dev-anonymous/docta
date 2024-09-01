@@ -262,8 +262,8 @@
             <div syncdiv class="progress w-100" style="display:none">
                 <div syncbar class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"></div>
             </div>
-            <div class="d-flex justify-content-center">
-                <span error class="text-danger" style="font-size: 10px"></span>
+            <div class="d-flex justify-content-center p-3">
+                <b error class="text-danger" style="font-size: 10px"></b>
             </div>
         </div>
         <div class="d-flex justify-content-end ">
@@ -282,7 +282,7 @@
                     <label for="file"><i class="btn btn-outline-dark fa fa-image"></i></label>
                 </div>
                 <div style="margin-right: 5px; margin-left: 5px">
-                    <i class="btn btn-outline-info fa fa-microphone startrec"></i>
+                    <button type="button" class="btn btn-outline-info fa fa-microphone startrec"></button>
                 </div>
                 <div style="margin-right: 5px; display: none">
                     <i class="btn btn-outline-danger fa fa-times-circle cancelrec"></i>
@@ -332,7 +332,7 @@
                     <hr>
                     <h4>Crédit</h4>
                     <h6>Solde : <b s-solde></b></h6>
-                    <button class="btn btn-outline-info btn-sm mt-3" btnrech type="button">
+                    <button class="btn btn-info btn-sm mt-3" btnrech type="button">
                         Recharger
                     </button>
                     <hr>
@@ -541,6 +541,9 @@
         }
 
         $('#file').change(async function() {
+            if (!canmessage()) {
+                return false;
+            }
             lockbtn(true);
             try {
                 var field = $(this);
@@ -610,6 +613,30 @@
             return sendMessage();
         })
 
+        function canmessage(showmessage = false) {
+            var localmsg = getMsg();
+            localmsg = localmsg.filter(function(mes) {
+                return mes.fromuser == 0;
+            });
+            var n = localmsg.length;
+
+            var spa = $('[solde]');
+            var solde = Number(spa.attr('solde'));
+            var facsms = Number(spa.attr('sms'));
+
+            if (n > 0) {
+                if ((solde == 0 && facsms > 0)) {
+                    var sp = $('[error]');
+                    sp.stop().html("Veuillez recharger votre crédit SVP. Cliquer sur la zone crédit en gris foncé en haut.");
+                    setTimeout(() => {
+                        sp.html('');
+                    }, 10000);
+                    return false;
+                }
+            }
+            return true;
+        }
+
         function sendMessage() {
             var msg = ta.val().trim();
             var d = btn_send.attr('disabled');
@@ -626,24 +653,8 @@
                 return false;
             }
 
-            var spa = $('[solde]');
-            var solde = Number(spa.attr('solde'));
-            var facsms = Number(spa.attr('sms'));
-
-            var localmsg = getMsg();
-            localmsg = localmsg.filter(function(mes) {
-                return mes.fromuser == 0;
-            });
-            var n = localmsg.length;
-            if (n > 0) {
-                if ((solde == 0 && facsms > 0)) {
-                    var sp = $('[error]');
-                    sp.stop().html("Veuillez recharger votre solde SVP.");
-                    setTimeout(() => {
-                        sp.html('');
-                    }, 2000);
-                    return false;
-                }
+            if (!canmessage()) {
+                return false;
             }
 
             var date = moment().utcOffset('+0200').format('YYYY-MM-DD h:mm:ss');
@@ -1187,6 +1198,9 @@
             }
 
             startButton.click(function() {
+                if (!canmessage()) {
+                    return false;
+                }
                 navigator.mediaDevices
                     .getUserMedia({
                         audio: true
