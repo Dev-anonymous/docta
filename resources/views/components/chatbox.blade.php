@@ -627,7 +627,7 @@
             if (n > 0) {
                 if ((solde == 0 && facsms > 0)) {
                     var sp = $('[error]');
-                    sp.stop().html("Veuillez recharger votre crédit SVP. Cliquer sur la zone crédit en gris foncé en haut.");
+                    sp.stop().html("Veuillez recharger votre crédit SVP. Cliquez sur la zone crédit en gris foncé en haut.");
                     setTimeout(() => {
                         sp.html('');
                     }, 10000);
