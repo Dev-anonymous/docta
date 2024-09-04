@@ -79,6 +79,7 @@ class StatistiqueAPIController extends Controller
             'telechargementhier' => $telechargementhier,
             'telechargementjournaliere' => $telechargementjournaliere,
             'telechargementhebdomadaire' => $telechargementhebdomadaire,
+            'messages' => $messages,
             'messagehier' => $messagehier,
             'messagejournaliere' => $messagejournaliere,
             'messagehebdomadaire' => $messagehebdomadaire,
