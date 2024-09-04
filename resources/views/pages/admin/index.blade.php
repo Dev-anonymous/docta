@@ -339,11 +339,11 @@
                         $('[messagejournaliere]').html(r.messagejournaliere);
                         $('[messagehier]').html(r.messagehier);
                         $('[messagehebdomadaire]').html(r.messagehebdomadaire);
-                        var docta = r.docta;
-                        if (docta.length == 0) {
+                        var doctaname = r.doctaname;
+                        if (doctaname.length == 0) {
                             $('[doctaname]').html('');
                         } else {
-                            $('[doctaname]').html('du Docteur ' + docta);
+                            $('[doctaname]').html('du Docteur ' + doctaname);
                         }
 
                         chart0.updateSeries([{
@@ -351,7 +351,10 @@
                         }]);
                         chart1.updateSeries([{
                             data: r.visites,
-                        }])
+                        }]);
+                        chart3.updateSeries([{
+                            data: r.messages,
+                        }]);
 
                     }
                 }).always(function() {

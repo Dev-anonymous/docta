@@ -28,6 +28,7 @@ class StatistiqueAPIController extends Controller
 
         $visites = [];
         $telechargement = [];
+        $messages = [];
 
         foreach (range(1, 12) as $m) {
             $visites[] =   Visite::whereMonth('date', $m)->sum('nb');
@@ -46,18 +47,25 @@ class StatistiqueAPIController extends Controller
         $messagehier =  Message::whereDate('date', now()->subDay());
         $messagehebdomadaire =  Message::whereDate('date', '>=', date('Y-m-d', strtotime('monday this week')))->whereDate('date', '<=', date('Y-m-d', strtotime('sunday this week')));
 
-        $docta = '';
+        $doctaname = '';
         if ($docta_id) {
             $messagejournaliere = $messagejournaliere->whereIn('chat_id', Chat::where('users_id', $docta_id)->pluck('id')->all());
             $messagehier = $messagehier->whereIn('chat_id', Chat::where('users_id', $docta_id)->pluck('id')->all());
             $messagehebdomadaire = $messagehebdomadaire->whereIn('chat_id', Chat::where('users_id', $docta_id)->pluck('id')->all());
-            $docta = @User::find($docta_id)->name;
-            $docta = ucwords(($docta));
+            $doctaname = @User::find($docta_id)->name;
+            $doctaname = ucwords(($doctaname));
+
+            foreach (range(1, 12) as $m) {
+                $messages[] =   Message::whereMonth('date', $m)->whereIn('chat_id', Chat::where('users_id', $docta_id)->pluck('id')->all())->count();
+            }
+        } else {
+            foreach (range(1, 12) as $m) {
+                $messages[] =   Message::whereMonth('date', $m)->count();
+            }
         }
         $messagejournaliere = $messagejournaliere->count();
         $messagehier = $messagehier->count();
         $messagehebdomadaire = $messagehebdomadaire->count();
-
 
         return response([
             'docta' => $docta,
@@ -74,7 +82,7 @@ class StatistiqueAPIController extends Controller
             'messagehier' => $messagehier,
             'messagejournaliere' => $messagejournaliere,
             'messagehebdomadaire' => $messagehebdomadaire,
-            'docta' => $docta,
+            'doctaname' => $doctaname,
         ]);
     }
 
