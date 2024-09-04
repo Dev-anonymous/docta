@@ -18,7 +18,8 @@ class AdminController extends Controller
 {
     public function index()
     {
-        return view('pages.admin.index');
+        $docta = User::where('user_role', 'docta')->orderBy('name')->get();
+        return view('pages.admin.index', compact('docta'));
     }
 
     public function clients()

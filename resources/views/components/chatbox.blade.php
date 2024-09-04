@@ -481,7 +481,7 @@
 <script>
     new WOW().init();
 
-    function iOS() {
+    function isIOS() {
         return [
                 'iPad Simulator',
                 'iPhone Simulator',
@@ -492,6 +492,12 @@
             ].includes(navigator.platform) ||
             (navigator.userAgent.includes("Mac") && "ontouchend" in document)
     }
+
+    function isAndroid() {
+        var isAndroid = /(android)/i.test(navigator.userAgent);
+        return isAndroid;
+    }
+
     $(function() {
         $("[data-toggle='tooltip']").tooltip();
     })
@@ -627,7 +633,8 @@
             if (n > 0) {
                 if ((solde == 0 && facsms > 0)) {
                     var sp = $('[error]');
-                    sp.stop().html("Veuillez recharger votre crédit SVP. Cliquez sur la zone crédit en gris foncé en haut.");
+                    sp.stop().html(
+                        "Veuillez recharger votre crédit SVP. Cliquez sur la zone crédit en gris foncé en haut.");
                     setTimeout(() => {
                         sp.html('');
                     }, 10000);
@@ -1283,77 +1290,6 @@
 
                 startButton.click();
             }
-            // navigator.mediaDevices.getUserMedia({
-            //         audio: true
-            //     })
-            //     .then(stream => {
-            //         audioRecorder = new MediaRecorder(stream);
-            //         audioRecorder.addEventListener('dataavailable', e => {
-            //             audioChunks.push(e.data);
-            //             let reader = new FileReader()
-            //             reader.onloadend = () => {
-            //                 if (sendfi) {
-            //                     var file = reader.result;
-
-            //                     var date = moment().utcOffset('+0200').format('YYYY-MM-DD h:mm:ss');
-            //                     var tt = Date.now();
-            //                     var rnd = `${Math.random()}`.split('0.').join('');
-            //                     var id = `${tt}-${rnd}`;
-            //                     var mess = {
-            //                         id: id,
-            //                         message: `Audio(${audiotime.html()})`,
-            //                         file: file,
-            //                         date: date,
-            //                         sent: 0,
-            //                         fromuser: 0,
-            //                     };
-            //                     setMsg(mess);
-            //                     restoreMsg();
-            //                     sendlocalmsg();
-            //                     audiotime.html('')
-            //                 }
-            //             }
-            //             reader.readAsDataURL(e.data);
-            //         });
-
-            //         startButton[0].addEventListener('click', () => {
-            //             sendfi = true;
-            //             if (isrec) {
-            //                 audioRecorder.stop();
-            //                 isrec = false;
-            //                 startButton.addClass('fa-microphone btn-outline-info').removeClass(
-            //                     'fa-stop btn-outline-success');
-            //                 totalSeconds = 0;
-            //                 clearInterval(intervalfunc);
-
-            //             } else {
-            //                 isrec = true;
-            //                 audioChunks = [];
-            //                 audioRecorder.start();
-            //                 startButton.removeClass('fa-microphone btn-outline-info').addClass(
-            //                     'fa-stop btn-outline-success');
-
-            //                 totalSeconds = 0;
-            //                 clearInterval(intervalfunc);
-            //                 intervalfunc = setInterval(setTime, 1000);
-
-            //             }
-            //             cancelButton.closest('div').toggle();
-            //         });
-
-            //         cancelButton[0].addEventListener('click', () => {
-            //             sendfi = false;
-            //             startButton.addClass('fa-microphone btn-outline-info').removeClass(
-            //                 'fa-stop btn-outline-success');
-            //             audioRecorder.stop();
-            //             cancelButton.closest('div').toggle();
-            //         });
-            //     }).catch(err => {
-            //         console.log('Error: ' + err);
-            //     });
-
-
-
         }
 
         initAudio();

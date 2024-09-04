@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\App;
+use App\Models\Chat;
 use App\Models\Download;
+use App\Models\Message;
 use App\Models\User;
 use App\Models\Visite;
 use Illuminate\Http\Request;
@@ -22,6 +24,8 @@ class StatistiqueAPIController extends Controller
         $min_date = now('Africa/Lubumbashi')->subDays(8)->format("Y-m-d H:i:s");
         $clientactifs = App::whereDate('last_login', '>=', $min_date)->count();
 
+        $docta_id = request('docta_id');
+
         $visites = [];
         $telechargement = [];
 
@@ -38,6 +42,23 @@ class StatistiqueAPIController extends Controller
         $telechargementhier =  Download::whereDate('date', now()->subDay())->sum('nb');
         $telechargementhebdomadaire =  Download::whereDate('date', '>=', date('Y-m-d', strtotime('monday this week')))->whereDate('date', '<=', date('Y-m-d', strtotime('sunday this week')))->sum('nb');
 
+        $messagejournaliere =  Message::whereDate('date', now());
+        $messagehier =  Message::whereDate('date', now()->subDay());
+        $messagehebdomadaire =  Message::whereDate('date', '>=', date('Y-m-d', strtotime('monday this week')))->whereDate('date', '<=', date('Y-m-d', strtotime('sunday this week')));
+
+        $docta = '';
+        if ($docta_id) {
+            $messagejournaliere = $messagejournaliere->whereIn('chat_id', Chat::where('users_id', $docta_id)->pluck('id')->all());
+            $messagehier = $messagehier->whereIn('chat_id', Chat::where('users_id', $docta_id)->pluck('id')->all());
+            $messagehebdomadaire = $messagehebdomadaire->whereIn('chat_id', Chat::where('users_id', $docta_id)->pluck('id')->all());
+            $docta = @User::find($docta_id)->name;
+            $docta = ucwords(($docta));
+        }
+        $messagejournaliere = $messagejournaliere->count();
+        $messagehier = $messagehier->count();
+        $messagehebdomadaire = $messagehebdomadaire->count();
+
+
         return response([
             'docta' => $docta,
             'clients' => $clients,
@@ -50,6 +71,10 @@ class StatistiqueAPIController extends Controller
             'telechargementhier' => $telechargementhier,
             'telechargementjournaliere' => $telechargementjournaliere,
             'telechargementhebdomadaire' => $telechargementhebdomadaire,
+            'messagehier' => $messagehier,
+            'messagejournaliere' => $messagejournaliere,
+            'messagehebdomadaire' => $messagehebdomadaire,
+            'docta' => $docta,
         ]);
     }
 

@@ -120,6 +120,42 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body pb-0">
+                                    <div class="d-flex justify-content-between">
+                                        <h4 class="mb-1">Statistique de messages <span doctaname></span></h4>
+                                        <select name="docta" id="" class="form-control" style="width: 200px">
+                                            <option value="">Tous</option>
+                                            @foreach ($docta as $el)
+                                                <option value="{{ $el->id }}">{{ ucwords($el->name) }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="card-body pb-0 pt-0">
+                                    <div id="chart3"></div>
+                                </div>
+                                <div class="card-footer">
+                                    <h4>Statistiques <span doctaname></span></h4>
+                                    <p class="font-weight-bold m-0">
+                                        <i class="fa fa-check-circle"></i> Messages journalièrs :
+                                        <span class="badge badge-success badge-pill font-weight-bold text-white"
+                                            style="font-size: 13px" messagejournaliere></span>
+                                    </p>
+                                    <p class="font-weight-bold m-0">
+                                        <i class="fa fa-check-circle"></i> Messages d'hier :
+                                        <span class="badge badge-danger badge-pill font-weight-bold"
+                                            style="font-size: 13px" messagehier></span>
+                                    </p>
+                                    <p class="font-weight-bold m-0">
+                                        <i class="fa fa-check-circle"></i> Messages hebdomadaires :
+                                        <span class="badge badge-info badge-pill font-weight-bold" style="font-size: 13px"
+                                            messagehebdomadaire></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body pb-0">
@@ -244,12 +280,50 @@
             var chart2 = new ApexCharts(document.querySelector("#chart2"), options2);
             chart2.render();
 
-            function stat() {
+            var options3 = {
+                series: [{
+                    name: "Message",
+                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                }],
+                colors: ['#02BBFF'],
+                chart: {
+                    type: 'area',
+                    height: 350,
+                    zoom: {
+                        enabled: false
+                    },
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    curve: 'smooth',
+                    width: 2,
+                },
+                labels: [
+                    'Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre',
+                    'Octobre', 'Novembre',
+                    'Decembre'
+                ],
+
+                legend: {
+                    horizontalAlign: 'left'
+                }
+            };
+
+            var chart3 = new ApexCharts(document.querySelector("#chart3"), options3);
+            chart3.render();
+
+            $('[name=docta]').change(function() {
+                stat(false);
+                console.log('ffff');
+            })
+
+            function stat(interval = true) {
                 $.ajax({
                     url: '{{ route('stat.index') }}',
                     data: {
-                        'downloaddate': $('[downloaddate]').html(),
-                        'visitedate': $('[visitedate]').html(),
+                        'docta_id': $('[name=docta]').val(),
                     },
                     success: function(r) {
                         $('[clients]').html(r.clients);
@@ -262,6 +336,15 @@
                         $('[telechargementjournaliere]').html(r.telechargementjournaliere);
                         $('[telechargementhier]').html(r.telechargementhier);
                         $('[telechargementhebdomadaire]').html(r.telechargementhebdomadaire);
+                        $('[messagejournaliere]').html(r.messagejournaliere);
+                        $('[messagehier]').html(r.messagehier);
+                        $('[messagehebdomadaire]').html(r.messagehebdomadaire);
+                        var docta = r.docta;
+                        if (docta.length == 0) {
+                            $('[doctaname]').html('');
+                        } else {
+                            $('[doctaname]').html('du Docteur ' + docta);
+                        }
 
                         chart0.updateSeries([{
                             data: r.telechargement,
@@ -272,6 +355,9 @@
 
                     }
                 }).always(function() {
+                    if (!interval) {
+                        return;
+                    }
                     setTimeout(() => {
                         stat();
                     }, 3000);
