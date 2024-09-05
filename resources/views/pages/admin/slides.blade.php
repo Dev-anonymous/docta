@@ -272,19 +272,13 @@
                 $.getJSON('{{ route('slide.index') }}', function(data) {
                     var str = '';
                     $.each(data, function(i, e) {
-                        if (e.isimage) {
-                            var file =
-                                `<img class="img-rounded" height="70px" width="100px" src="{{ asset('storage') }}/${e.file}"/>`;
-                        } else {
-                            var file = '';
-                        }
                         str += `
                         <tr>
                             <td>${i+1}</td>
                             <td>${e.title??''}</td>
                             <td>${e.text??''}</td>
                             <td>
-                                ${file}
+                                <img class="img-rounded" height="70px" width="100px" src="{{ asset('storage') }}/${e.file}"/>
                             </td>
                             <td>
                                 <div class='d-flex'>

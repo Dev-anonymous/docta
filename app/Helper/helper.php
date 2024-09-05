@@ -303,9 +303,3 @@ function isconnected($last_login)
     return (object) ['ok' =>  $m <= 3, 'lastlogin' => $m, 'label' => $l, 'days' => $days];
 }
 
-function isimage($file)
-{
-    $ext = explode('.', $file);
-    $ext = end($ext);
-    return !in_array($ext, ['mp4']);
-}

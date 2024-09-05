@@ -23,7 +23,6 @@ class SlideAPIController extends Controller
         foreach ($data as $el) {
             $o = (object) $el->toArray();
             $o->date = $el->date?->format('d-m-Y H:i:s');
-            $o->isimage = isimage($el->file);
             $tab[] = $o;
         }
         return $tab;
