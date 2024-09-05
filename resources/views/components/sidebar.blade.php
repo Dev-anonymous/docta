@@ -9,7 +9,7 @@
                     <li><a href="{{ route('admin.home') }}">Accueil</a></li>
                     <li><a href="{{ route('admin.client') }}">Clients</a></li>
                     <li><a href="{{ route('admin.docteur') }}">Docteurs</a></li>
-                    <li><a href="{{ route('admin.conseils') }}">Conseils</a></li>
+                    <li><a href="{{ route('admin.slides') }}">Slides</a></li>
                     <li><a href="{{ route('admin.contact') }}">Contact & Feedback</a></li>
                 </ul>
             </li>
@@ -18,6 +18,7 @@
                     <i class="fa fa-android menu-icon"></i><span class="nav-text">Application</span>
                 </a>
                 <ul aria-expanded="true">
+                    <li><a href="{{ route('admin.conseils') }}">Conseils</a></li>
                     <li><a href="{{ route('admin.app') }}">App Version</a></li>
                     <li><a href="{{ route('admin.log') }}">Logs</a></li>
                     <li><a href="{{ route('admin.zegocloud') }}">Zegocloud</a></li>

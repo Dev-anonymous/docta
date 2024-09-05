@@ -8,6 +8,7 @@ use App\Models\Contact;
 use App\Models\Errorlog;
 use App\Models\Forfait;
 use App\Models\Site;
+use App\Models\Slide;
 use App\Models\Solde;
 use App\Models\Taux;
 use App\Models\User;
@@ -41,6 +42,11 @@ class AdminController extends Controller
     {
         $data = Contact::orderBy('id', 'desc')->get();
         return view('pages.admin.contact', compact('data'));
+    }
+
+    public function slides()
+    {
+        return view('pages.admin.slides');
     }
 
     public function facturation()

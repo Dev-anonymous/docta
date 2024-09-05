@@ -33,6 +33,7 @@
     <x-web-header />
     @yield('body')
     <x-web-footer />
+    @yield('js')
 </body>
 
 </html>

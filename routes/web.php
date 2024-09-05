@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('clients', 'clients')->name('admin.client');
                 Route::get('docta', 'docta')->name('admin.docteur');
                 Route::get('conseils', 'conseils')->name('admin.conseils');
+                Route::get('slides', 'slides')->name('admin.slides');
                 Route::get('contact', 'contact')->name('admin.contact');
                 Route::get('facturation', 'facturation')->name('admin.facturation');
                 Route::get('taux', 'taux')->name('admin.taux');

@@ -123,6 +123,56 @@
              </div>
          </section> --}}
 
+         @if (count($slides))
+             <section class="contact py-0 mb-5">
+                 <div class="container">
+                     <div class="row">
+                         <div class="col-md-12">
+                             <div>
+                                 <div style="box-shadow: 0px 10px 45px rgba(0, 0, 0, 0.1);" id="carousela"
+                                     class="carousel slide" data-ride="carousel" data-interval="3000">
+                                     <ol class="carousel-indicators">
+                                         @foreach ($slides as $k => $el)
+                                             <li data-target="#carousela" data-slide-to="{{ $k }}"
+                                                 class="@if (0 == $k) active @endif">
+                                             </li>
+                                         @endforeach
+                                     </ol>
+                                     <div class="carousel-inner">
+                                         @foreach ($slides as $k => $el)
+                                             <div class="carousel-item @if (0 == $k) active @endif">
+                                                 <img height="400px" class="d-block w-100"
+                                                     src="{{ asset('storage/' . $el->file) }}" style="border-radius: 10px">
+                                                 @if ($el->title or $el->text)
+                                                     <div class="carousel-caption d-none d-md-block">
+                                                         <div style="border-radius: 10px; background-color: rgba(15, 8, 8, 0.25)"
+                                                             class="p-2">
+                                                             <h5 class="font-weight-bold">{{ $el->title }}</h5>
+                                                             <p class="font-weight-bold">{{ $el->text }}</p>
+                                                         </div>
+                                                     </div>
+                                                 @endif
+                                             </div>
+                                         @endforeach
+                                     </div>
+                                     <a class="carousel-control-prev" href="#carousela" role="button" data-slide="prev">
+                                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                         <span class="sr-only">Previous</span>
+                                     </a>
+                                     <a class="carousel-control-next" href="#carousela" role="button" data-slide="next">
+                                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                         <span class="sr-only">Next</span>
+                                     </a>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+             </section>
+         @endif
+
+
+
          <section class="contact py-0" id="about">
              <div class="container">
                  <div class="section-title">
@@ -228,7 +278,8 @@
                              <div class="email">
                                  <i class="bi bi-envelope"></i>
                                  <h4>Email:</h4>
-                                 <p><a href="mailto:contact@docta-tam.com" class="text-muted">contact@docta-tam.com</a></p>
+                                 <p><a href="mailto:contact@docta-tam.com" class="text-muted">contact@docta-tam.com</a>
+                                 </p>
                              </div>
 
                              <div class="phone">
@@ -288,4 +339,237 @@
          </section>
 
      </main>
+ @endsection
+
+ @section('js')
+     <style>
+         .carousel {
+             position: relative;
+         }
+
+         .carousel-inner {
+             position: relative;
+             width: 100%;
+             overflow: hidden;
+         }
+
+         .carousel-item {
+             position: relative;
+             display: none;
+             align-items: center;
+             width: 100%;
+             backface-visibility: hidden;
+             perspective: 1000px;
+         }
+
+         .carousel-item.active,
+         .carousel-item-next,
+         .carousel-item-prev {
+             display: block;
+             transition: transform 0.6s ease;
+         }
+
+         @media screen and (prefers-reduced-motion: reduce) {
+
+             .carousel-item.active,
+             .carousel-item-next,
+             .carousel-item-prev {
+                 transition: none;
+             }
+         }
+
+         .carousel-item-next,
+         .carousel-item-prev {
+             position: absolute;
+             top: 0;
+         }
+
+         .carousel-item-next.carousel-item-left,
+         .carousel-item-prev.carousel-item-right {
+             transform: translateX(0);
+         }
+
+         @supports (transform-style: preserve-3d) {
+
+             .carousel-item-next.carousel-item-left,
+             .carousel-item-prev.carousel-item-right {
+                 transform: translate3d(0, 0, 0);
+             }
+         }
+
+         .carousel-item-next,
+         .active.carousel-item-right {
+             transform: translateX(100%);
+         }
+
+         @supports (transform-style: preserve-3d) {
+
+             .carousel-item-next,
+             .active.carousel-item-right {
+                 transform: translate3d(100%, 0, 0);
+             }
+         }
+
+         .carousel-item-prev,
+         .active.carousel-item-left {
+             transform: translateX(-100%);
+         }
+
+         @supports (transform-style: preserve-3d) {
+
+             .carousel-item-prev,
+             .active.carousel-item-left {
+                 transform: translate3d(-100%, 0, 0);
+             }
+         }
+
+         .carousel-fade .carousel-item {
+             opacity: 0;
+             transition-duration: .6s;
+             transition-property: opacity;
+         }
+
+         .carousel-fade .carousel-item.active,
+         .carousel-fade .carousel-item-next.carousel-item-left,
+         .carousel-fade .carousel-item-prev.carousel-item-right {
+             opacity: 1;
+         }
+
+         .carousel-fade .active.carousel-item-left,
+         .carousel-fade .active.carousel-item-right {
+             opacity: 0;
+         }
+
+         .carousel-fade .carousel-item-next,
+         .carousel-fade .carousel-item-prev,
+         .carousel-fade .carousel-item.active,
+         .carousel-fade .active.carousel-item-left,
+         .carousel-fade .active.carousel-item-prev {
+             transform: translateX(0);
+         }
+
+         @supports (transform-style: preserve-3d) {
+
+             .carousel-fade .carousel-item-next,
+             .carousel-fade .carousel-item-prev,
+             .carousel-fade .carousel-item.active,
+             .carousel-fade .active.carousel-item-left,
+             .carousel-fade .active.carousel-item-prev {
+                 transform: translate3d(0, 0, 0);
+             }
+         }
+
+         .carousel-control-prev,
+         .carousel-control-next {
+             position: absolute;
+             top: 0;
+             bottom: 0;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             width: 15%;
+             color: #fff;
+             text-align: center;
+             opacity: 0.5;
+         }
+
+         .carousel-control-prev:hover,
+         .carousel-control-prev:focus,
+         .carousel-control-next:hover,
+         .carousel-control-next:focus {
+             color: #fff;
+             text-decoration: none;
+             outline: 0;
+             opacity: .9;
+         }
+
+         .carousel-control-prev {
+             left: 0;
+         }
+
+         .carousel-control-next {
+             right: 0;
+         }
+
+         .carousel-control-prev-icon,
+         .carousel-control-next-icon {
+             display: inline-block;
+             width: 20px;
+             height: 20px;
+             background: transparent no-repeat center center;
+             background-size: 100% 100%;
+         }
+
+         .carousel-control-prev-icon {
+             background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E");
+         }
+
+         .carousel-control-next-icon {
+             background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E");
+         }
+
+         .carousel-indicators {
+             position: absolute;
+             right: 0;
+             bottom: 10px;
+             left: 0;
+             z-index: 15;
+             display: flex;
+             justify-content: center;
+             padding-left: 0;
+             margin-right: 15%;
+             margin-left: 15%;
+             list-style: none;
+         }
+
+         .carousel-indicators li {
+             position: relative;
+             flex: 0 1 auto;
+             width: 30px;
+             height: 3px;
+             margin-right: 3px;
+             margin-left: 3px;
+             text-indent: -999px;
+             cursor: pointer;
+             border-radius: 50px;
+             background-color: rgba(15, 8, 8, 0.5);
+         }
+
+         .carousel-indicators li::before {
+             position: absolute;
+             top: -10px;
+             left: 0;
+             display: inline-block;
+             width: 100%;
+             height: 10px;
+             content: "";
+         }
+
+         .carousel-indicators li::after {
+             position: absolute;
+             bottom: -10px;
+             left: 0;
+             display: inline-block;
+             width: 100%;
+             height: 10px;
+             content: "";
+         }
+
+         .carousel-indicators .active {
+             background-color: #02BBFF;
+         }
+
+         .carousel-caption {
+             position: absolute;
+             right: 15%;
+             bottom: 20px;
+             left: 15%;
+             z-index: 10;
+             padding-top: 20px;
+             padding-bottom: 20px;
+             color: #fff;
+             text-align: center;
+         }
+     </style>
+     <script src="{{ asset('plugins/common/common.min.js') }}"></script>
  @endsection

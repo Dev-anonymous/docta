@@ -10,6 +10,7 @@ use App\Http\Controllers\API\DoctaAPIController;
 use App\Http\Controllers\API\ForfaitAPIController;
 use App\Http\Controllers\API\PAYController;
 use App\Http\Controllers\API\SiteAPIController;
+use App\Http\Controllers\API\SlideAPIController;
 use App\Http\Controllers\API\TauxAPIController;
 use App\Http\Controllers\API\ZegocloudController;
 use App\Http\Controllers\ClientAPIController;
@@ -64,4 +65,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('appversion', AppVersionAPIController::class);
     Route::resource('clients', ClientAPIController::class);
     Route::resource('stat', StatistiqueAPIController::class);
+    Route::resource('slide', SlideAPIController::class);
+    Route::post('slide/{slide}', [SlideAPIController::class, 'update']);
 });
