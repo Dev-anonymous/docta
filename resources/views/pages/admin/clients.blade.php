@@ -136,7 +136,6 @@
 
                                 var p = '';
                                 pai.forEach(element => {
-                                    console.log(element);
                                     p += `
                                         <div class="card m-0 mb-2" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">
                                             <div class="card-body p-2 d-flex">
