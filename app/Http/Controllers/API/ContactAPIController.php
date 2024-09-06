@@ -72,10 +72,13 @@ class ContactAPIController extends Controller
         }
 
         try {
-            $m['user'] = "{$data['name']} {$data['email']}";
+            $email = $data['email'];
+            $m['user'] = "{$data['name']} $email";
             $m['msg'] = "{$data['message']}\n\n\n";
             $m['subject'] = "[CONTACT] " . $data['subject'];
-            $m['replyTo'] = [$data['email'], $data['name']];
+            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $m['replyTo'] = [$email, $data['name']];
+            }
             Mail::to('contact@docta-tam.com')->send(new AppMail((object)$m));
 
             $data['date'] = now('Africa/Lubumbashi');
