@@ -59,11 +59,11 @@ class ContactAPIController extends Controller
         if (
             strpos($text, ' seo') != false  || strpos($text, ' rank') != false || strpos($text, ' ranks') != false ||
             strpos($text, ' online') != false || strpos($text, ' optimization') != false || strpos($text, ' improve') != false || strpos($text, ' visibility') != false
-            || strpos($text, ' backlinks') != false || strpos($text, ' backlink') != false || strpos($text, ' digital') != false || strpos($text, 'https://') != false ||
+            || strpos($text, ' software') != false || strpos($text, ' backlinks') != false || strpos($text, ' backlink') != false || strpos($text, ' digital') != false || strpos($text, 'https://') != false ||
 
             strpos($subject, ' seo') != false  || strpos($subject, ' rank') != false || strpos($subject, ' ranks') != false ||
             strpos($subject, ' online') != false || strpos($subject, ' optimization') != false || strpos($subject, ' improve') != false || strpos($subject, ' visibility') != false
-            || strpos($subject, ' backlinks') != false || strpos($subject, ' backlink') != false || strpos($subject, ' digital') != false || strpos($subject, 'https://') != false
+            || strpos($subject, ' software') != false || strpos($subject, ' backlinks') != false || strpos($subject, ' backlink') != false || strpos($subject, ' digital') != false || strpos($subject, 'https://') != false
 
         ) {
             return response([
@@ -75,6 +75,7 @@ class ContactAPIController extends Controller
             $m['user'] = "{$data['name']} {$data['email']}";
             $m['msg'] = "{$data['message']}\n\n\n";
             $m['subject'] = "[CONTACT] " . $data['subject'];
+            $m['replyTo'] = [$data['email'], $data['name']];
             Mail::to('contact@docta-tam.com')->send(new AppMail((object)$m));
 
             $data['date'] = now('Africa/Lubumbashi');

@@ -28,6 +28,7 @@ class AppMail extends Mailable
      */
     public function build()
     {
-        return $this->subject($this->data->subject)->markdown('emails.appmail', ['data' => $this->data]);
+        $replyTo = @$this->data->replyTo;
+        return $this->replyTo(@$replyTo[0], @$replyTo[1])->subject($this->data->subject)->markdown('emails.appmail', ['data' => $this->data]);
     }
 }
