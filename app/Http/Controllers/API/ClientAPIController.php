@@ -127,6 +127,7 @@ class ClientAPIController extends Controller
             $o->image = $el->methode == 'mobile_money' ? asset('images/mmoney.png') : asset('images/visa.png');
             $tab[] = $o;
         }
+        
         $data['paiement'] = $tab;
         return $data;
     }
