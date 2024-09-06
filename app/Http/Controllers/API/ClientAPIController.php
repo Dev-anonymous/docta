@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\App;
+use App\Models\Message;
 use App\Models\Solde;
 use Illuminate\Http\Request;
 
@@ -129,6 +130,23 @@ class ClientAPIController extends Controller
         }
 
         $data['paiement'] = $tab;
+
+        $docta = '';
+        $messa = $messr = 0;
+        $chat = $client->chats()->first();
+        if ($chat) {
+            $user = $chat->user;
+            if ($user) {
+                $docta = ucwords($user->name);
+            }
+            $messa = Message::where('chat_id', $chat->id)->where('fromuser', 0)->count();
+            $messr = Message::where('chat_id', $chat->id)->where('fromuser', 1)->count();
+        }
+        $data['message'] = [
+            'docta' => $docta,
+            'messageenvoye' => $messa,
+            'messagerecu' => $messr,
+        ];
         return $data;
     }
 

@@ -120,6 +120,7 @@
                             success: function(rep) {
                                 var pai = rep.paiement;
                                 var pro = rep.profil;
+                                var mess = rep.message;
                                 var html = `
                                 <b>Profil</b>
                                 <h4>${pro.client}</h4>
@@ -129,6 +130,11 @@
                                 <h5>DEVICE ID : ${pro.deviceid}</h5>
                                 <h5>UID : ${pro.uid}</h5>
                                 <h5>Status : ${pro.status}</h5>
+                                <hr>
+                                <b>Message</b>
+                                <h5>Docteur assigné : ${mess.docta}</h5>
+                                <h5>Message envoyé : ${mess.messageenvoye}</h5>
+                                <h5>Message re&ccirc;u : ${mess.messagerecu}</h5>
                                 <hr>
                                 <b class="pb-5">Historique de paiement</b>
                                 <div style="max-height:500px; overflow:auto;">
