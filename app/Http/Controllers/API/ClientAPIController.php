@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use App\Models\App;
 use App\Models\Solde;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class ClientAPIController extends Controller
@@ -21,7 +21,7 @@ class ClientAPIController extends Controller
 
         foreach ($app as $el) {
             $label = 'Déconnecté';
-            $actif = "<b style='cursor:pointer' class='badge badge-danger text-white'> <i class='fa fa-wifi'></i> DECONNECTE</b>";
+            $actif = "<b class='badge badge-danger text-white'> <i class='fa fa-wifi'></i> DECONNECTE</b>";
 
             if ($el->last_login) {
                 $n = $el->last_login->diffInDays();
@@ -32,12 +32,12 @@ class ClientAPIController extends Controller
                 if ($isco->ok) {
                     $label = 'Connecté';
                     $actif =
-                        "<b style='cursor:pointer' class='badge badge-success text-white'> <i class='fa fa-wifi'></i> CONNECTE</b>";
+                        "<b class='badge badge-success text-white'> <i class='fa fa-wifi'></i> CONNECTE</b>";
                 } else {
                     if ($isco->days >= 8) {
                         $label = $isco->label;
                         $actif =
-                            "<b style='cursor:pointer' class='badge badge-info'> <i class='fa fa-check-circle'></i> ACTIF</b>";
+                            "<b class='badge badge-info'> <i class='fa fa-check-circle'></i> ACTIF</b>";
                     }
                 }
                 $actif .= "<br><i>$isco->label</i>";
@@ -82,9 +82,53 @@ class ClientAPIController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(App $client)
     {
-        //
+        $label = 'Déconnecté';
+        $actif = "<b class='badge badge-danger text-white'> <i class='fa fa-wifi'></i> DECONNECTE</b>";
+        $el = $client;
+        if ($el->last_login) {
+            $n = $el->last_login->diffInDays();
+            $l = $el->last_login->diffForHumans();
+
+            $isco = isconnected($el->last_login);
+
+            if ($isco->ok) {
+                $label = 'Connecté';
+                $actif =
+                    "<b class='badge badge-success text-white'> <i class='fa fa-wifi'></i> CONNECTE</b>";
+            } else {
+                if ($isco->days >= 8) {
+                    $label = $isco->label;
+                    $actif =
+                        "<b class='badge badge-info'> <i class='fa fa-check-circle'></i> ACTIF</b>";
+                }
+            }
+            $actif .= "<br><i>$isco->label</i>";
+        }
+        $solde = $client->soldes()->first()->solde_usd;
+        $data['profil'] = [
+            'client' => $client->nom ?? '-',
+            'tel' => $client->telephone ?? '-',
+            'email' => $client->email ?? '-',
+            'uid' => $client->uid ?? '-',
+            'deviceid' => $client->deviceid ?? '-',
+            'status' => $actif,
+            'solde' => number_format($solde, 2, '.', ' ') . " USD"
+        ];
+
+        $tab = [];
+        foreach ($client->paiements()->orderBy('id', 'desc')->get() as $el) {
+            $o = (object)[];
+            $o->ref = $el->ref;
+            $o->montant = number_format($el->montant, 2, '.', ' ') . " $el->devise";
+            $o->date = $el->date->format('d-m-Y H:i:s');
+            $o->methode = $el->methode;
+            $o->image = $el->methode == 'mobile_money' ? asset('images/mmoney.png') : asset('images/visa.png');
+            $tab[] = $o;
+        }
+        $data['paiement'] = $tab;
+        return $data;
     }
 
     /**
@@ -94,7 +138,7 @@ class ClientAPIController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, App $client)
     {
         //
     }
@@ -105,7 +149,7 @@ class ClientAPIController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(App $client)
     {
         //
     }

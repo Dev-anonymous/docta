@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\AppController;
 use App\Http\Controllers\API\AppVersionAPIController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\ClientAPIController;
 use App\Http\Controllers\API\ConseilAPIController;
 use App\Http\Controllers\API\ConseilMedicalAPIController;
 use App\Http\Controllers\API\ContactAPIController;
@@ -13,7 +14,6 @@ use App\Http\Controllers\API\SiteAPIController;
 use App\Http\Controllers\API\SlideAPIController;
 use App\Http\Controllers\API\TauxAPIController;
 use App\Http\Controllers\API\ZegocloudController;
-use App\Http\Controllers\ClientAPIController;
 use App\Http\Controllers\StatistiqueAPIController;
 use App\Models\Conseilmedical;
 use Illuminate\Support\Facades\Route;

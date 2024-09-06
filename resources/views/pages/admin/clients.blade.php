@@ -25,11 +25,11 @@
                                 <table tclient class="table table-striped table-bordered">
                                     <thead>
                                         <tr>
-                                            <th style="width: 10px"><span loader><i class="fa fa-spinner fa-spin"></i></span></th>
+                                            <th style="width: 10px"><span loader><i
+                                                        class="fa fa-spinner fa-spin"></i></span></th>
                                             <th>UID / DEVICE ID</th>
                                             <th>SOLDE</th>
-                                            <th>EMAIL/TEL</th>
-                                            <th>NOM</th>
+                                            <th>NOM/TEL/EMAIL</th>
                                             <th>DERNIERE CONNEXION</th>
                                             <th>DATE CREATION</th>
                                         </tr>
@@ -42,7 +42,31 @@
                 </div>
             </div>
         </div>
-        <!-- #/ container -->
+
+    </div>
+    <div class="modal fade" id="addmdl" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Détails du client</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">X</span>
+                    </button>
+                </div>
+                <form id="fadd">
+                    <div class="modal-body">
+                        <div class="jumbotron p-3 data">
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
     </div>
 @endsection
 @section('js-code')
@@ -65,13 +89,10 @@
                                  ${e.uid} <br> ${e.deviceid}
                             </td>
                             <td>
-                                 <span class="badge bg-${e.solde_classe} text-white font-weight-bold" style="font-size:18px">${e.solde}</span>
+                                 <span historique id='${e.id}' style="cursor:pointer; font-size:20px" class="badge bg-${e.solde_classe} text-white font-weight-bold">${e.solde}</span>
                             </td>
                             <td>
-                                 ${e.telephone} <br> ${e.email}
-                            </td>
-                            <td>
-                                 ${e.nom}
+                                ${e.nom} </br> ${e.telephone} <br> ${e.email}
                             </td>
                             <td>
                                  ${e.last_login??''} ${e.actif}
@@ -87,6 +108,66 @@
                     $('[solde]').html(data.solde);
                     table.DataTable().destroy();
                     table.find('tbody').html(str);
+                    $('[historique]').off('click').click(function() {
+                        var id = $(this).attr('id');
+                        var mdl = $('#addmdl');
+                        $('.data', mdl).html(
+                            '<div class="w-100 text-center"><i class="fa fa-spin fa-spinner fa-5x"></i></div>'
+                        );
+
+                        $.ajax({
+                            url: '{{ route('clients.show', '') }}/' + id,
+                            success: function(rep) {
+                                var pai = rep.paiement;
+                                var pro = rep.profil;
+                                var html = `
+                                <b>Profil</b>
+                                <h4>${pro.client}</h4>
+                                <h5>Tel : ${pro.tel}</h5>
+                                <h5>Email : ${pro.email}</h5>
+                                <h5>Solde : <span class="badge badge-info">${pro.solde}</span></h5>
+                                <h5>DEVICE ID : ${pro.deviceid}</h5>
+                                <h5>UID : ${pro.uid}</h5>
+                                <h5>Status : ${pro.status}</h5>
+                                <hr>
+                                <b class="pb-5">Historique de paiement</b>
+                                <div style="max-height:500px; overflow:auto;">
+                                `;
+
+                                var p = '';
+                                pai.forEach(element => {
+                                    console.log(element);
+                                    p += `
+                                        <div class="card m-0 mb-2" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">
+                                            <div class="card-body p-2 d-flex">
+                                                <div class="">
+                                                    <img style="object-fit: contain" src="${element.image}" width="50px"
+                                                        height="50px" alt="">
+                                                </div>
+                                                <div class="pl-2" style="line-height: 15px">
+                                                    <b>${element.montant}<br>
+                                                        ${element.ref} <br>
+                                                        ${element.date} </b>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+                                });
+                                html += p;
+                                html += '</div>';
+
+                                $('.data', mdl).html(html);
+                            },
+                            error: function(rep) {
+                                $('.data', mdl).html(
+                                    '<div class="w-100 text-center text-danger">Erreur de chargement, veuillez réessayer.</div>'
+                                );
+                            }
+                        })
+
+                        mdl.modal('show');
+                        console.log(id);
+                    });
                     table.DataTable({
                         stateSave: true
                     });
