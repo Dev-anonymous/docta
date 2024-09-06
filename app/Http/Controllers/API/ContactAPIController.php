@@ -40,7 +40,7 @@ class ContactAPIController extends Controller
             ],
             [
                 'g-recaptcha-response.required' => 'Veuillez cocher la case “Je ne suis pas un robot”',
-                'g-recaptcha-response.captcha' => "captcha non valide"
+                'g-recaptcha-response.captcha' => "captcha non valide, actualisez la page et réessayez."
             ]
         );
 
