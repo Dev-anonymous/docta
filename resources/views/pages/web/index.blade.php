@@ -141,8 +141,8 @@
                                      <div class="carousel-inner">
                                          @foreach ($slides as $k => $el)
                                              <div class="carousel-item @if (0 == $k) active @endif">
-                                                 <img height="400px" class="d-block w-100"
-                                                     src="{{ asset('storage/' . $el->file) }}" style="border-radius: 10px">
+                                                 <img height="250px" class="d-block w-100"
+                                                     src="{{ asset('storage/' . $el->file) }}" style="border-radius: 10px;">
                                                  @if ($el->title or $el->text)
                                                      <div class="carousel-caption d-none d-md-block">
                                                          <div style="border-radius: 10px; background-color: rgba(15, 8, 8, 0.25)"
