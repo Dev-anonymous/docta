@@ -9,6 +9,7 @@
         "anhskohbo/no-captcha": "^3.6",
         "google/apiclient": "^2.16",
         "guzzlehttp/guzzle": "^7.2",
+        "jaybizzle/crawler-detect": "^1.2",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7"

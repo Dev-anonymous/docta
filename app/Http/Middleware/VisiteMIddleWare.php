@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Models\Visite;
 use Closure;
 use Illuminate\Http\Request;
+use Jaybizzle\CrawlerDetect\CrawlerDetect;
 
 class VisiteMIddleWare
 {
@@ -25,10 +26,9 @@ class VisiteMIddleWare
 
         $ua = strtolower($usera);
 
-        if (
-            !(strpos($ua, 'www.facebook.com') !== false or strpos($ua, 'googlebot') !== false)
-            or strpos($ua, 'dataprovider.com') !== false
-        ) {
+        $CrawlerDetect = new CrawlerDetect();
+
+        if (!$CrawlerDetect->isCrawler()) {
             $ex = Visite::where(['ip' => $ip, 'url' => $url])->first();
             if ($ex) {
                 $ex->increment('nb');
@@ -37,6 +37,19 @@ class VisiteMIddleWare
                 Visite::create(['ip' => $ip, 'nb' => 1, 'useragent' => $usera, 'url' => $url, 'date' => $date]);
             }
         }
+
+        // if (
+        //     !(strpos($ua, 'www.facebook.com') !== false or strpos($ua, 'googlebot') !== false)
+        //     or strpos($ua, 'dataprovider.com') !== false
+        // ) {
+        //     $ex = Visite::where(['ip' => $ip, 'url' => $url])->first();
+        //     if ($ex) {
+        //         $ex->increment('nb');
+        //         $ex->update(['date' => $date]);
+        //     } else {
+        //         Visite::create(['ip' => $ip, 'nb' => 1, 'useragent' => $usera, 'url' => $url, 'date' => $date]);
+        //     }
+        // }
         return $next($request);
     }
 }
