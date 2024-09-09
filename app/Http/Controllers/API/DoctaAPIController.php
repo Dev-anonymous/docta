@@ -146,10 +146,6 @@ class DoctaAPIController extends Controller
      */
     public function destroy(User $docta)
     {
-        // $oth = User::where('user_role', 'docta')->where('id', '!=', $docta->id)->first();
-
-
-
         DB::beginTransaction();
         $notifuser = [];
         $chat = $docta->chats()->get();

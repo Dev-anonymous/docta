@@ -281,15 +281,17 @@ function assignchat($chats = [], $skipeuser = 0)
 
     $notify = array_unique($notify);
 
-    foreach ($notify as $iduser) {
-        $user = User::where('id', $iduser)->first();
-        $title = 'Nouvelle Conversation';
-        $pushno = json_encode(['to' => ['user', $user->id], 'title' => $title, 'message' => "Vous avez des conversations qui vous ont été assignées automatiquement. Veuillez vous reconnecter de l'application."]);
-        Pushnotification::create([
-            'data' => $pushno
-        ]);
-        $user->tokens()->delete();
+    if ($skipeuser) {
+        foreach ($notify as $iduser) {
+            $user = User::where('id', $iduser)->first();
+            $title = 'Nouvelle Conversation';
+            $pushno = json_encode(['to' => ['user', $user->id], 'title' => $title, 'message' => "Vous avez des conversations qui vous ont été assignées automatiquement."]);
+            Pushnotification::create([
+                'data' => $pushno
+            ]);
+        }
     }
+
     DB::commit();
 }
 
@@ -302,4 +304,3 @@ function isconnected($last_login)
     $days = $m / 1440;
     return (object) ['ok' =>  $m <= 3, 'lastlogin' => $m, 'label' => $l, 'days' => $days];
 }
-

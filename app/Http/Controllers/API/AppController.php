@@ -122,7 +122,6 @@ class AppController extends Controller
     {
         canmessage();
         $app = userapp();
-        $chat = $app->chats()->first();
 
         $validator = Validator::make(request()->all(), [
             'id' => 'required',
@@ -141,18 +140,18 @@ class AppController extends Controller
         $chat = $app->chats()->first();
         if (!$chat) {
             $chat = Chat::create(['app_id' => $app->id, 'date' => now('Africa/Lubumbashi')]);
+            assignchat();
         }
 
         $solde = $app->soldes()->first();
         $forf = Forfait::first();
 
         $id = request('id');
-        $chat_id = request('chat_id');
         $success = false;
 
         $rms = 'Saved';
         try {
-            $r = Message::where(['local_id' => $id, 'chat_id' => $chat_id, 'fromuser' => 0])->first();
+            $r = Message::where(['local_id' => $id, 'fromuser' => 0])->first();
             if (!$r) {
                 $message = request('message');
                 $date = request('date');
@@ -174,10 +173,10 @@ class AppController extends Controller
                 $newsol = (float) @$solde->solde_usd - (float) $sms;
                 if ($newsol < 0) {
                     $newsol = 0;
-                    // can message = true ::: new user
                 };
                 $solde->update(['solde_usd' => $newsol]);
 
+                $chat = Chat::find($chat->id); // ### users_id may be null before assignchat()
                 $user = $chat->user;
                 if ($user) {
                     $title = $app->nom ? ucfirst($app->nom) : $app->uid;
@@ -457,8 +456,6 @@ class AppController extends Controller
                 }
             }
         }
-
-        assignchat();
 
         /** @var $user App\Models\Usere **/
         $user = auth()->user();
