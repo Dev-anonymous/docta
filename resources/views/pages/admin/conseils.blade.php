@@ -79,7 +79,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="">Message</label>
-                                <textarea name="pushmessage" id="" rows="10" class="form-control"></textarea>
+                                <textarea name="pushmessage" id="" rows="5" class="form-control"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
@@ -107,23 +107,21 @@
                 </div>
                 <form id="fadd2">
                     <div class="modal-body">
-                        <div class="pushdiv">
-                            <h3>Push notification</h3>
-                            <div class="form-group">
-                                <label for="">Envoyer aux</label>
-                                <select name="to" id="" class="form-control">
-                                    <option value="client">Clients</option>
-                                    <option value="docta">Docta</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="recipient-name" class="col-form-label">Titre</label>
-                                <input class="form-control" value="Conseil médical" name="pushtitle">
-                            </div>
-                            <div class="form-group">
-                                <label for="">Message</label>
-                                <textarea name="pushmessage" id="" rows="10" class="form-control"></textarea>
-                            </div>
+                        <h3>Push notification</h3>
+                        <div class="form-group">
+                            <label for="">Envoyer aux</label>
+                            <select name="to" id="" class="form-control">
+                                <option value="client">Clients</option>
+                                <option value="docta">Docta</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Titre</label>
+                            <input class="form-control" value="Conseil médical" name="pushtitle">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Message</label>
+                            <textarea name="pushmessage" id="" rows="5" class="form-control"></textarea>
                         </div>
                         <div class="form-group">
                             <div id="rep"></div>

@@ -91,7 +91,7 @@ class ConseilAPIController extends Controller
     public function update(Request $request, Conseilmedical $conseil)
     {
         $validator = Validator::make(request()->all(), [
-            'conseil' => 'required|unique:conseilmedical',
+            'conseil' => 'required|unique:conseilmedical,id,' . $conseil->id,
         ]);
 
         if ($validator->fails()) {
