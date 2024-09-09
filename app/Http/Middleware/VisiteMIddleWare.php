@@ -25,7 +25,10 @@ class VisiteMIddleWare
 
         $ua = strtolower($usera);
 
-        if (!(strpos($ua, 'www.facebook.com') !== false or strpos($ua, 'googlebot') !== false)) {
+        if (
+            !(strpos($ua, 'www.facebook.com') !== false or strpos($ua, 'googlebot') !== false)
+            or strpos($ua, 'dataprovider.com') !== false
+        ) {
             $ex = Visite::where(['ip' => $ip, 'url' => $url])->first();
             if ($ex) {
                 $ex->increment('nb');
