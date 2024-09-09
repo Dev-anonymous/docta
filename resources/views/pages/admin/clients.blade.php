@@ -127,8 +127,8 @@
                                 <h5>Tel : ${pro.tel}</h5>
                                 <h5>Email : ${pro.email}</h5>
                                 <h5>Solde : <span class="badge badge-info">${pro.solde}</span></h5>
-                                <h5>DEVICE ID : ${pro.deviceid}</h5>
-                                <h5>UID : ${pro.uid}</h5>
+                                <h5>Device ID : ${pro.deviceid}</h5>
+                                <h5>Uid: ${pro.uid}</h5>
                                 <h5>Status : ${pro.status}</h5>
                                 <hr>
                                 <b>Message</b>
