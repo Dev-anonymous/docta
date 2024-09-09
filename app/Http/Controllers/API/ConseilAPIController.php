@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\App;
 use App\Models\Conseilmedical;
+use App\Models\Pushnotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class ConseilAPIController extends Controller
@@ -40,7 +43,26 @@ class ConseilAPIController extends Controller
         }
 
         $data = $validator->validated();
+        DB::beginTransaction();
+        if (request()->has('sendpush')) {
+            $title = request('pushtitle');
+            $message = request('pushmessage');
+
+            if ($title and $message) {
+                foreach (App::all() as $app) {
+                    $pushno = json_encode(['to' => ['app', $app->id], 'title' => $title, 'message' => $message]);
+                    Pushnotification::create([
+                        'data' => $pushno
+                    ]);
+                }
+            } else {
+                return response([
+                    'message' => "Entrez votre message push"
+                ]);
+            }
+        }
         Conseilmedical::create($data);
+        DB::commit();
 
         return response([
             'success' => true,

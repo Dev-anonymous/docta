@@ -18,8 +18,15 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <h4 class="card-title">Conseils médicals (<span nb></span>)</h4>
-                                <button class="btn btn-default" data-toggle="modal" data-target="#addmdl">Nouveau
-                                    Conseil</button>
+                                <div class="">
+                                    <button class="btn btn-default m-1" data-toggle="modal" data-target="#addmdl">
+                                        Nouveau Conseil
+                                    </button>
+                                    <button class="btn btn-success m-1" data-toggle="modal" data-target="#addmdl2">
+                                        Nouveau Pushnotification
+                                    </button>
+                                </div>
+
                             </div>
                             <div class="table-responsive">
                                 <table table class="table table-striped table-hover table-condensed">
@@ -53,7 +60,70 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label class="col-form-label">Conseil médical</label>
-                            <textarea name="conseil" required class="form-control" cols="30" rows="10"></textarea>
+                            <textarea name="conseil" required class="form-control" cols="30" rows="5"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="sendpush" checked
+                                    id="flexCheckDefault233">
+                                <label class="form-check-label text-dark" for="flexCheckDefault233">
+                                    Envoyer une push notification aux clients
+                                </label>
+                            </div>
+                        </div>
+                        <div class="pushdiv">
+                            <h3>Push notification</h3>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Titre</label>
+                                <input class="form-control" value="Conseil médical" name="pushtitle">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Message</label>
+                                <textarea name="pushmessage" id="" rows="10" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div id="rep"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-default"><span></span> Valider</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addmdl2" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nouveau Pushnotification</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">X</span>
+                    </button>
+                </div>
+                <form id="fadd2">
+                    <div class="modal-body">
+                        <div class="pushdiv">
+                            <h3>Push notification</h3>
+                            <div class="form-group">
+                                <label for="">Envoyer aux</label>
+                                <select name="to" id="" class="form-control">
+                                    <option value="client">Clients</option>
+                                    <option value="docta">Docta</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Titre</label>
+                                <input class="form-control" value="Conseil médical" name="pushtitle">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Message</label>
+                                <textarea name="pushmessage" id="" rows="10" class="form-control"></textarea>
+                            </div>
                         </div>
                         <div class="form-group">
                             <div id="rep"></div>
@@ -150,6 +220,40 @@
                             form[0].reset();
                             rep.removeClass().addClass('alert alert-success');
                             getdata();
+                            setTimeout(() => {
+                                $('.modal').modal('hide');
+                            }, 2000);
+                        } else {
+                            rep.removeClass().addClass('alert alert-danger');
+                        }
+                        rep.html(data.message).slideDown();
+                    },
+                    error: function(data) {
+                        rep.removeClass().addClass('alert alert-danger').html(
+                            "Erreur, veuillez réessayer.").slideDown();
+                    }
+                }).always(function() {
+                    btn.find('span').removeClass();
+                    $(':input', form).attr('disabled', false);
+                })
+            });
+            $('#fadd2').submit(function() {
+                event.preventDefault();
+                var form = $(this);
+                var btn = $(':submit', form);
+                btn.find('span').removeClass().addClass('fa fa-spinner fa-spin');
+                var data = form.serialize();
+                $(':input', form).attr('disabled', true);
+                var rep = $('#rep', form);
+                rep.stop().slideUp();
+                $.ajax({
+                    type: 'post',
+                    data: data,
+                    url: '{{ route('pushnotification.store') }}',
+                    success: function(data) {
+                        if (data.success) {
+                            form[0].reset();
+                            rep.removeClass().addClass('alert alert-success');
                             setTimeout(() => {
                                 $('.modal').modal('hide');
                             }, 2000);
@@ -285,6 +389,31 @@
             }
 
             getdata();
+
+            var sendpush = $('[name=sendpush]');
+            var pushmessage = $('[name=pushmessage]');
+
+            var div = $('.pushdiv');
+            $('[name=conseil]').keyup(function() {
+                var v = this.value;
+                pushmessage.val(v);
+            })
+
+            function toggle() {
+                if (sendpush.is(':checked')) {
+                    div.stop().slideDown();
+                    $('[name=pushtitle]').attr('required', true);
+                    $('[name=pushmessage]').attr('required', true);
+                } else {
+                    div.stop().slideUp();
+                    $('[name=pushtitle]').attr('required', false);
+                    $('[name=pushmessage]').attr('required', false);
+                }
+            }
+            sendpush.change(function() {
+                toggle();
+            })
+            toggle();
         })
     </script>
 @endsection

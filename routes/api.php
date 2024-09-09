@@ -10,6 +10,7 @@ use App\Http\Controllers\API\ContactAPIController;
 use App\Http\Controllers\API\DoctaAPIController;
 use App\Http\Controllers\API\ForfaitAPIController;
 use App\Http\Controllers\API\PAYController;
+use App\Http\Controllers\API\PushnotificationAPIController;
 use App\Http\Controllers\API\SiteAPIController;
 use App\Http\Controllers\API\SlideAPIController;
 use App\Http\Controllers\API\TauxAPIController;
@@ -67,4 +68,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('stat', StatistiqueAPIController::class);
     Route::resource('slide', SlideAPIController::class);
     Route::post('slide/{slide}', [SlideAPIController::class, 'update']);
+    Route::resource('pushnotification', PushnotificationAPIController::class);
+
 });
