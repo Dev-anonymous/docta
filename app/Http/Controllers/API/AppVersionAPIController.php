@@ -70,12 +70,14 @@ class AppVersionAPIController extends Controller
             }
             if ($clientv != $appversion->versionclient) {
                 foreach (App::all() as $app) {
-                    $title = "Docta V$clientv";
-                    $message = "Une nouvelle mise à jour est disponible! ouvrez l'application pour la mettre à jour.";
-                    $pushno = json_encode(['to' => ['app', $app->id], 'title' => $title, 'message' => $message]);
-                    Pushnotification::create([
-                        'data' => $pushno
-                    ]);
+                    if (strpos($app->uid, 'BROWSER-') === false) {
+                        $title = "Docta V$clientv";
+                        $message = "Une nouvelle mise à jour est disponible! ouvrez l'application pour la mettre à jour.";
+                        $pushno = json_encode(['to' => ['app', $app->id], 'title' => $title, 'message' => $message]);
+                        Pushnotification::create([
+                            'data' => $pushno
+                        ]);
+                    }
                 }
             }
             $appversion->update($data);

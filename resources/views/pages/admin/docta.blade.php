@@ -304,6 +304,7 @@
                     });
                     $('[nb]').html(data.length);
                     table.DataTable().destroy();
+                    table.find('tbody').html(str);
                     $('.bdel').off('click').click(function() {
                         var id = this.value;
                         var cmpt = $(this).attr('user');
@@ -323,7 +324,6 @@
                         mdl.modal('show');
                     })
 
-                    table.find('tbody').html(str);
                     $("[data-toggle='tooltip']").tooltip('dispose');
                     $("[data-toggle='tooltip']").off('tooltip').tooltip();
                     table.DataTable({
