@@ -989,7 +989,7 @@
             var tmp = [];
             for (var i in msg) {
                 var m = msg[i];
-                if (m.fromuser == 0) {
+                if (m.fromuser == 0 && m.sent == 1) {
                     m.userread = 1;
                 }
                 tmp.push(m);
