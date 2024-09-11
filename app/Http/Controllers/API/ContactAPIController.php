@@ -76,6 +76,7 @@ class ContactAPIController extends Controller
             $m['user'] = "{$data['name']} $email";
             $m['msg'] = "{$data['message']}\n\n\n";
             $m['subject'] = "[CONTACT] " . $data['subject'];
+            $email = trim($email);
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $m['replyTo'] = [$email, $data['name']];
             }

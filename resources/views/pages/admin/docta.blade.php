@@ -1,12 +1,12 @@
 @extends('layouts.main')
-@section('title', 'Docta')
+@section('title', 'Docteurs')
 @section('body')
     <div class="content-body">
         <div class="row page-titles mx-0">
             <div class="col p-md-0">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
-                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Docta</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Docteurs</a></li>
                 </ol>
             </div>
         </div>
@@ -16,12 +16,12 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
-                                <h4 class="card-title">Docta (<span nb></span>)</h4>
+                                <h4 class="card-title">Docteurs (<span nb></span>)</h4>
                                 <div class="">
                                     <a class="mb-2 btn btn-danger" href="{{ asset('docta-admin.apk') }}">
                                         <i class="fa fa-download"></i> App Mobile Docta Admin</a>
                                     <button class="mb-2 btn btn-default" data-toggle="modal" data-target="#addmdl">
-                                        Nouveau Docta</button>
+                                        Nouveau Docteur</button>
                                 </div>
                             </div>
                             <div class="table-responsive">
@@ -50,7 +50,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Nouveau docta</h5>
+                    <h5 class="modal-title">Nouveau Docteur</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">X</span>
                     </button>
@@ -118,7 +118,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit docta</h5>
+                    <h5 class="modal-title">Modification</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">X</span>
                     </button>
@@ -288,9 +288,10 @@
                             <td style="width: 10px">${i+1}</td>
                             <td>${e.name}</td>
                             <td>${e.email}<br>${e.phone}</td>
-                            <td>
+                            <td class='text-nowrap'>
                                 <b>Chats : <span class='badge badge-dark badge-pill'>${e.conversation}</span></b></br>
-                                <b>Messages : <span class='badge badge-dark badge-pill'>${e.message}</span></b>
+                                <b>Messages envoyés : <span class='badge badge-dark badge-pill'>${e.messageenvoye}</span></b></br>
+                                <b>Messages recus : <span class='badge badge-dark badge-pill'>${e.messagerecu}</span></b>
                             </td>
                             <td>${e.derniere_connexion} ${e.actif}</td>
                             <td>

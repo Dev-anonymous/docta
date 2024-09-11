@@ -51,9 +51,11 @@ class DoctaAPIController extends Controller
             $o->actif = $actif;
             $chat = $el->chats();
             $c = $chat->count();
-            $m =  Message::whereIn('chat_id', $chat->pluck('id')->all())->count();
+            $ma =  Message::whereIn('chat_id', $chat->pluck('id')->all())->where('fromuser', 1)->count();
+            $mr =  Message::whereIn('chat_id', $chat->pluck('id')->all())->where('fromuser', 0)->count();
             $o->conversation = $c;
-            $o->message = $m;
+            $o->messageenvoye = $ma;
+            $o->messagerecu = $mr;
             $data[] = $o;
         }
         return $data;

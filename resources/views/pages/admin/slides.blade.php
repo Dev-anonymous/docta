@@ -62,8 +62,8 @@
                             <textarea name="text" maxlength="450" class="form-control" cols="30" rows="5"></textarea>
                         </div>
                         <div class="form-group">
-                            <label class="col-form-label">Fichier (*) : .gif,.png,.jpg,.jpeg, 1.2Mo Max</label>
-                            <input type="file" accept=".gif,.png,.jpg,.jpeg" class="form-control" name="file"
+                            <label class="col-form-label">Fichier (*) : .gif,.svg,.png,.jpg,.jpeg, 1.2Mo Max</label>
+                            <input type="file" accept=".gif,.svg,.png,.jpg,.jpeg" class="form-control" name="file"
                                 required>
                         </div>
                         <div class="form-group">
@@ -127,8 +127,8 @@
                             <textarea name="text" maxlength="450" class="form-control" cols="30" rows="5"></textarea>
                         </div>
                         <div class="form-group">
-                            <label class="col-form-label">Fichier (optionnel) : .gif,.png,.jpg,.jpeg, 1.2Mo Max</label>
-                            <input type="file" accept=".gif,.png,.jpg,.jpeg" class="form-control" name="file">
+                            <label class="col-form-label">Fichier (optionnel) : .gif,.svg,.png,.jpg,.jpeg, 1.2Mo Max</label>
+                            <input type="file" accept=".gif,.svg,.png,.jpg,.jpeg" class="form-control" name="file">
                         </div>
                         <div class="form-group">
                             <div id="rep"></div>

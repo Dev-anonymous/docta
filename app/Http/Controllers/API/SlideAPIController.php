@@ -39,7 +39,7 @@ class SlideAPIController extends Controller
         $validator = Validator::make(request()->all(), [
             'title' => 'sometimes|max:100',
             'text' => 'sometimes|max:450',
-            'file' => 'required|mimes:png,jpg,jpeg,gif|max:1500',
+            'file' => 'required|mimes:png,jpg,jpeg,gif,svg|max:1500',
         ]);
 
         if ($validator->fails()) {
@@ -82,7 +82,7 @@ class SlideAPIController extends Controller
         $validator = Validator::make(request()->all(), [
             'title' => 'sometimes|max:100',
             'text' => 'sometimes|max:450',
-            'file' => 'sometimes|mimes:png,jpg,jpeg,gif|max:1500',
+            'file' => 'sometimes|mimes:png,jpg,jpeg,gif,svg|max:1500',
         ]);
 
         if ($validator->fails()) {
