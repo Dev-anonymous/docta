@@ -316,7 +316,7 @@ function defaultdata()
     }
 }
 
-function codemedecin($userl)
+function codemedecin($user)
 {
     $tab = explode(' ', str_replace('  ', '', $user));
     $n = '';

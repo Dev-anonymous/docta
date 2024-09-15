@@ -118,9 +118,22 @@ class AppController extends Controller
     function docta()
     {
         $id = request('docta_id');
-        $user = User::where(['id' => $id, 'user_role' => 'docta'])->first();
+        $docta_code = request('docta_code');
+        if (request()->has('docta_code')) {
+            $prof = Profil::where(['code' => $docta_code])->first();
+            if (!$prof) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Le code médecin que vous avez saisi n'est pas valide.",
+                ]);
+            }
+            $user = $prof->user;
+        } else {
+            $user = User::where(['id' => $id, 'user_role' => 'docta'])->first();
+        }
         if (!$user) {
             return response()->json([
+                'success' => false,
                 'message' => "Oops! veuillez reessayer plus tard.",
             ]);
         }
@@ -158,6 +171,34 @@ class AppController extends Controller
         return response()->json([
             'success' => true,
             'message' => "Vous discutez désormais avec le docteur " . ucwords($user->name) . ' (' . ucfirst($profi->categorie->categorie) . ')',
+        ]);
+    }
+
+    function getdocta()
+    {
+        $data = User::where(['user_role' => 'docta'])->orderBy('name')->get();
+        $tab = [];
+
+        foreach ($data as $el) {
+            $profi = $el->profils()->first();
+            $img = $profi?->image;
+            if (!$img) {
+                $img = asset('images/doc.jpg');
+            } else {
+                $img = asset('storage/' . $img);
+            }
+            $o = (object) [];
+            $o->id = $el->id;
+            $o->code = $profi->code;
+            $o->name = ucwords($el->name);
+            $o->type = ucfirst($profi->categorie->categorie);
+            $o->bio = ucfirst($profi->bio);
+            $o->image = $img;
+            $tab[] = $o;
+        }
+        return response()->json([
+            'success' => true,
+            'data' => $tab,
         ]);
     }
 

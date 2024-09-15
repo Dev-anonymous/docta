@@ -43,6 +43,7 @@ Route::prefix('v1')->group(function () {
         Route::post('/profil', [AppController::class, 'profil'])->name('api.profile');
         Route::get('/pay/pay-historique', [AppController::class, 'payhistorique']);
         Route::post('/docta', [AppController::class, 'docta'])->name('api.docta');
+        Route::get('/docta', [AppController::class, 'getdocta']);
     });
 
     Route::group(['middleware' => ['auth:sanctum']], function () {
