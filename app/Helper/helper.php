@@ -315,28 +315,26 @@ function defaultdata()
         }
     }
 
-    $ctid = Categorie::where('categorie', 'Médecin généraliste')->first()->id;
-    foreach (User::where('user_role', 'docta')->orderBy('name')->get() as $k => $e) {
+    $sms = Forfait::first()->sms;
+    foreach (User::where('user_role', 'docta')->get() as $k => $e) {
         $pro = $e->profils()->first();
-        if (!$pro) {
-            $e->update(['type' => 'interne']);
-            Profil::create([
-                'users_id' => $e->id,
-                'categorie_id' => $ctid,
-                'code' => codemedecin($e->name, $k + 1),
-            ]);
+        if ($pro->solde == 0) {
+            $chats = $e->chats()->pluck('id')->all();
+            $n = Message::where(['fromuser' => 0])->whereIn('chat_id', $chats)->count();
+            $sol =  $n * $sms;
+            $pro->update(['solde' => $sol]);
         }
     }
 }
 
-function codemedecin($user, $num = null)
+function codemedecin($userl)
 {
     $tab = explode(' ', str_replace('  ', '', $user));
     $n = '';
     foreach ($tab as $e) {
         $n .= substr($e, 0, 1);
     }
-    $t = $num ?? User::where('user_role', 'docta')->count() + 1;
+    $t =  User::where('user_role', 'docta')->count() + 1;
     if ($t <= 9) {
         $t = "00$t";
     } else if ($t >= 10 && $t <= 99) {

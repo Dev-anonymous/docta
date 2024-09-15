@@ -58,7 +58,7 @@ class DoctaAPIController extends Controller
             $o->conversation = $c;
             $o->messageenvoye = $ma;
             $o->messagerecu = $mr;
-            $sold = @$el->profil?->solde;
+            $sold = @$el->profils()->first()?->solde;
             $o->solde = "$ " . @number_format($sold, 3, '.', ' ');
             $o->categorie_id = @$el->profils()->first()->categorie_id;
             $o->bio = @$el->profils()->first()->bio;
@@ -133,7 +133,7 @@ class DoctaAPIController extends Controller
         } else {
             $img = asset('storage/' . $img);
         }
-        $sold = @$docta->profil?->solde;
+        $sold = @$docta->profils()->first()?->solde;
         $solde = "$ " . @number_format($sold, 3, '.', ' ');
         $status = '-';
         $validto = $profi?->validto?->format('d-m-Y') ?? '-';

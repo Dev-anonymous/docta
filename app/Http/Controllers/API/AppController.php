@@ -11,6 +11,7 @@ use App\Models\Download;
 use App\Models\Errorlog;
 use App\Models\Forfait;
 use App\Models\Message;
+use App\Models\Profil;
 use App\Models\Pushnotification;
 use App\Models\Solde;
 use App\Models\User;
@@ -226,6 +227,7 @@ class AppController extends Controller
                     Pushnotification::create([
                         'data' => $pushno
                     ]);
+                    Profil::where('users_id', $user->id)->increment('solde', $sms);
                 }
                 DB::commit();
                 $success = true;
