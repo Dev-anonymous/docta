@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Profil;
 use App\Models\Site;
 use App\Models\Slide;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class WEBController extends Controller
@@ -12,7 +14,7 @@ class WEBController extends Controller
     {
         // return view('pages.web.a');
         $slides = Slide::orderBy('id', 'desc')->get();
-        return view('pages.web.index', compact('slides'));
+        return view('pages.web.index', compact('slides',));
     }
     function politique()
     {

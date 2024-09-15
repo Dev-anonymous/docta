@@ -53,6 +53,7 @@ class ForfaitAPIController extends Controller
         $validator = Validator::make(request()->all(), [
             'appel' => 'required|numeric',
             'sms' => 'required|numeric',
+            'compte' => 'required|numeric',
             'sendpush' => 'sometimes',
             'pushtitle' => 'sometimes',
             'pushmessage' => 'sometimes',

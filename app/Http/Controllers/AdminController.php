@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\App;
 use App\Models\Appversion;
+use App\Models\Categorie;
 use App\Models\Contact;
 use App\Models\Errorlog;
 use App\Models\Forfait;
@@ -30,7 +31,13 @@ class AdminController extends Controller
 
     public function docta()
     {
-        return view('pages.admin.docta');
+        $categories = Categorie::orderBy('categorie')->get();
+        return view('pages.admin.docta', compact('categories'));
+    }
+
+    public function categorie()
+    {
+        return view('pages.admin.categorie');
     }
 
     public function conseils()

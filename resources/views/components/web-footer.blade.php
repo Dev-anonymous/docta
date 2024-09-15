@@ -13,11 +13,15 @@
 
         </div>
         <div class="social-links text-center text-md-right pt-3 pt-md-0">
-            <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
-            <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
-            <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
-            <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
-            <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+            <a href="https://x.com/Doctatam?t=PCAkDjLrPv4M0IfiJSjv3g&s=08" target="_blank" class="twitter"><i
+                    class="bi bi-twitter"></i></a>
+            <a href="https://www.facebook.com/people/Ton-ami-m%C3%A9decin/61564993377127" target="_blank"
+                class="facebook"><i class="bi bi-facebook"></i></a>
+            <a href="https://www.threads.net/@d.o.c.t.a" target="_blank"><i class="bi bi-threads"></i></a>
+            <a href="https://www.instagram.com/d.o.c.t.a?igsh=aDBzY2xoOHdzaHcx" target="_blank" class="instagram"><i
+                    class="bi bi-instagram"></i></a>
+            <a href="https://www.linkedin.com/in/docta-ton-ami-m%C3%A9decin-9a08b4322" target="_blank"
+                class="linkedin"><i class="bi bi-linkedin"></i></i></a>
         </div>
     </div>
 </footer>

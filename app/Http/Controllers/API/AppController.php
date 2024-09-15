@@ -33,10 +33,6 @@ class AppController extends Controller
     function appversion()
     {
         $appversion = Appversion::first();
-
-        if ($appversion) {
-        }
-
         return response()->json([
             'success' => true,
             'data' => $appversion,
@@ -116,6 +112,52 @@ class AppController extends Controller
         } else {
             Download::create(['ip' => $ip, 'nb' => 1, 'useragent' => $usera, 'date' => $date]);
         }
+    }
+
+    function docta()
+    {
+        $id = request('docta_id');
+        $user = User::where(['id' => $id, 'user_role' => 'docta'])->first();
+        if (!$user) {
+            return response()->json([
+                'message' => "Oops! veuillez reessayer plus tard.",
+            ]);
+        }
+        $app = userapp();
+        $chat = $app->chats()->first();
+        if (!$chat) {
+            $chat = Chat::create(['app_id' => $app->id, 'date' => now('Africa/Lubumbashi')]);
+            assignchat();
+        }
+
+        DB::beginTransaction();
+        $olddocta = User::where(['id' => $chat->users_id, 'user_role' => 'docta'])->first();
+        if ($olddocta) {
+            $title = "Changement du docteur";
+            $message = "Le patient " . ($app->nom ? ucfirst($app->nom) : $app->uid) . ' vient de migrer vers un autre docteur.';
+            $pushno = json_encode(['to' => ['user', $olddocta->id], 'title' => $title, 'message' => $message]);
+            Pushnotification::create([
+                'data' => $pushno
+            ]);
+        }
+        $title = "Nouveau patient";
+        $message = "Le patient " . ($app->nom ? ucfirst($app->nom) : $app->uid) . ' vient de vous choisir pour une nouvelle conversation';
+        $pushno = json_encode(['to' => ['user', $user->id], 'title' => $title, 'message' => $message]);
+        Pushnotification::create([
+            'data' => $pushno
+        ]);
+
+        $app->update(['premium' => 1]);
+        $chat->update(['users_id' => $user->id, 'sent' => 0]);
+        Message::where('chat_id', $chat->id)->update(['senttouser' => 0]);
+
+        DB::commit();
+
+        $profi = $user->profils()->first();
+        return response()->json([
+            'success' => true,
+            'message' => "Vous discutez désormais avec le docteur " . ucwords($user->name) . ' (' . ucfirst($profi->categorie->categorie) . ')',
+        ]);
     }
 
     public function message()

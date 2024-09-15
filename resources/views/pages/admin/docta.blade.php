@@ -58,6 +58,25 @@
                 <form id="fadd">
                     <div class="modal-body">
                         <div class="form-group">
+                            <label for="">Type</label>
+                            <select name="type" id="" class="form-control">
+                                <option value="interne">Interne</option>
+                                <option value="externe">Externe</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Catégorie du docteur</label>
+                            <select name="categorie_id" id="" class="form-control">
+                                @foreach ($categories as $el)
+                                    <option value="{{ $el->id }}">{{ ucfirst($el->categorie) }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Dossier du médecin (optionnel) : .pdf 1.2Mo Max</label>
+                            <input type="file" accept=".pdf" class="form-control" name="file">
+                        </div>
+                        <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Nom</label>
                             <input type="text" class="form-control" name="name" required>
                         </div>
@@ -67,12 +86,21 @@
                         </div>
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Téléphone</label>
-                            <input type="text" class="form-control" name="phone" maxlength="10" minlength="10" "[0-9]"
+                            <input type="text" class="form-control" name="phone" maxlength="10" minlength="10"
                                 placeholder="Ex : 099xxxxxxx" required>
                         </div>
                         <div class="form-group">
+                            <label for="">Biographie</label>
+                            <textarea class="form-control" name="bio" cols="30" rows="3" maxlength="255"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Image du médecin (optionnel) : png,jpg,jpeg 1.2Mo Max</label>
+                            <input type="file" accept=".png,.jpg,.jpeg" class="form-control" name="image">
+                        </div>
+                        <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Mot de passe de connexion</label>
-                            <input type="password" role="presentation" autocomplete="off" class="form-control" required name="pass">
+                            <input type="password" role="presentation" autocomplete="off" class="form-control" required
+                                name="pass">
                         </div>
                         <div class="form-group">
                             <div id="rep"></div>
@@ -127,6 +155,18 @@
                     <input type="hidden" name="id">
                     <div class="modal-body">
                         <div class="form-group">
+                            <label for="">Catégorie du docteur</label>
+                            <select name="categorie_id" id="" class="form-control">
+                                @foreach ($categories as $el)
+                                    <option value="{{ $el->id }}">{{ ucfirst($el->categorie) }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Dossier du médecin (optionnel) : .pdf 1.2Mo Max</label>
+                            <input type="file" accept=".pdf" class="form-control" name="file">
+                        </div>
+                        <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Nom</label>
                             <input type="text" class="form-control" name="name" required>
                         </div>
@@ -136,13 +176,22 @@
                         </div>
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Téléphone</label>
-                            <input type="text" class="form-control" name="phone" maxlength="10"
-                                minlength="10" "[0-9]" placeholder="Ex : 099xxxxxxx" required>
+                            <input type="text" class="form-control" name="phone" maxlength="10" minlength="10"
+                                placeholder="Ex : 099xxxxxxx" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Biographie</label>
+                            <textarea class="form-control" name="bio" cols="30" rows="3" maxlength="255"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Image du médecin (optionnel) : png,jpg,jpeg 1.2Mo Max</label>
+                            <input type="file" accept=".png,.jpg,.jpeg" class="form-control" name="image">
                         </div>
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Mot de passe de
                                 connexion(optionnel)</label>
-                            <input type="password" role="presentation" autocomplete="off" class="form-control" name="pass">
+                            <input type="password" role="presentation" autocomplete="off" class="form-control"
+                                name="pass">
                         </div>
                         <div class="form-group">
                             <div id="rep"></div>
@@ -151,6 +200,31 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-default"><span></span> Valider</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="detmdl" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Détails du compte</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">X</span>
+                    </button>
+                </div>
+                <form id="fadd">
+                    <div class="modal-body">
+                        <div class="jumbotron p-3 data">
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
                     </div>
                 </form>
 
@@ -170,13 +244,15 @@
                 var form = $(this);
                 var btn = $(':submit', form);
                 btn.find('span').removeClass().addClass('fa fa-spinner fa-spin');
-                var data = form.serialize();
+                var data = new FormData(form[0]);
                 $(':input', form).attr('disabled', true);
                 var rep = $('#rep', form);
                 rep.stop().slideUp();
                 $.ajax({
                     type: 'post',
                     data: data,
+                    contentType: false,
+                    processData: false,
                     url: '{{ route('doctas.store') }}',
                     success: function(data) {
                         if (data.success) {
@@ -229,7 +305,6 @@
                         rep.html(data.message).slideDown();
                     },
                     error: function(data) {
-                        console.log(rep);
                         rep.removeClass().addClass('alert alert-danger').html(
                             "Erreur, veuillez réessayer.").slideDown();
                     }
@@ -244,14 +319,16 @@
                 var form = $(this);
                 var btn = $(':submit', form);
                 btn.find('span').removeClass().addClass('fa fa-spinner fa-spin');
-                var data = form.serialize();
+                var data = new FormData(form[0]);
                 var id = $('[name=id]', form).val();
                 $(':input', form).attr('disabled', true);
                 var rep = $('#rep', form);
                 rep.stop().slideUp();
                 $.ajax({
-                    type: 'put',
+                    type: 'post',
                     data: data,
+                    contentType: false,
+                    processData: false,
                     url: '{{ route('doctas.update', '') }}/' + id,
                     success: function(data) {
                         if (data.success) {
@@ -278,7 +355,7 @@
 
             var table = $('[table]');
 
-            function getdocta() {
+            function getdocta(interval = false) {
                 $("[loader]").html('<i class="fa fa-spinner fa-spin"></i>');
                 $.getJSON('{{ route('doctas.index') }}', function(data) {
                     var str = '';
@@ -286,14 +363,15 @@
                         str += `
                         <tr>
                             <td style="width: 10px">${i+1}</td>
-                            <td>${e.name}</td>
-                            <td>${e.email}<br>${e.phone}</td>
-                            <td class='text-nowrap'>
+                            <td style='cursor:pointer' details id=${e.id}>${e.name}</td>
+                            <td style='cursor:pointer' details id=${e.id}>${e.email}<br>${e.phone}</td>
+                            <td class='text-nowrap' style='cursor:pointer' details id=${e.id}>
                                 <b>Chats : <span class='badge badge-dark badge-pill'>${e.conversation}</span></b></br>
                                 <b>Messages envoyés : <span class='badge badge-dark badge-pill'>${e.messageenvoye}</span></b></br>
-                                <b>Messages recus : <span class='badge badge-dark badge-pill'>${e.messagerecu}</span></b>
+                                <b>Messages recus : <span class='badge badge-dark badge-pill'>${e.messagerecu}</span></b></br>
+                                <b>Solde : <span class='badge badge-danger badge-pill' style='font-size:15px'>${e.solde}</span></b>
                             </td>
-                            <td>${e.derniere_connexion} ${e.actif}</td>
+                            <td style='cursor:pointer' details id=${e.id} >${e.derniere_connexion} ${e.actif}</td>
                             <td>
                                 <div class='d-flex'>
                                     <button user="${escape(e.name)}" value='${e.id}' class='bdel btn btn-outline-danger btn-sm m-1'><i class='fa fa-trash'></i></button>
@@ -319,11 +397,89 @@
                         var cmpt = JSON.parse(unescape(d));
                         var mdl = $('#editmdl');
                         $('[name=id]', mdl).val(cmpt.id);
+                        $('[name=bio]', mdl).val(cmpt.bio);
+                        $('[name=categorie_id]', mdl).val(cmpt.categorie_id);
                         $('[name=name]', mdl).val(cmpt.name);
                         $('[name=email]', mdl).val(cmpt.email);
                         $('[name=phone]', mdl).val(cmpt.phone);
                         mdl.modal('show');
-                    })
+                    });
+                    $('[details]').off('click').click(function() {
+                        var id = $(this).attr('id');
+                        var mdl = $('#detmdl');
+
+                        $('.data', mdl).html(
+                            '<div class="w-100 text-center"><i class="fa fa-spin fa-spinner fa-5x"></i></div>'
+                        );
+
+                        $.ajax({
+                            url: '{{ route('doctas.show', '') }}/' + id,
+                            success: function(rep) {
+                                var trans = rep.transfert;
+                                var pro = rep.profil;
+                                var mess = rep.message;
+                                var html = `
+                                <div class="d-flex justify-content-center">
+                                    <div class="">
+                                        <img class='img-circle' style="object-fit: contain" src="${pro.image}" width="150px"
+                                            height="150px" alt="">
+                                    </div>
+                                </div>
+                                <b>Profil</b>
+                                <h4>${pro.name}</h4>
+                                <h5>Tel : ${pro.phone}</h5>
+                                <h5>Email : ${pro.email}</h5>
+                                <h5>Code docteur : ${pro.code}</h5>
+                                <h5>Lien docteur : {{ route('web.index', ['docta'=>'']) }}${pro.code}</h5>
+                                <h5>Solde : <span class="badge badge-info">${pro.solde}</span></h5>
+                                <h5>Catégorie : ${pro.categorie}</h5>
+                                <h5>Type : ${pro.type}</h5>
+                                <h5>Bio : ${pro.bio}</h5>
+                                <h5>Fin abonnement : ${pro.finabonnement}</h5>
+                                <h5>Status compte : ${pro.status}</h5>
+                                <h5>Dossier PDF : ${pro.dossier}</h5>
+                                <hr>
+                                <b>Message</b>
+                                <h5>Clients assignés : ${mess.client}</h5>
+                                <h5>Message envoyé : ${mess.messageenvoye}</h5>
+                                <h5>Message re&ccirc;u : ${mess.messagerecu}</h5>
+                                <hr>
+                                <b class="pb-5">Historique de transferts</b>
+                                <div style="max-height:500px; overflow:auto;">
+                                `;
+
+                                var p = '';
+                                trans.forEach(element => {
+                                    p += `
+                                        <div class="card m-0 mb-2" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">
+                                            <div class="card-body p-2 d-flex">
+                                                <div class="">
+                                                    <img style="object-fit: contain" src="{{ asset('images/mmoney.png') }}" width="50px"
+                                                        height="50px" alt="">
+                                                </div>
+                                                <div class="pl-2" style="line-height: 15px">
+                                                    <b>${element.montant}<br>
+                                                        ${element.ref} <br>
+                                                        ${element.date} </b>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+                                });
+                                html += p;
+                                html += '</div>';
+
+                                $('.data', mdl).html(html);
+                            },
+                            error: function(rep) {
+                                $('.data', mdl).html(
+                                    '<div class="w-100 text-center text-danger">Erreur de chargement, veuillez réessayer.</div>'
+                                );
+                            }
+                        })
+                        mdl.modal('show');
+                    });
+
 
                     $("[data-toggle='tooltip']").tooltip('dispose');
                     $("[data-toggle='tooltip']").off('tooltip').tooltip();
@@ -332,15 +488,14 @@
                     });
                 }).always(function() {
                     $("[loader]").html('');
-                    setTimeout(() => {
-                        getdocta();
-                    }, 3000);
+                    if (interval) {
+                        setTimeout(() => {
+                            getdocta();
+                        }, 3000);
+                    }
                 })
             }
-
-            getdocta();
-
-
+            getdocta(true);
         })
     </script>
 @endsection

@@ -51,6 +51,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('site', 'site')->name('admin.site');
                 Route::get('log', 'log')->name('admin.log');
                 Route::get('app', 'app')->name('admin.app');
+                Route::get('categorie', 'categorie')->name('admin.categorie');
             });
         });
     });

@@ -16,14 +16,14 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
-                                <h4 class="card-title">Facturation d'appel</h4>
+                                <h4 class="card-title">Facturation</h4>
 
                             </div>
                             <div class="table-responsive">
                                 <table table class="table table-striped table-hover table-condensed zero-configuration">
                                     <thead>
                                         <tr>
-                                            <th>Prix d'appel</th>
+                                            <th>Facturation</th>
                                             <th style="width: 100px !important"></th>
                                         </tr>
                                     </thead>
@@ -31,7 +31,8 @@
                                         <tr class="text-nowrap">
                                             <td>
                                                 Appel : {{ $data->appel }} USD/Sec <br>
-                                                SMS : {{ $data->sms }} USD/SMS
+                                                SMS : {{ $data->sms }} USD/SMS <br>
+                                                Compte docteur : {{ $data->compte }} USD pour 6 mois <br>
                                             </td>
                                             <td>
                                                 <button data-toggle="modal" data-target="#editmdl"
@@ -71,6 +72,11 @@
                             <label for="recipient-name" class="col-form-label">SMS : Prix par message</label>
                             <input type="number" min="0" step="0.001" value="{{ $data->sms }}"
                                 class="form-control" name="sms" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Compte docteur</label>
+                            <input type="number" min="0" step="0.001" value="{{ $data->compte }}"
+                                class="form-control" name="compte" required>
                         </div>
                         <div class="form-group">
                             <div class="form-check">

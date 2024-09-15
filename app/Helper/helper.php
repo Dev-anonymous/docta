@@ -1,11 +1,13 @@
 <?php
 
 use App\Models\App;
+use App\Models\Categorie;
 use App\Models\Chat;
 use App\Models\Forfait;
 use App\Models\Gopay;
 use App\Models\Message;
 use App\Models\Paiement;
+use App\Models\Profil;
 use App\Models\Pushnotification;
 use App\Models\Taux;
 use App\Models\User;
@@ -261,7 +263,7 @@ function assignchat($chats = [], $skipeuser = 0)
     $notify = [];
     foreach ($chats as $el) {
         $uchat = [];
-        $doc = User::where('user_role', 'docta');
+        $doc = User::where(['user_role' => 'docta', 'type' => 'interne']);
         if ($skipeuser) {
             $doc = $doc->where('id', '!=', $skipeuser);
         }
@@ -291,7 +293,6 @@ function assignchat($chats = [], $skipeuser = 0)
             ]);
         }
     }
-
     DB::commit();
 }
 
@@ -303,4 +304,54 @@ function isconnected($last_login)
     $l = $last_login->diffForHumans();
     $days = $m / 1440;
     return (object) ['ok' =>  $m <= 3, 'lastlogin' => $m, 'label' => $l, 'days' => $days];
+}
+
+function defaultdata()
+{
+    $c = Categorie::first();
+    if (!$c) {
+        foreach (['Médecin généraliste' => "Assure votre suivi personnalisé et vous prescrit des traitements adaptés.", 'Gynécologue' => 'Spécialisé dans les maladies de la physiologie et des maladies de l\'appareil génital.'] as $k => $v) {
+            Categorie::create(['categorie' => $k, 'description' => $v]);
+        }
+    }
+
+    $ctid = Categorie::where('categorie', 'Médecin généraliste')->first()->id;
+    foreach (User::where('user_role', 'docta')->orderBy('name')->get() as $k => $e) {
+        $pro = $e->profils()->first();
+        if (!$pro) {
+            $e->update(['type' => 'interne']);
+            Profil::create([
+                'users_id' => $e->id,
+                'categorie_id' => $ctid,
+                'code' => codemedecin($e->name, $k + 1),
+            ]);
+        }
+    }
+}
+
+function codemedecin($user, $num = null)
+{
+    $tab = explode(' ', str_replace('  ', '', $user));
+    $n = '';
+    foreach ($tab as $e) {
+        $n .= substr($e, 0, 1);
+    }
+    $t = $num ?? User::where('user_role', 'docta')->count() + 1;
+    if ($t <= 9) {
+        $t = "00$t";
+    } else if ($t >= 10 && $t <= 99) {
+        $t = "0$t";
+    }
+    $v = "$n-$t-";
+    $rn = rand(1000, 9999);
+    $v .= $rn;
+
+    while (1) {
+        if (Profil::where('code', $v)->first()) {
+            return codemedecin($user);
+        } else {
+            break;
+        }
+    }
+    return strtoupper($v);
 }

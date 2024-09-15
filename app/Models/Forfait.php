@@ -13,7 +13,8 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property int $id
  * @property float $appel
- * @property float|null $sms
+ * @property float $sms
+ * @property float|null $compte
  *
  * @package App\Models
  */
@@ -24,11 +25,13 @@ class Forfait extends Model
 
 	protected $casts = [
 		'appel' => 'float',
-		'sms' => 'float'
+		'sms' => 'float',
+		'compte' => 'float'
 	];
 
 	protected $fillable = [
 		'appel',
-		'sms'
+		'sms',
+		'compte'
 	];
 }

@@ -171,7 +171,6 @@
                         })
 
                         mdl.modal('show');
-                        console.log(id);
                     });
                     table.DataTable({
                         stateSave: true

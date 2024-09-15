@@ -27,8 +27,10 @@ use Laravel\Sanctum\HasApiTokens;
  * @property Carbon|null $derniere_connexion
  * @property string|null $user_role
  * @property string|null $fcmtoken
+ * @property string|null $type
  *
  * @property Collection|Chat[] $chats
+ * @property Collection|Profil[] $profils
  *
  * @package App\Models
  */
@@ -58,11 +60,17 @@ class User extends Authenticatable
 		'phone',
 		'derniere_connexion',
 		'user_role',
-		'fcmtoken'
+		'fcmtoken',
+		'type'
 	];
 
 	public function chats()
 	{
 		return $this->hasMany(Chat::class, 'users_id');
+	}
+
+	public function profils()
+	{
+		return $this->hasMany(Profil::class, 'users_id');
 	}
 }

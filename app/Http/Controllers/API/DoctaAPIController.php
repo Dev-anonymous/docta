@@ -4,10 +4,12 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Message;
+use App\Models\Profil;
 use App\Models\Pushnotification;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -56,6 +58,10 @@ class DoctaAPIController extends Controller
             $o->conversation = $c;
             $o->messageenvoye = $ma;
             $o->messagerecu = $mr;
+            $sold = @$el->profil?->solde;
+            $o->solde = "$ " . @number_format($sold, 3, '.', ' ');
+            $o->categorie_id = @$el->profils()->first()->categorie_id;
+            $o->bio = @$el->profils()->first()->bio;
             $data[] = $o;
         }
         return $data;
@@ -72,8 +78,13 @@ class DoctaAPIController extends Controller
         $validator = Validator::make(request()->all(), [
             'name' => 'required',
             'email' => 'required|unique:users',
-            'phone' => 'required|min:10|unique:users',
+            'phone' => 'required|min:10|max:10|unique:users',
             'pass' => 'required',
+            'type' => 'required|in:interne,externe',
+            'categorie_id' => 'required|exists:categorie,id',
+            'file' => 'sometimes|mimes:pdf|max:1500',
+            'image' => 'sometimes|mimes:png,jpg,jpeg|max:1500',
+            'bio' => 'sometimes|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -86,7 +97,19 @@ class DoctaAPIController extends Controller
         $data = $validator->validated();
         $data['password'] = Hash::make(request('pass'));
         $data['user_role'] = 'docta';
-        User::create($data);
+        if (request()->has('file')) {
+            $data['file'] = request('file')->store('docs', 'public');
+        }
+        if (request()->has('image')) {
+            $data['image'] = request('image')->store('profil', 'public');
+        }
+
+        DB::beginTransaction();
+        $user =  User::create($data);
+        $data['users_id'] = $user->id;
+        $data['code'] = codemedecin($user->name);
+        $profil = Profil::create($data);
+        DB::commit();
 
         return response([
             'success' => true,
@@ -100,9 +123,72 @@ class DoctaAPIController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $docta)
     {
-        //
+        $profi = $docta->profils()->first();
+        $img = $profi?->image;
+
+        if (!$img) {
+            $img = asset('images/doc.jpg');
+        } else {
+            $img = asset('storage/' . $img);
+        }
+        $sold = @$docta->profil?->solde;
+        $solde = "$ " . @number_format($sold, 3, '.', ' ');
+        $status = '-';
+        $validto = $profi?->validto?->format('d-m-Y') ?? '-';
+        if ($docta->type == 'interne') {
+            $validto = '-';
+            $status = '-';
+        } else {
+            $status = $docta->actif ? '<span class="badge badge-success badge-pill">ACTIF</span>' : '<span class="badge badge-danger badge-pill">INACTIF</span>';
+        }
+
+        $do = '';
+        if ($profi?->file) {
+            $h = asset('storage/' . $profi->file);
+            $do = "<a href='$h' target='_blank'><i class='fa fa-file'></i></a>";
+        }
+
+        $data['profil'] = [
+            'name' => ucwords($docta->name),
+            'email' => $docta->email ?? '-',
+            'phone' => $docta->phone ?? '',
+            'image' => $img,
+            'solde' => $solde,
+            'type' => $docta->type,
+            'categorie' => $profi?->categorie->categorie,
+            'finabonnement' => $validto,
+            'status' => $status,
+            'bio' => $profi->bio ?? '-',
+            'dossier' => $do,
+            'code' => $profi?->code,
+        ];
+
+        $trans = $profi?->transferts()->orderBy('id', 'desc')->get();
+        $tt = [];
+        foreach ($trans ?? [] as $el) {
+            $o = (object) $el->toArray();
+            $o->montant = "$ " . @number_format($el->montant, 3, '.', ' ');
+            $o->date = $el->date->format('d-m-Y');
+            $tt[] = $o;
+        }
+        $trans = $tt;
+        $data['transfert'] = $trans;
+
+        $chat = $docta->chats();
+        $c = $chat->count();
+
+        $ma =  Message::whereIn('chat_id', $chat->pluck('id')->all())->where('fromuser', 1)->count();
+        $mr =  Message::whereIn('chat_id', $chat->pluck('id')->all())->where('fromuser', 0)->count();
+
+        $data['message'] = [
+            'client' => $c,
+            'messageenvoye' => $ma,
+            'messagerecu' => $mr,
+        ];
+
+        return $data;
     }
 
     /**
@@ -117,8 +203,12 @@ class DoctaAPIController extends Controller
         $validator = Validator::make(request()->all(), [
             'name' => 'required',
             'email' => 'required|unique:users,email,' . $docta->id,
-            'phone' => 'required|min:10|unique:users,phone,' . $docta->id,
+            'phone' => 'required|min:10|max:10|unique:users,phone,' . $docta->id,
             'pass' => 'sometimes',
+            'categorie_id' => 'required|exists:categorie,id',
+            'file' => 'sometimes|mimes:pdf|max:1500',
+            'image' => 'sometimes|mimes:png,jpg,jpeg|max:1500',
+            'bio' => 'sometimes|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -132,7 +222,21 @@ class DoctaAPIController extends Controller
         if (request('pass')) {
             $data['password'] = Hash::make(request('pass'));
         }
+
+        DB::beginTransaction();
+        $profil = $docta->profils()->first();
+        if (request()->has('file')) {
+            File::delete('storage/' . $profil->file);
+            $data['file'] = request('file')->store('docs', 'public');
+        }
+        if (request()->has('image')) {
+            File::delete('storage/' . $profil->image);
+            $data['image'] = request('image')->store('profil', 'public');
+        }
+
         $docta->update($data);
+        $profil->update($data);
+        DB::commit();
 
         return response([
             'success' => true,

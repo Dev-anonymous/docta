@@ -8,9 +8,17 @@
                 <ul aria-expanded="true">
                     <li><a href="{{ route('admin.home') }}">Accueil</a></li>
                     <li><a href="{{ route('admin.client') }}">Clients</a></li>
-                    <li><a href="{{ route('admin.docteur') }}">Docteurs</a></li>
                     <li><a href="{{ route('admin.slides') }}">Slides</a></li>
                     <li><a href="{{ route('admin.contact') }}">Contact & Feedback</a></li>
+                </ul>
+            </li>
+            <li>
+                <a menulabel class="has-arrow" href="javascript:void()" aria-expanded="false">
+                    <i class="fa fa-user-md menu-icon"></i><span class="nav-text">Docteurs</span>
+                </a>
+                <ul aria-expanded="true">
+                    <li><a href="{{ route('admin.docteur') }}">Docteurs</a></li>
+                    <li><a href="{{ route('admin.categorie') }}">Catégories docteurs</a></li>
                 </ul>
             </li>
             <li>

@@ -240,14 +240,19 @@
                     </span>
                 </span>
             </div>
-            <div class="w-100 appcolor ">
-                <span class="badge bg-secondary pulse2" btnprofile style="cursor: pointer">
-                    <i class="fa fa-info-circle text-muted"></i>
-                    <span solde></span>
-                </span>
-
-                <a href="#" style="margin-left: 20px" data-bs-toggle="modal" data-bs-target="#mdl-welcome"><i
-                        class="fa fa-exclamation-circle text-warning fa-spin"></i></a>
+            <div class="w-100 appcolor pt-3">
+                <div class="d-flex justify-content-between">
+                    <div class="">
+                        <span class="badge bg-secondary pulse2" btnprofile style="cursor: pointer">
+                            <i class="fa fa-info-circle text-muted"></i>
+                            <span solde></span>
+                        </span>
+                    </div>
+                    <a href="#" class="btn btn-sm btn-outline-primary text-white" style="margin-left: 20px"
+                        data-bs-toggle="modal" data-bs-target="#mdl-docta">
+                        <i class="fa fa-user-md"></i> Docteur
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -473,10 +478,142 @@
         </div>
     </div>
 </div>
+@php
+    $docta = App\Models\User::where('user_role', 'docta')->orderBy('name', 'desc')->get();
+
+    $code = request('docta');
+    $docta_id = false;
+    $text = '';
+    if ($code) {
+        $pro = App\Models\Profil::where('code', $code)->first();
+        if ($pro) {
+            $docta_id = $pro?->users_id;
+            $text =
+                'Voulez-vous choisir le docteur <b>' .
+                ucwords($pro->user->name) .
+                ' (' .
+                ucfirst($pro?->categorie->categorie) .
+                ')</b>' .
+                ' pour la discussion ?';
+        }
+    }
+    $show = (bool) $docta_id;
+@endphp
+<div class="modal fade" id="mdl-docta" tabindex="-1" role="dialog" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content ">
+            <div class="modal-body">
+                <div class="p-3 rounded-5" style="background-color: rgba(0, 0, 0, 0.075)">
+                    <div class="d-flex justify-content-between">
+                        <h4>Changement du docteur</h4>
+                        <img src="{{ asset('images/logo.png') }}" alt="" width="150px">
+                    </div>
+                    <div class="mt-4">
+                        <h5>Voulez-vous parler à un médecin spécifique ? sélectionnez le médecin qu'il vous faut.</h5>
+                        <div class="row">
+                            @foreach ($docta as $el)
+                                @php
+                                    $profi = $el->profils()->first();
+                                    $img = $profi?->image;
+                                    if (!$img) {
+                                        $img = asset('images/doc.jpg');
+                                    } else {
+                                        $img = asset('storage/' . $img);
+                                    }
+                                    $text =
+                                        'Voulez-vous choisir le docteur <b>' .
+                                        ucwords($el->name) .
+                                        ' (' .
+                                        ucfirst($profi?->categorie->categorie) .
+                                        ')</b>' .
+                                        ' pour la discussion ?';
+                                @endphp
+                                <div class="col-md-6 col-lg-4 col-12">
+                                    <div class="card m-2 p-2 divdocta">
+                                        <div class="d-flex justify-content-center">
+                                            <div class="">
+                                                <img class='img-circle' style="object-fit: contain"
+                                                    src="{{ $img }}" width="100px" height="100px"
+                                                    alt="">
+                                            </div>
+                                        </div>
+                                        <p style="font-weight: 900" class="m-0">{{ ucwords($el->name) }}</p>
+                                        <p style="font-weight: 300" class="m-0">
+                                            <i>{{ ucfirst($profi?->categorie->categorie) }}</i>
+                                        </p>
+                                        <p style="font-weight: 300" class="m-0">
+                                            <i>Code médecin : {{ $profi?->code }}</i>
+                                        </p>
+                                        <div class="mt-3" style="height: 180px; overflow: auto;">
+                                            <p style="font-weight: 300" class="m-0">
+                                                {{ ucfirst($profi?->bio) }}
+                                            </p>
+                                        </div>
+                                        <div class="d-flex justify-content-end">
+                                            <button value="{{ $el->id }}" class="btn btn-sm btn-info bdocta"
+                                                data-bs-target="#mdl-change-docta" data-bs-toggle="modal"
+                                                text="{{ $text }}">
+                                                <i class="fa fa-user-md"></i> Choisir
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-outline-dark my-2" data-bs-dismiss="modal">
+                        Fermer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdl-change-docta" tabindex="-1" role="dialog" aria-hidden="true"
+    data-bs-backdrop="static">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content ">
+            <div class="modal-body">
+                <div class="p-3 rounded-5" style="background-color: rgba(0, 0, 0, 0.075)">
+                    <div class="d-flex justify-content-between">
+                        <h4>Changement du docteur</h4>
+                        <img src="{{ asset('images/logo.png') }}" alt="" width="150px">
+                    </div>
+                    <form action="#" class="form" id="fdoc">
+                        <div class="mt-4">
+                            <h5 changemsg>{!! $text !!}</h5>
+                            <p id="rep" style="font-weight: 900"></p>
+                        </div>
+                        <input type="hidden" value="{{ $show ? $docta_id : '' }}" name="docta_id" id="docta_id">
+                        <button type="button" class="btn btn-sm btn-outline-dark my-2 m-2 bclo"
+                            data-bs-dismiss="modal">
+                            NON
+                        </button>
+                        <button type="submit" class="btn btn-info btn-sm my-2 m-2 byes">
+                            <span></span> OUI JE CONFIRME
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="{{ asset('assets/js/moment.js') }}"></script>
 <script src="{{ asset('assets/js/wow.js') }}"></script>
 <link rel="stylesheet" href="{{ asset('assets/css/animate.css') }}">
+<style>
+    .divdocta {
+        box-shadow: 0px 10px 45px rgba(2, 187, 255, 0.1);
+        transition: transform .5s;
+    }
+
+    .divdocta:hover {
+        box-shadow: 0px 10px 45px rgba(2, 187, 255, 0.5);
+        transform: scale(1.02);
+    }
+</style>
 
 <script>
     new WOW().init();
@@ -500,7 +637,61 @@
 
     $(function() {
         $("[data-toggle='tooltip']").tooltip();
-    })
+    });
+
+    @if ($show)
+        $(function() {
+            $('#mdl-change-docta').modal('show');
+        })
+    @endif
+
+    $('.bdocta').click(function() {
+        var txt = $(this).attr('text');
+        var id = this.value;
+        $('[changemsg]').html(txt);
+        $('#docta_id').val(id);
+        $('.byes').show();
+        $('.bclo').html('NON').show();
+        $('#rep', $('#fdoc')).removeClass().html('');
+    });
+
+    $('#fdoc').submit(function() {
+        event.preventDefault();
+        var form = $(this);
+        var btn = $(':submit', form);
+        btn.find('span').removeClass().addClass('fa fa-spinner fa-spin');
+        var data = form.serialize();
+        $(':input', form).attr('disabled', true);
+        var rep = $('#rep', form);
+        rep.stop().slideUp();
+        $.ajax({
+            type: 'post',
+            data: data,
+            url: '{{ route('api.docta') }}',
+            success: function(data) {
+                if (data.success) {
+                    rep.removeClass().addClass('alert alert-success');
+                    $('.byes').fadeOut();
+                    $('.bclo').html('Fermer');
+                    @if ($show)
+                        setTimeout(() => {
+                            location.assign('{{ route('web.index') }}');
+                        }, 5000);
+                    @endif
+                } else {
+                    rep.removeClass().addClass('alert alert-danger');
+                }
+                rep.html(data.message).slideDown();
+            },
+            error: function(data) {
+                rep.removeClass().addClass('alert alert-danger').html(
+                    "Erreur, veuillez réessayer.").slideDown();
+            }
+        }).always(function() {
+            btn.find('span').removeClass();
+            $(':input', form).attr('disabled', false);
+        })
+    });
 
     // if (iOS()) {
     // $('#dapp').fadeOut();

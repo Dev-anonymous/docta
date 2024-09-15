@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\AppController;
 use App\Http\Controllers\API\AppVersionAPIController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\CategorieAPIController;
 use App\Http\Controllers\API\ClientAPIController;
 use App\Http\Controllers\API\ConseilAPIController;
 use App\Http\Controllers\API\ConseilMedicalAPIController;
@@ -41,6 +42,7 @@ Route::prefix('v1')->group(function () {
         Route::post('/pay/cardpayment', [PAYController::class, 'cardpayment']);
         Route::post('/profil', [AppController::class, 'profil'])->name('api.profile');
         Route::get('/pay/pay-historique', [AppController::class, 'payhistorique']);
+        Route::post('/docta', [AppController::class, 'docta'])->name('api.docta');
     });
 
     Route::group(['middleware' => ['auth:sanctum']], function () {
@@ -58,6 +60,7 @@ Route::prefix('v1')->group(function () {
 Route::group(['middleware' => ['auth:sanctum']], function () {
     // ADMIN
     Route::resource('doctas', DoctaAPIController::class);
+    Route::post('doctas/{docta}', [DoctaAPIController::class, 'update']);
     Route::resource('conseil', ConseilAPIController::class);
     Route::resource('forfait', ForfaitAPIController::class);
     Route::resource('taux', TauxAPIController::class);
@@ -69,5 +72,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('slide', SlideAPIController::class);
     Route::post('slide/{slide}', [SlideAPIController::class, 'update']);
     Route::resource('pushnotification', PushnotificationAPIController::class);
+    Route::resource('categorie', CategorieAPIController::class);
 
 });
