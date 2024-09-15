@@ -314,17 +314,6 @@ function defaultdata()
             Categorie::create(['categorie' => $k, 'description' => $v]);
         }
     }
-
-    $sms = Forfait::first()->sms;
-    foreach (User::where('user_role', 'docta')->get() as $k => $e) {
-        $pro = $e->profils()->first();
-        if ($pro->solde == 0) {
-            $chats = $e->chats()->pluck('id')->all();
-            $n = Message::where(['fromuser' => 0])->whereIn('chat_id', $chats)->count();
-            $sol =  $n * $sms;
-            $pro->update(['solde' => $sol]);
-        }
-    }
 }
 
 function codemedecin($userl)
