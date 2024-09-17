@@ -23,8 +23,8 @@ class DoctaMiddleware
             abort(401, "Docta Only");
         }
 
-        $profil = $user->profils()->first()?->actif;
-        abort_if(1 != $profil->actif, 403, 'Profil non actif');
+        $actif = $user->profils()->first()?->actif;
+        abort_if(1 != $actif, 403, 'Profil non actif');
 
         $user->update(['derniere_connexion' => now('Africa/Lubumbashi')]);
         return $next($request);
