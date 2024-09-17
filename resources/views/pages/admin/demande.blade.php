@@ -206,16 +206,21 @@
             });
 
             var table = $('[table]');
+
             function getdata(interval = false) {
                 $("[loader]").html('<i class="fa fa-spinner fa-spin"></i>');
                 $.getJSON('{{ route('demandeadhesion.index') }}', function(data) {
                     var str = '';
                     $.each(data, function(i, e) {
+                        var bdel = '';
                         var status =
                             '<span class="badge badge-danger"> <i class="fa fa-times-circle"></i> EN ATTENTE</span>';
                         if (e.valide == 1) {
                             status =
                                 '<span class="badge badge-success"> <i class="fa fa-check-circle"></i> VALIDE</span>';
+                        } else {
+                            bdel =
+                                `<button user="${escape(e.name)}" value='${e.id}' class='bdel btn btn-outline-danger btn-sm m-1'><i class='fa fa-trash'></i></button>`;
                         }
 
                         str += `
@@ -234,7 +239,7 @@
                             <td style='cursor:pointer' details user="${escape( JSON.stringify(e) )}" id=${e.id} >${e.date}</td>
                             <td>
                                 <div class='d-flex'>
-                                    <button user="${escape(e.name)}" value='${e.id}' class='bdel btn btn-outline-danger btn-sm m-1'><i class='fa fa-trash'></i></button>
+                                    ${bdel}
                                 </div>
                             </td>
                         </tr>

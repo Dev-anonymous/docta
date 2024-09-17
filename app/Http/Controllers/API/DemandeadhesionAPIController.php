@@ -227,9 +227,15 @@ class DemandeadhesionAPIController extends Controller
      */
     public function destroy(Demandeadhesion $demandeadhesion)
     {
+        abort_if($demandeadhesion->valide == 1, 403);
         $demandeadhesion->delete();
-        // File::delete("storage/$path");
-
+        $data = json_decode($demandeadhesion->data);
+        foreach ($data->carteidentite as $file) {
+            File::delete("storage/$file");
+        }
+        foreach ($data->files as $file) {
+            File::delete("storage/$file");
+        }
 
         return response([
             'success' => true,
