@@ -19,6 +19,8 @@
                 <ul aria-expanded="true">
                     <li><a href="{{ route('admin.docteur') }}">Docteurs</a></li>
                     <li><a href="{{ route('admin.categorie') }}">Catégories docteurs</a></li>
+                    <li><a href="{{ route('admin.demande') }}">Demandes d'adhésion</a></li>
+
                 </ul>
             </li>
             <li>

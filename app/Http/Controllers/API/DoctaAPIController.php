@@ -27,6 +27,17 @@ class DoctaAPIController extends Controller
 
         foreach ($t as $el) {
             $o = (object) $el->toArray();
+
+
+            $img = $el->profils()->first()?->image;
+
+            if (!$img) {
+                $img = asset('images/doc.jpg');
+            } else {
+                $img = asset('storage/' . $img);
+            }
+            $o->image = $img;
+
             $o->derniere_connexion = $el->derniere_connexion?->format('d-m-Y H:i:s') ?? '-';
             $label = 'Déconnecté';
             $actif = "<b style='cursor:pointer' class='badge badge-danger text-white'> <i class='fa fa-wifi'></i> DECONNECTE</b>";
@@ -82,8 +93,8 @@ class DoctaAPIController extends Controller
             'pass' => 'required',
             'type' => 'required|in:interne,externe',
             'categorie_id' => 'required|exists:categorie,id',
-            'file' => 'sometimes|mimes:pdf|max:1500',
-            'image' => 'sometimes|mimes:png,jpg,jpeg|max:1500',
+            'file' => 'sometimes|mimes:pdf|max:1200',
+            'image' => 'sometimes|mimes:png,jpg,jpeg|max:1200',
             'bio' => 'sometimes|max:255',
         ]);
 
@@ -135,11 +146,8 @@ class DoctaAPIController extends Controller
         }
         $sold = @$docta->profils()->first()?->solde;
         $solde = "$ " . @number_format($sold, 3, '.', ' ');
-        $status = '-';
-        $validto = $profi?->validto?->format('d-m-Y') ?? '-';
         if ($docta->type == 'interne') {
-            $validto = '-';
-            $status = '-';
+            $status = '<span class="badge badge-success badge-pill">ACTIF</span>';
         } else {
             $status = $docta->actif ? '<span class="badge badge-success badge-pill">ACTIF</span>' : '<span class="badge badge-danger badge-pill">INACTIF</span>';
         }
@@ -158,7 +166,6 @@ class DoctaAPIController extends Controller
             'solde' => $solde,
             'type' => $docta->type,
             'categorie' => $profi?->categorie->categorie,
-            'finabonnement' => $validto,
             'status' => $status,
             'bio' => $profi->bio ?? '-',
             'dossier' => $do,
@@ -206,8 +213,8 @@ class DoctaAPIController extends Controller
             'phone' => 'required|min:10|max:10|unique:users,phone,' . $docta->id,
             'pass' => 'sometimes',
             'categorie_id' => 'required|exists:categorie,id',
-            'file' => 'sometimes|mimes:pdf|max:1500',
-            'image' => 'sometimes|mimes:png,jpg,jpeg|max:1500',
+            'file' => 'sometimes|mimes:pdf|max:1200',
+            'image' => 'sometimes|mimes:png,jpg,jpeg|max:1200',
             'bio' => 'sometimes|max:255',
         ]);
 

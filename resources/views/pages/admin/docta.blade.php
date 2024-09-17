@@ -363,7 +363,13 @@
                         str += `
                         <tr>
                             <td style="width: 10px">${i+1}</td>
-                            <td style='cursor:pointer' details id=${e.id}>${e.name}</td>
+                            <td style='cursor:pointer' details id=${e.id}>
+                                <div class="">
+                                    <img class='img-circle' style="object-fit: contain" src="${e.image}" width="80px"
+                                        height="80px" alt="">
+                                </div>
+                                ${e.name}
+                            </td>
                             <td style='cursor:pointer' details id=${e.id}>${e.email}<br>${e.phone}</td>
                             <td class='text-nowrap' style='cursor:pointer' details id=${e.id}>
                                 <b>Chats : <span class='badge badge-dark badge-pill'>${e.conversation}</span></b></br>
@@ -435,7 +441,6 @@
                                 <h5>Catégorie : ${pro.categorie}</h5>
                                 <h5>Type : ${pro.type}</h5>
                                 <h5>Bio : ${pro.bio}</h5>
-                                <h5>Fin abonnement : ${pro.finabonnement}</h5>
                                 <h5>Status compte : ${pro.status}</h5>
                                 <h5>Dossier PDF : ${pro.dossier}</h5>
                                 <hr>

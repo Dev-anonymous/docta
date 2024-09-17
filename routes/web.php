@@ -22,6 +22,8 @@ Route::get('login', function () {
 
 Route::post('/auth/login', [AuthController::class, 'login'])->name('web.login');
 
+#####################################################################################################################
+Route::get('/pay-cb', [PAYController::class, 'pay_cb'])->name('pay.callback');
 Route::middleware('visite.mdwl')->group(function () {
     Route::get('', [WEBController::class, 'index'])->name('web.index');
     Route::get('/politique-de-confidentialite', [WEBController::class, 'politique'])->name('web.politique');
@@ -29,8 +31,10 @@ Route::middleware('visite.mdwl')->group(function () {
     Route::get('/termes-et-conditions', [WEBController::class, 'terme'])->name('web.terme');
     Route::get('/apptermes', [WEBController::class, 'terme00'])->name('terme00');
 });
+Route::get('/doctor', [WEBController::class, 'doctor'])->name('web.doctor');
+#####################################################################################################################
 
-Route::get('/pay-cb', [PAYController::class, 'pay_cb'])->name('pay.callback');
+
 
 Route::middleware('auth')->group(function () {
     Route::middleware('admin.mdwl')->group(function () {
@@ -42,6 +46,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('', 'index')->name('admin.home');
                 Route::get('clients', 'clients')->name('admin.client');
                 Route::get('docta', 'docta')->name('admin.docteur');
+                Route::get('demande-adhesion', 'demande')->name('admin.demande');
                 Route::get('conseils', 'conseils')->name('admin.conseils');
                 Route::get('slides', 'slides')->name('admin.slides');
                 Route::get('contact', 'contact')->name('admin.contact');

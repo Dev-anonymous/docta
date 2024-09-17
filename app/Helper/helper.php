@@ -95,6 +95,13 @@ function transaction_status($myref)
     return $status;
 }
 
+function nnow($date = null)
+{
+    if ($date) {
+        return $date->format('d-m-Y H:i:s');
+    }
+    return now('Africa/Lubumbashi');
+}
 
 function saveData($paydata, $trans)
 {
@@ -102,7 +109,7 @@ function saveData($paydata, $trans)
         DB::transaction(function () use ($paydata, $trans) {
             $d = (array) $paydata;
             $d['ref'] = $trans->ref;
-            $d['date'] =  now('Africa/Lubumbashi');
+            $d['date'] =  nnow();
             Paiement::create($d);
             $montant = $paydata->montant;
             $devise = $paydata->devise;

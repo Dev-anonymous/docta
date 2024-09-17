@@ -34,7 +34,10 @@ class AdminController extends Controller
         $categories = Categorie::orderBy('categorie')->get();
         return view('pages.admin.docta', compact('categories'));
     }
-
+    public function demande()
+    {
+        return view('pages.admin.demande');
+    }
     public function categorie()
     {
         return view('pages.admin.categorie');

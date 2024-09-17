@@ -32,7 +32,7 @@
                                             <td>
                                                 Appel : {{ $data->appel }} USD/Sec <br>
                                                 SMS : {{ $data->sms }} USD/SMS <br>
-                                                Compte docteur : {{ $data->compte }} USD pour 6 mois <br>
+                                                Compte docteur : {{ $data->compte }} USD<br>
                                             </td>
                                             <td>
                                                 <button data-toggle="modal" data-target="#editmdl"

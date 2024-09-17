@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categorie;
 use App\Models\Profil;
 use App\Models\Site;
 use App\Models\Slide;
@@ -52,5 +53,11 @@ class WEBController extends Controller
 
         $text = @Site::where('type', $show)->first()->text;
         return view('pages.web.site-embeded', compact('text', 'title'));
+    }
+
+    function doctor()
+    {
+        $categories = Categorie::orderBy('categorie')->get();
+        return view('pages.web.doctor', compact('categories'));
     }
 }

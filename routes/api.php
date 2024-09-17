@@ -8,6 +8,7 @@ use App\Http\Controllers\API\ClientAPIController;
 use App\Http\Controllers\API\ConseilAPIController;
 use App\Http\Controllers\API\ConseilMedicalAPIController;
 use App\Http\Controllers\API\ContactAPIController;
+use App\Http\Controllers\API\DemandeadhesionAPIController;
 use App\Http\Controllers\API\DoctaAPIController;
 use App\Http\Controllers\API\ForfaitAPIController;
 use App\Http\Controllers\API\PAYController;
@@ -23,6 +24,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/auth/login', [AuthController::class, 'login']);
 
 Route::resource('contact', ContactAPIController::class);
+Route::post('new-doctor', [DemandeadhesionAPIController::class, 'store'])->name('newdoctor');
 
 Route::prefix('v1')->group(function () {
     Route::post('/applog', [AppController::class, 'error']);
@@ -61,6 +63,7 @@ Route::prefix('v1')->group(function () {
 Route::group(['middleware' => ['auth:sanctum']], function () {
     // ADMIN
     Route::resource('doctas', DoctaAPIController::class);
+    Route::resource('demandeadhesion', DemandeadhesionAPIController::class);
     Route::post('doctas/{docta}', [DoctaAPIController::class, 'update']);
     Route::resource('conseil', ConseilAPIController::class);
     Route::resource('forfait', ForfaitAPIController::class);
@@ -74,5 +77,4 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('slide/{slide}', [SlideAPIController::class, 'update']);
     Route::resource('pushnotification', PushnotificationAPIController::class);
     Route::resource('categorie', CategorieAPIController::class);
-
 });
