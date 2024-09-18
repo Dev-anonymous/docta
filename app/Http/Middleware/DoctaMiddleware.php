@@ -24,7 +24,7 @@ class DoctaMiddleware
         }
 
         $actif = $user->profils()->first()?->actif;
-        abort_if(1 != $actif, 403, 'Profil non actif');
+        abort_if(1 != $actif and 'externe' == $user->type, 403, 'Profil non actif');
 
         $user->update(['derniere_connexion' => now('Africa/Lubumbashi')]);
         return $next($request);
