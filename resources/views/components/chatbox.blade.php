@@ -544,11 +544,11 @@
                                         <p style="font-weight: 300" class="m-0">
                                             <i>Code médecin : {{ $profi?->code }}</i>
                                         </p>
-                                        <div class="mt-3" style="height: 180px; overflow: auto;">
+                                        {{-- <div class="mt-3" style="height: 180px; overflow: auto;">
                                             <p style="font-weight: 300" class="m-0">
                                                 {{ ucfirst($profi?->bio) }}
                                             </p>
-                                        </div>
+                                        </div> --}}
                                         <div class="d-flex justify-content-end">
                                             <button value="{{ $el->id }}" class="btn btn-sm btn-info bdocta"
                                                 data-bs-target="#mdl-change-docta" data-bs-toggle="modal"
