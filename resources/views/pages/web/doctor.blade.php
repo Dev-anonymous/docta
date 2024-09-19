@@ -1,5 +1,10 @@
  @extends('layouts.web')
  @section('title', 'Demande du profil Docta')
+ @section('meta')
+     <meta name="description" content="Veuillez remplir soigneusement tous les champs du formulaire">
+     <meta property="og:title" content="Demande du profil Docta">
+     <meta property="og:description" content="Veuillez remplir soigneusement tous les champs du formulaire">
+ @endsection
 
  @section('body')
 
