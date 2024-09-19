@@ -46,7 +46,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('', 'index')->name('admin.home');
                 Route::get('clients', 'clients')->name('admin.client');
                 Route::get('docta', 'docta')->name('admin.docteur');
-                Route::get('demande-adhesion', 'demande')->name('admin.demande');
+                Route::get('demande-profil', 'demande')->name('admin.demande');
                 Route::get('conseils', 'conseils')->name('admin.conseils');
                 Route::get('slides', 'slides')->name('admin.slides');
                 Route::get('contact', 'contact')->name('admin.contact');

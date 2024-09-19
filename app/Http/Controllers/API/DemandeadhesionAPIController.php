@@ -47,6 +47,7 @@ class DemandeadhesionAPIController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make(request()->all(), [
+            'accept' => 'required',
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'phone' => 'required|min:10|max:10|unique:users',
@@ -70,7 +71,8 @@ class DemandeadhesionAPIController extends Controller
             'permistravail.required' => "Veuillez repondre à la question : Disposez vous d'un permis de travail en RDC ?",
             'travail.required' => "Veuillez repondre à la question : Travaillez vous ?",
             'disponibilite.required' => "Veuillez repondre à la question : Etes-vous disposé à être disponible ... ?",
-            'datenaissance.before' => "Date de naissance non valide. vous devez avoir plus de 18 ans."
+            'datenaissance.before' => "Date de naissance non valide. vous devez avoir plus de 18 ans.",
+            'accept.required' => "Veuillez accepter le contrat de consultation Docta"
         ]);
 
         if ($validator->fails()) {

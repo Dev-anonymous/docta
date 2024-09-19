@@ -1,12 +1,12 @@
 @extends('layouts.main')
-@section('title', "Demande d'adhésion")
+@section('title', "Demande profil")
 @section('body')
     <div class="content-body">
         <div class="row page-titles mx-0">
             <div class="col p-md-0">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
-                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Demande d'adhésion</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Demande profil</a></li>
                 </ol>
             </div>
         </div>
@@ -16,8 +16,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
-                                <h4 class="card-title">Demande d'adhésion (<span nb></span>)</h4>
-
+                                <h4 class="card-title">Demande profil (<span nb></span>)</h4>
                             </div>
                             <div class="table-responsive">
                                 <table table class="table table-striped table-hover table-condensed">
