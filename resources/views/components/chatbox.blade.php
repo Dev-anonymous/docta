@@ -520,7 +520,7 @@
                                     } else {
                                         $img = asset('storage/' . $img);
                                     }
-                                    $text =
+                                    $text2 =
                                         'Voulez-vous choisir le docteur <b>' .
                                         ucwords($el->name) .
                                         ' (' .
@@ -552,7 +552,7 @@
                                         <div class="d-flex justify-content-end">
                                             <button value="{{ $el->id }}" class="btn btn-sm btn-info bdocta"
                                                 data-bs-target="#mdl-change-docta" data-bs-toggle="modal"
-                                                text="{{ $text }}">
+                                                text="{{ $text2 }}">
                                                 <i class="fa fa-user-md"></i> Choisir
                                             </button>
                                         </div>
