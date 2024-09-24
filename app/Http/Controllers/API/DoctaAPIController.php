@@ -149,7 +149,7 @@ class DoctaAPIController extends Controller
         if ($docta->type == 'interne') {
             $status = '<span class="badge badge-success badge-pill">ACTIF</span>';
         } else {
-            $status = $docta->actif ? '<span class="badge badge-success badge-pill">ACTIF</span>' : '<span class="badge badge-danger badge-pill">INACTIF</span>';
+            $status = $profi->actif ? '<span class="badge badge-success badge-pill">ACTIF</span>' : '<span class="badge badge-danger badge-pill">INACTIF</span>';
         }
 
         $do = '';

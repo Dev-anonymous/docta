@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\App;
+use App\Models\Forfait;
 use App\Models\Gopay;
 use App\Models\Maxicash;
 use App\Models\Paiement;
@@ -71,6 +72,7 @@ class PAYController extends Controller
             'issaved' => 0,
             'isfailed' => 0,
             'paydata' => json_encode([
+                'fortable' => 'paiement',
                 'app_id' => $app->id,
                 'montant' => $amount,
                 'devise' => $devise,
@@ -136,6 +138,81 @@ class PAYController extends Controller
                 'transaction' => $t
             ]);
         }
+    }
+
+    public function init_payment2()
+    {
+        $validator = Validator::make(
+            request()->all(),
+            [
+                'telephone' => 'required'
+            ]
+        );
+
+        if ($validator->fails()) {
+            $m = implode(', ', $validator->errors()->all());
+            return response([
+                'success' => false,
+                'message' => $m
+            ]);
+        }
+        $tel = request()->telephone;
+        $tel = "+" . ((int) $tel);
+
+        $ok = preg_match('/(\+24390|\+24399|\+24397|\+24398|\+24380|\+24381|\+24382|\+24383|\+24384|\+24385|\+24389)[0-9]{7}/', $tel);
+
+        if (!$ok) {
+            $m = "Le numéro $tel est invalide";
+            return response([
+                'success' => false,
+                'message' => $m
+            ]);
+        }
+
+        $devise = 'USD';
+        $forf = Forfait::first();
+        $n = $forf->compte;
+        $amount = $n;
+
+        if ($amount <= 0) {
+            return response([
+                'success' => false,
+                'message' => "Veuillez contacter le service Docta SVP. [AMOUNT]"
+            ]);
+        }
+
+        $user = auth()->user();
+        $prof = $user->profils()->first();
+        if (!$prof) {
+            return response([
+                'success' => false,
+                'message' => "Veuillez contacter le service Docta SVP. [PROFIL]"
+            ]);
+        }
+
+        $myref = 'myref' . time() . rand(10000, 90000);
+        $gopay = Gopay::create([
+            'myref' => $myref,
+            'issaved' => 0,
+            'isfailed' => 0,
+            'paydata' => json_encode([
+                'fortable' => 'profil',
+                'profil_id' => $prof->id,
+            ]),
+        ]);
+        $r = gopay_init_payment($amount, $devise, $tel, $myref);
+
+        $ref = null;
+        if ($r->success) {
+            $ref = $r->data->ref;
+            $gopay->update(compact('ref'));
+        }
+
+        return response([
+            'success' => $r->success,
+            'message' => $r->message,
+            'data' => ['myref' => $myref]
+        ]);
     }
 
     function cardpayment()

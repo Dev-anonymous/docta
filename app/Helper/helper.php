@@ -108,26 +108,39 @@ function saveData($paydata, $trans)
     try {
         DB::transaction(function () use ($paydata, $trans) {
             $d = (array) $paydata;
-            $d['ref'] = $trans->ref;
-            $d['date'] =  nnow();
-            Paiement::create($d);
-            $montant = $paydata->montant;
-            $devise = $paydata->devise;
-            $taux = Taux::first();
+            $fortable = @$d['fortable'];
+            unset($d['fortable']);
 
-            if ($devise == 'USD') {
-                $val = $montant;
-            } else {
-                $val = $montant * $taux->cdf_usd;
+            if ($fortable == 'profil') {
+                $prof = Profil::find($d['profil_id']);
+                if ($prof) {
+                    $prof->update(['actif' => 1]);
+                    $trans->update(['issaved' => 1]);
+                }
             }
 
-            $app = App::where('id', $paydata->app_id)->first();
-            $solde = $app->soldes()->first();
-            if (!$solde) {
-                $solde = $app->soldes()->create(['solde_usd' => 0]);
+            if ($fortable == 'paiement') {
+                $d['ref'] = $trans->ref;
+                $d['date'] =  nnow();
+                Paiement::create($d);
+                $montant = $paydata->montant;
+                $devise = $paydata->devise;
+                $taux = Taux::first();
+
+                if ($devise == 'USD') {
+                    $val = $montant;
+                } else {
+                    $val = $montant * $taux->cdf_usd;
+                }
+
+                $app = App::where('id', $paydata->app_id)->first();
+                $solde = $app->soldes()->first();
+                if (!$solde) {
+                    $solde = $app->soldes()->create(['solde_usd' => 0]);
+                }
+                $solde->increment('solde_usd', $val);
+                $trans->update(['issaved' => 1]);
             }
-            $solde->increment('solde_usd', $val);
-            $trans->update(['issaved' => 1]);
         });
     } catch (\Throwable $th) {
         // throw $th;

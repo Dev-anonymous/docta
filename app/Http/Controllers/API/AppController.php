@@ -684,4 +684,15 @@ class AppController extends Controller
             'message' => "Saved"
         ]);
     }
+
+    function forfait_profil()
+    {
+        $forf = Forfait::first();
+        $n = $forf->compte;
+        return response()->json([
+            'success' => true,
+            'message' => "",
+            'data' => $n
+        ]);
+    }
 }
