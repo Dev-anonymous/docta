@@ -87,6 +87,25 @@ class AuthController extends Controller
             $messages[] = $mm;
         }
 
+        $profil = [];
+        if ($user->user_role == 'docta') {
+            $pro = $user->profils()->first();
+            if ($pro) {
+                $img = $pro->image;
+                if (!$img) {
+                    $img = asset('images/doc.jpg');
+                } else {
+                    $img = asset('storage/' . $img);
+                }
+
+                $profil['actif'] = $pro->actif;
+                $profil['image'] = $img;
+                $profil['code'] = $pro->code;
+                $profil['lien'] = route('web.index', ['docta' => $pro->code]);
+                $profil['categorie'] = $pro->categorie->categorie;
+            }
+        }
+
         return response()->json([
             'success' => true,
             'message' => "Connexion reussi",
@@ -95,6 +114,7 @@ class AuthController extends Controller
                 'user' => $user,
                 'chats' => $chats,
                 'messages' => $messages,
+                'profil' => $profil,
             ]
         ]);
     }
