@@ -479,7 +479,7 @@
     </div>
 </div>
 @php
-    $docta = App\Models\User::where('user_role', 'docta')->orderBy('name', 'desc')->get();
+    $docta = App\Models\User::where('user_role', 'docta')->orderBy('name')->get();
 
     $code = request('docta');
     $docta_id = false;
