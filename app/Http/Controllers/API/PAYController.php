@@ -170,7 +170,7 @@ class PAYController extends Controller
         }
 
         $devise = 'CDF';
-        $forf = Forfait::first();
+        $forf = 500;  Forfait::first();
         $n = $forf->compte;
         $amount = $n;
 
