@@ -251,7 +251,7 @@ class AppController extends Controller
                 $data['chat_id'] = $chat->id;
                 $data['local_id'] = $id;
                 DB::beginTransaction();
-                Message::create($data);
+                $mess = Message::create($data);
 
                 $sms = @$forf->sms;
                 $newsol = (float) @$solde->solde_usd - (float) $sms;
@@ -264,7 +264,27 @@ class AppController extends Controller
                 $user = $chat->user;
                 if ($user) {
                     $title = $app->nom ? ucfirst($app->nom) : $app->uid;
-                    $pushno = json_encode(['to' => ['user', $user->id], 'title' => $title, 'message' => $message]);
+                    $pushno = json_encode(['to' => ['user', $user->id], 'title' => $title, 'message' => $message, 'payload' => [
+                        'type' => 'message',
+                        'data' => [
+                            'chat' => [
+                                'server_id' => $chat->id,
+                                'app_id' => $app->id,
+                                'date' => $chat->date->format('Y-m-d H:i:s'),
+                                'app' => $app,
+                            ],
+                            'message' => [
+                                'server_id' => $mess->id,
+                                'chat_id' => $chat->id,
+                                'message' => $mess->message,
+                                'file' => $mess->file,
+                                'date' => $mess->date->format('Y-m-d H:i:s'),
+                                'fromuser' => 0,
+                                'received' => 1,
+                                'username' => $mess->username
+                            ]
+                        ]
+                    ]]);
                     Pushnotification::create([
                         'data' => $pushno
                     ]);

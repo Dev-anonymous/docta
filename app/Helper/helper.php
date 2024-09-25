@@ -226,7 +226,7 @@ function fcmtoken()
     $token = $client->getAccessToken();
     return $token['access_token'];
 }
-function sendMessage($token, $title, $body)
+function sendMessage($token, $title, $body, $payload = [])
 {
     if (!$token) {
         return false;
@@ -246,6 +246,9 @@ function sendMessage($token, $title, $body)
                 // 'icon' => asset('images/icon.png'),
                 // 'image' => asset('images/icon.png'),
             ],
+            'data' => [
+                'content' => json_encode($payload)
+            ]
         ],
     ];
 
@@ -265,6 +268,10 @@ function sendMessage($token, $title, $body)
     curl_close($ch);
     try {
         $result = json_decode($result);
+        $mess = @$result?->error?->message;
+        if ('Android message is too big' == $mess) {
+            return 0;
+        }
         // dd($result);
         $ok = (bool) @$result->name;
     } catch (\Throwable $th) {

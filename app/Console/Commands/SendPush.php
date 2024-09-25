@@ -42,6 +42,7 @@ class SendPush extends Command
                     try {
                         $ob = null;
                         $to = $data->to;
+                        $payload = (object) @$data->payload;
                         if (@$to[0] == 'user') {
                             $ob = User::where('id', @$to[1])->first();
                         }
@@ -49,12 +50,16 @@ class SendPush extends Command
                             $ob = App::where('id', @$to[1])->first();
                         }
                         if ($ob) {
-                            $ok = sendMessage(@$ob->fcmtoken, $data->title, $data->message);
+                            $ok = sendMessage(@$ob->fcmtoken, $data->title, $data->message, $payload);
+                            if ($ok === 0) {
+                                $payload = (object) ['type' => 'bigmessage'];
+                                $ok = sendMessage(@$ob->fcmtoken, $data->title, $data->message, $payload);
+                            }
                         }
                     } catch (\Throwable $th) {
                         // dd($th);
                     }
-                    if ($ok) {
+                    if ($ok === true) {
                         $push->delete();
                     } else {
                         $push->increment('retry');
