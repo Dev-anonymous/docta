@@ -532,7 +532,7 @@
                                     <div class="card m-2 p-2 divdocta">
                                         <div class="d-flex justify-content-center">
                                             <div class="">
-                                                <img class='img-circle' style="object-fit: contain"
+                                                <img class='rounded-circle' style="object-fit: contain; border: 1px solid #ccc;"
                                                     src="{{ $img }}" width="100px" height="100px"
                                                     alt="">
                                             </div>
