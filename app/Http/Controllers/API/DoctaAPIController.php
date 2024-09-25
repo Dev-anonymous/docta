@@ -119,6 +119,9 @@ class DoctaAPIController extends Controller
         $user =  User::create($data);
         $data['users_id'] = $user->id;
         $data['code'] = codemedecin($user->name);
+        if ('interne' == request('type')) {
+            $data['actif'] = 1;
+        }
         $profil = Profil::create($data);
         DB::commit();
 
