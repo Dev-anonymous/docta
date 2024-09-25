@@ -169,7 +169,7 @@ class PAYController extends Controller
             ]);
         }
 
-        $devise = 'USD';
+        $devise = 'CDF';
         $forf = Forfait::first();
         $n = $forf->compte;
         $amount = $n;
