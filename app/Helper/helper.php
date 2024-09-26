@@ -272,7 +272,7 @@ function sendMessage($token, $title, $body, $payload = [])
         if ('Android message is too big' == $mess) {
             return 0;
         }
-        // dd($result);
+        dd($result);
         $ok = (bool) @$result->name;
     } catch (\Throwable $th) {
         // throw $th;
