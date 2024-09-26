@@ -34,7 +34,7 @@ class SendPush extends Command
         DB::transaction(function () {
             $pend = Pushnotification::lockForUpdate()->get();
             foreach ($pend as $push) {
-                if ($push->retry > 500) {
+                if ($push->retry > 1000) {
                     $push->delete();
                 } else {
                     $data = json_decode($push->data);
