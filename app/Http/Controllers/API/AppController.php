@@ -744,6 +744,7 @@ class AppController extends Controller
             'message' => "",
             'data' => [
                 'profil' => $profil,
+                'user' => $user,
             ]
         ]);
     }
