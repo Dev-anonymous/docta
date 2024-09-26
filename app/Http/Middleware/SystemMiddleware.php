@@ -39,7 +39,7 @@ class SystemMiddleware
         assignchat();
         completeTrans();
         defaultdata();
-        // Artisan::call('sendpush');
+        Artisan::call('sendpush');
         return $next($request);
     }
 }
