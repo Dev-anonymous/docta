@@ -202,6 +202,36 @@ class AppController extends Controller
         ]);
     }
 
+    function doctabycode()
+    {
+        $code = request('code');
+        $profi = Profil::where(['code' => $code])->first();
+        if (!$profi) {
+            return response()->json([
+                'success' => false,
+                'message' => "Code médecin invalide : $code",
+            ]);
+        }
+
+        $img = $profi?->image;
+        if (!$img) {
+            $img = asset('images/doc.jpg');
+        } else {
+            $img = asset('storage/' . $img);
+        }
+        $o = (object) [];
+        $o->code = $profi->code;
+        $o->name = ucwords($profi->user->name);
+        $o->type = ucfirst($profi->categorie->categorie);
+        $o->image = $img;
+
+        return response()->json([
+            'success' => true,
+            'message' => '',
+            'data' => $o,
+        ]);
+    }
+
     public function message()
     {
         canmessage();
