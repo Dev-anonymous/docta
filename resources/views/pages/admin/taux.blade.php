@@ -35,7 +35,7 @@
                                                 1 USD = {{ $data->usd_cdf }} CDF <br>
                                             </td>
                                             <td>
-                                                {{ $data->date?->format('d-m-d H:i:s') }}
+                                                {{ $data->date?->format('d-m-Y H:i:s') }}
                                             </td>
                                             {{-- <td>
                                                 <button data-toggle="modal" data-target="#editmdl"
