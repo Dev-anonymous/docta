@@ -24,7 +24,8 @@
                                     <thead>
                                         <tr>
                                             <th>Taux</th>
-                                            <th style="width: 100px !important"></th>
+                                            <th>Date MAJ</th>
+                                            {{-- <th style="width: 100px !important"></th> --}}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -34,11 +35,14 @@
                                                 1 USD = {{ $data->usd_cdf }} CDF <br>
                                             </td>
                                             <td>
+                                                {{ $data->date?->format('d-m-d H:i:s') }}
+                                            </td>
+                                            {{-- <td>
                                                 <button data-toggle="modal" data-target="#editmdl"
                                                     class='bedit btn btn-default btn-sm m-1'>
                                                     <i class='fa fa-edit'></i>
                                                 </button>
-                                            </td>
+                                            </td> --}}
                                         </tr>
                                     </tbody>
                                 </table>

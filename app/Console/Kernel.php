@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Console\Commands\GetTaux;
+use App\Console\Commands\SendPush;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -16,6 +18,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('sendpush')->everyMinute();
+        $schedule->command('gettaux')->everyThirtyMinutes();
     }
 
     /**
