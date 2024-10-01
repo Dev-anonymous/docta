@@ -303,7 +303,7 @@ function assignchat($chats = [], $skipeuser = 0)
         if (count($uchat)) {
             $key = array_key_first($uchat);
             $el->update(['users_id' => $key,  'sent' => 0]);
-            Message::where('chat_id', $el->id)->update(['senttouser' => 0]);
+            // Message::where('chat_id', $el->id)->update(['senttouser' => 0]);
             $notify[] = $key;
         }
     }
