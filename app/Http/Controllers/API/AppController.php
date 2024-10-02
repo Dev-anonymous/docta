@@ -234,7 +234,9 @@ class AppController extends Controller
 
     public function message()
     {
-        canmessage();
+        if (!istest()) {
+            canmessage();
+        }
         $app = userapp();
 
         $validator = Validator::make(request()->all(), [
@@ -288,13 +290,16 @@ class AppController extends Controller
                 if ($newsol < 0) {
                     $newsol = 0;
                 };
-                $solde->update(['solde_usd' => $newsol]);
+
+                if (!istest()) {
+                    $solde->update(['solde_usd' => $newsol]);
+                }
 
                 $chat = Chat::find($chat->id); // ### users_id may be null before assignchat()
                 $user = $chat->user;
                 if ($user) {
                     $title = $app->nom ? ucfirst($app->nom) : $app->uid;
-                    $pushno = json_encode(['to' => ['user', $user->id], 'title' => $title, 'message' => $message, 'payload' => [
+                    $pushno = json_encode(['to' => ['user', $user->id], 'title' => (istest() ? "###TEST### " : '') . $title, 'message' => $message, 'payload' => [
                         'type' => 'message',
                         'data' => [
                             'chat' => [
@@ -318,7 +323,9 @@ class AppController extends Controller
                     Pushnotification::create([
                         'data' => $pushno
                     ]);
-                    Profil::where('users_id', $user->id)->increment('solde', $sms);
+                    if (!istest()) {
+                        Profil::where('users_id', $user->id)->increment('solde', $sms);
+                    }
                 }
                 DB::commit();
                 $success = true;
@@ -328,7 +335,7 @@ class AppController extends Controller
             $rms =  $th->getMessage();
         }
 
-        $sol = number_format($solde->solde_usd, 3, '.', ' ');
+        $sol =   number_format(istest() ? 1 : $solde->solde_usd, 3, '.', ' ');
         $sms = number_format($forf->sms, 3, '.', ' ');
         $appel = number_format($forf->appel, 3, '.', ' ');
         $data = ['solde' => $sol, 'sms' => $sms, 'appel' => $appel];
@@ -379,7 +386,7 @@ class AppController extends Controller
 
         $solde = $app->soldes()->first();
         $forf = Forfait::first();
-        $solde = number_format($solde->solde_usd, 3, '.', ' ');
+        $solde = number_format(istest() ? 1 : $solde->solde_usd, 3, '.', ' ');
         $sms = number_format($forf->sms, 3, '.', ' ');
         $appel = number_format($forf->appel, 3, '.', ' ');
 
