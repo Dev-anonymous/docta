@@ -122,6 +122,7 @@ class DoctaAPIController extends Controller
         if ('interne' == request('type')) {
             $data['actif'] = 1;
         }
+        $data['solde'] = 0;
         $profil = Profil::create($data);
         DB::commit();
 
