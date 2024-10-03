@@ -440,3 +440,10 @@ function codemedecin($user)
     }
     return strtoupper($v);
 }
+
+
+function v($val, $apend = '')
+{
+    $v =  number_format($val, 3, '.', ' ');
+    return $v . ($apend ? " $apend" : '');
+}

@@ -287,7 +287,7 @@ class PAYController extends Controller
         if ($action == 'accept') {
             $pay = Maxicash::where(compact('ref'))->first();
             if ($pay) {
-                $montant = number_format((json_decode($pay->paydata)->Amount / 100) ?? 0, 2, '.', ' ') . ' USD';
+                $montant = v((json_decode($pay->paydata)->Amount / 100) ?? 0, 'USD');
                 if ('success' == $status) {
                     $paydata = json_decode($pay->paydata);
                     if ($pay->saved === 0 and $pay->failed === 0) {
@@ -314,7 +314,7 @@ class PAYController extends Controller
         } else if ($action == 'cancel' or $action == 'decline') {
             $pay = Maxicash::where(compact('ref'))->first();
             if ($pay) {
-                $montant = number_format((json_decode($pay->paydata)->Amount / 100) ?? 0, 2, '.', ' ') . ' USD';
+                $montant = v((json_decode($pay->paydata)->Amount / 100) ?? 0, 'USD');
                 $pay->update(['failed' => 1]);
             }
         } else {

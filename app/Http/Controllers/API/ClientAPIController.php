@@ -46,7 +46,7 @@ class ClientAPIController extends Controller
 
             $o = (object) $el->toArray();
             $sold = $el->soldes()->first()->solde_usd;
-            $o->solde = "$ " . number_format($sold, 3, '.', ' ');
+            $o->solde = v($sold,   'USD');
             $o->solde_classe = $sold > 0 ? 'success' : 'secondary';
             $o->nom = $el->nom ?? '';
             $o->email = $el->email ?? '';
@@ -57,12 +57,11 @@ class ClientAPIController extends Controller
             $tab[] = $o;
         }
 
-        $solde = Solde::sum('solde_usd');
-        $solde = number_format($solde, 3, '.', ' ');
+        $solde = v(Solde::sum('solde_usd'),   'USD');
 
         return response()->json([
             'success' => true,
-            'data' => ['clients' => $tab, 'solde' => "$ $solde"]
+            'data' => ['clients' => $tab, 'solde' => $solde]
         ]);
     }
 
@@ -115,14 +114,14 @@ class ClientAPIController extends Controller
             'uid' => $client->uid ?? '-',
             'deviceid' => $client->deviceid ?? '-',
             'status' => $actif,
-            'solde' => number_format($solde, 3, '.', ' ') . " USD"
+            'solde' => v($solde, 'USD')
         ];
 
         $tab = [];
         foreach ($client->paiements()->orderBy('id', 'desc')->get() as $el) {
             $o = (object)[];
             $o->ref = $el->ref;
-            $o->montant = number_format($el->montant, 3, '.', ' ') . " $el->devise";
+            $o->montant = v($el->montant, $el->devise);
             $o->date = $el->date->format('d-m-Y H:i:s');
             $o->methode = $el->methode;
             $o->image = $el->methode == 'mobile_money' ? asset('images/mmoney.png') : asset('images/visa.png');

@@ -69,8 +69,8 @@ class DoctaAPIController extends Controller
             $o->conversation = $c;
             $o->messageenvoye = $ma;
             $o->messagerecu = $mr;
-            $sold = @$el->profils()->first()?->solde;
-            $o->solde = "$ " . @number_format($sold, 3, '.', ' ');
+            $sold = (float) @$el->profils()->first()?->solde;
+            $o->solde =  v($sold, 'USD');
             $o->categorie_id = @$el->profils()->first()->categorie_id;
             $o->bio = @$el->profils()->first()->bio;
             $data[] = $o;
@@ -149,7 +149,7 @@ class DoctaAPIController extends Controller
             $img = asset('storage/' . $img);
         }
         $sold = @$docta->profils()->first()?->solde;
-        $solde = "$ " . @number_format($sold, 3, '.', ' ');
+        $solde = v($sold, 'USD');
         if ($docta->type == 'interne') {
             $status = '<span class="badge badge-success badge-pill">ACTIF</span>';
         } else {
@@ -180,7 +180,7 @@ class DoctaAPIController extends Controller
         $tt = [];
         foreach ($trans ?? [] as $el) {
             $o = (object) $el->toArray();
-            $o->montant = "$ " . @number_format($el->montant, 3, '.', ' ');
+            $o->montant = v($el->montant, 'USD');
             $o->date = $el->date->format('d-m-Y');
             $tt[] = $o;
         }
@@ -263,6 +263,12 @@ class DoctaAPIController extends Controller
      */
     public function destroy(User $docta)
     {
+        $solde = $docta->profils()->first()?->solde;
+        if ($solde) {
+            return response([
+                'message' => "Ce compte contient " . v($solde, 'USD') . ' Veuillez vider le compte avant la suppression.'
+            ]);
+        }
         DB::beginTransaction();
         $notifuser = [];
         $chat = $docta->chats()->get();

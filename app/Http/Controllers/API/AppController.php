@@ -335,9 +335,9 @@ class AppController extends Controller
             $rms =  $th->getMessage();
         }
 
-        $sol =   number_format(istest() ? 1 : $solde->solde_usd, 3, '.', ' ');
-        $sms = number_format($forf->sms, 3, '.', ' ');
-        $appel = number_format($forf->appel, 3, '.', ' ');
+        $sol =   v(istest() ? 1 : $solde->solde_usd);
+        $sms = v($forf->sms);
+        $appel = v($forf->appel);
         $data = ['solde' => $sol, 'sms' => $sms, 'appel' => $appel];
 
         return response()->json([
@@ -386,9 +386,9 @@ class AppController extends Controller
 
         $solde = $app->soldes()->first();
         $forf = Forfait::first();
-        $solde = number_format(istest() ? 1 : $solde->solde_usd, 3, '.', ' ');
-        $sms = number_format($forf->sms, 3, '.', ' ');
-        $appel = number_format($forf->appel, 3, '.', ' ');
+        $solde = v(istest() ? 1 : $solde->solde_usd);
+        $sms = v($forf->sms);
+        $appel = v($forf->appel);
 
         return response()->json([
             'success' => true,
@@ -461,9 +461,9 @@ class AppController extends Controller
 
         $solde = $app->soldes()->first();
         $forf = Forfait::first();
-        $solde = number_format($solde->solde_usd, 3, '.', ' ');
-        $sms = number_format($forf->sms, 3, '.', ' ');
-        $appel = number_format($forf->appel, 3, '.', ' ');
+        $solde = v($solde->solde_usd);
+        $sms = v($forf->sms);
+        $appel = v($forf->appel);
 
         return response()->json([
             'success' => true,
@@ -509,9 +509,9 @@ class AppController extends Controller
 
         $forf = Forfait::first();
 
-        $sol = number_format($solde->solde_usd, 3, '.', ' ');
-        $sms = number_format($forf->sms, 3, '.', ' ');
-        $appel = number_format($forf->appel, 3, '.', ' ');
+        $sol = v($solde->solde_usd);
+        $sms = v($forf->sms);
+        $appel = v($forf->appel);
 
         $data = ['solde' => $sol, 'sms' => $sms, 'appel' => $appel];
         return response()->json([
@@ -564,7 +564,7 @@ class AppController extends Controller
         foreach ($app->paiements()->orderBy('id', 'desc')->get() as $el) {
             $o = (object)[];
             $o->ref = $el->ref;
-            $o->montant = number_format($el->montant, 2, '.', ' ') . " $el->devise";
+            $o->montant = v($el->montant, $el->devise);
             $o->date = $el->date->format('d-m-Y H:i:s');
             $o->methode = $el->methode;
             $tab[] = $o;
