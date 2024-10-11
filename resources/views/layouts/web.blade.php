@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta name="theme-color" content="#02BBFF">
     <meta charset="utf-8">

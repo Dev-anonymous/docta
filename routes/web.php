@@ -26,6 +26,7 @@ Route::post('/auth/login', [AuthController::class, 'login'])->name('web.login');
 Route::get('/pay-cb', [PAYController::class, 'pay_cb'])->name('pay.callback');
 Route::middleware('visite.mdwl')->group(function () {
     Route::get('', [WEBController::class, 'index'])->name('web.index');
+    Route::get('/docta/{code?}', [WEBController::class, 'index'])->name('codedocta');
     Route::get('/politique-de-confidentialite', [WEBController::class, 'politique'])->name('web.politique');
     Route::get('/mention-legale', [WEBController::class, 'mention'])->name('web.mention');
     Route::get('/termes-et-conditions', [WEBController::class, 'terme'])->name('web.terme');

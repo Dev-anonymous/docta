@@ -436,7 +436,7 @@
                                 <h5>Tel : ${pro.phone}</h5>
                                 <h5>Email : ${pro.email}</h5>
                                 <h5>Code docteur : ${pro.code}</h5>
-                                <h5>Lien docteur : {{ route('web.index', ['docta' => '']) }}${pro.code}</h5>
+                                <h5>Lien docteur : {{ route('codedocta', '') }}/${pro.code}</h5>
                                 <h5>Solde : <span class="badge badge-info">${pro.solde}</span></h5>
                                 <h5>Catégorie : ${pro.categorie}</h5>
                                 <h5>Type : ${pro.type}</h5>

@@ -481,7 +481,7 @@
 @php
     $docta = App\Models\User::where('user_role', 'docta')->orderBy('name')->get();
 
-    $code = request('docta');
+    $code = request()->segment(2);
     $docta_id = false;
     $text = '';
     if ($code) {
