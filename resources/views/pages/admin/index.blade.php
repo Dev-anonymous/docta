@@ -355,6 +355,9 @@
                             data: r.messages,
                         }]);
 
+                    },
+                    error: function(e, b, c) {
+                        console.log(e, b, c);
                     }
                 }).always(function() {
                     if (!interval) {
