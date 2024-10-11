@@ -2,10 +2,10 @@
 <html lang="fr">
 
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
     <script>
         eruda.init();
-    </script>
+    </script> --}}
     <meta name="theme-color" content="#02BBFF">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>@yield('title') - {{ config('app.name') }} </title>
