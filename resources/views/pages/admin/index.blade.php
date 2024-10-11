@@ -325,8 +325,8 @@
                         'docta_id': $('[name=docta]').val(),
                     },
                     crossDomain: true,
-            contentType: false,
-            processData: false,
+                    contentType: false,
+                    processData: false,
                     success: function(r) {
                         $('[clients]').html(r.clients);
                         $('[clientactifs]').html(r.clientactifs);
