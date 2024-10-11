@@ -315,7 +315,6 @@
 
             $('[name=docta]').change(function() {
                 stat(false);
-                console.log('ffff');
             })
 
             function stat(interval = true) {
