@@ -124,12 +124,15 @@
                                 <div class="card-body pb-0">
                                     <div class="d-flex justify-content-between">
                                         <h4 class="mb-1">Statistique de messages <span doctaname></span></h4>
-                                        <select name="docta" id="" class="form-control" style="width: 200px">
-                                            <option value="">Tous</option>
-                                            @foreach ($docta as $el)
-                                                <option value="{{ $el->id }}">{{ ucwords($el->name) }}</option>
-                                            @endforeach
-                                        </select>
+                                        <form action="#" id="fdoc">
+                                            <select name="docta_id" id="seldoc" class="form-control"
+                                                style="width: 200px">
+                                                <option value="">Tous</option>
+                                                @foreach ($docta as $el)
+                                                    <option value="{{ $el->id }}">{{ ucwords($el->name) }}</option>
+                                                @endforeach
+                                            </select>
+                                        </form>
                                     </div>
                                 </div>
                                 <div class="card-body pb-0 pt-0">
@@ -313,19 +316,19 @@
             var chart3 = new ApexCharts(document.querySelector("#chart3"), options3);
             chart3.render();
 
-            $('[name=docta]').change(function() {
+            $('#seldoc').change(function() {
                 stat(false);
             })
 
             function stat(interval = true) {
+                var data = new FormData($('#fdoc')[0]);
                 $.ajax({
                     url: '{{ route('stat.index') }}',
-                    data: {
-                        'docta_id': $('[name=docta]').val(),
-                    },
+                    type: 'POST',
+                    data: data,
                     crossDomain: true,
                     contentType: false,
-                    // processData: false,
+                    processData: false, 
                     success: function(r) {
                         $('[clients]').html(r.clients);
                         $('[clientactifs]').html(r.clientactifs);

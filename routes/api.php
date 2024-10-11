@@ -78,7 +78,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('site', SiteAPIController::class);
     Route::resource('appversion', AppVersionAPIController::class);
     Route::resource('clients', ClientAPIController::class);
-    Route::resource('stat', StatistiqueAPIController::class);
+    Route::any('stat', [StatistiqueAPIController::class,'index'])->name('stat.index');
     Route::resource('slide', SlideAPIController::class);
     Route::post('slide/{slide}', [SlideAPIController::class, 'update']);
     Route::resource('pushnotification', PushnotificationAPIController::class);
