@@ -771,7 +771,7 @@ class AppController extends Controller
                 $profil['actif'] = $pro->actif;
                 $profil['image'] = $img;
                 $profil['code'] = $pro->code;
-                $profil['lien'] = route('web.index', ['docta' => $pro->code]);
+                $profil['lien'] = route('codedocta', $pro->code);
                 $profil['categorie'] = $pro->categorie->categorie;
             }
         }
