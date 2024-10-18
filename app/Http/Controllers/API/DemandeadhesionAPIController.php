@@ -26,7 +26,7 @@ class DemandeadhesionAPIController extends Controller
     {
         $tab = [];
 
-        foreach (Demandeadhesion::orderBy('id', 'desc')->get() as $el) {
+        foreach (Demandeadhesion::orderBy('valide')->orderBy('id', 'desc')->get() as $el) {
             $o = (object) $el->toArray();
             $o->categorie = $el->categorie->categorie;
             $data = json_decode($el->data);
