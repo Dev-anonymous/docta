@@ -27,6 +27,7 @@
                                         <tr>
                                             <th style="width: 10px"><span loader><i
                                                         class="fa fa-spinner fa-spin"></i></span></th>
+                                            <th></th>
                                             <th>UID / DEVICE ID</th>
                                             <th>SOLDE</th>
                                             <th>NOM/TEL/EMAIL</th>
@@ -82,14 +83,17 @@
                     var str = '';
                     var data = d.data;
                     $.each(data.clients, function(i, e) {
+                        var ico = e.isapp ? 'fa fa-tablet' : 'fa fa-chrome';
                         str += `
-                        <tr>
+                        <tr historique id='${e.id}' style="cursor:pointer;">
                             <td>${i+1}</td>
+                            <td><span class="${ico} fa-2x"></span></td>
                             <td>
+                                <div style="white-space: nowrap;width: 300px;overflow: hidden;text-overflow: ellipsis;">${e.devicename??''}</div>
                                  ${e.uid} <br> ${e.deviceid}
                             </td>
                             <td>
-                                 <span historique id='${e.id}' style="cursor:pointer; font-size:20px" class="badge bg-${e.solde_classe} text-white font-weight-bold">${e.solde}</span>
+                                 <span style="font-size:20px" class="badge bg-${e.solde_classe} text-white font-weight-bold">${e.solde}</span>
                             </td>
                             <td>
                                 ${e.nom} </br> ${e.telephone} <br> ${e.email}
@@ -121,6 +125,7 @@
                                 var pai = rep.paiement;
                                 var pro = rep.profil;
                                 var mess = rep.message;
+                                var ap = rep.appareil;
                                 var html = `
                                 <b>Profil</b>
                                 <h4>${pro.client}</h4>
@@ -130,6 +135,10 @@
                                 <h5>Device ID : ${pro.deviceid}</h5>
                                 <h5>Uid: ${pro.uid}</h5>
                                 <h5>Status : ${pro.status}</h5>
+                                <hr>
+                                <b>Appareil</b>
+                                <h4>Marque : ${ap.marque}</h4>
+                                <h4>Version App : ${ap.appversion}</h4>
                                 <hr>
                                 <b>Message</b>
                                 <h5>Docteur assigné : ${mess.docta}</h5>

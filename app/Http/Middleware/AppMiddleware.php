@@ -25,6 +25,10 @@ class AppMiddleware
         $appversion = $request->header('App-version');
         $uid = $request->header('uid');
 
+        if (strpos($uid, 'BROWSER-') !== false) {
+            $devicename = request()->userAgent();
+        }
+
         $app = App::where('uid', $uid)->first();
         if ($app) {
             if ($app->deviceid != $deviceid and $deviceid) {

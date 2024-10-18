@@ -54,6 +54,7 @@ class ClientAPIController extends Controller
             $o->last_login = $el->last_login?->format('d-m-Y H:i:s');
             $o->date = $el->date?->format('d-m-Y H:i:s');
             $o->actif = $actif;
+            $o->isapp = strpos($el->uid, 'BROWSER-') === false;
             $tab[] = $o;
         }
 
@@ -141,6 +142,12 @@ class ClientAPIController extends Controller
             $messa = Message::where('chat_id', $chat->id)->where('fromuser', 0)->count();
             $messr = Message::where('chat_id', $chat->id)->where('fromuser', 1)->count();
         }
+
+        $data['appareil'] = [
+            'marque' => $client->devicename ?? '-',
+            'appversion' => $client->appversion ?? '-',
+        ];
+
         $data['message'] = [
             'docta' => $docta,
             'messageenvoye' => $messa,
