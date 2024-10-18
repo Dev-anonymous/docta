@@ -514,12 +514,7 @@
                             @foreach ($docta as $el)
                                 @php
                                     $profi = $el->profils()->first();
-                                    $img = $profi?->image;
-                                    if (!$img) {
-                                        $img = asset('images/doc.jpg');
-                                    } else {
-                                        $img = asset('storage/' . $img);
-                                    }
+                                    $img = userimage($el);
                                     $text2 =
                                         'Voulez-vous choisir le docteur <b>' .
                                         ucwords($el->name) .

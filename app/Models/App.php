@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property string $uid
  * @property string|null $deviceid
+ * @property string|null $devicename
+ * @property string|null $appversion
  * @property Carbon|null $date
  * @property Carbon|null $last_login
  * @property string|null $telephone
@@ -48,6 +50,8 @@ class App extends Model
 	protected $fillable = [
 		'uid',
 		'deviceid',
+		'devicename',
+		'appversion',
 		'date',
 		'last_login',
 		'telephone',

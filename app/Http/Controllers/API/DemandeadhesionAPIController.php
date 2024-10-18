@@ -200,7 +200,7 @@ class DemandeadhesionAPIController extends Controller
         $success = false;
 
         try {
-            $link = route('web.index', ['docta' => $profil->code]);
+            $link = route('codedocta', $profil->code);
             $link2 = asset('docta-admin.apk');
             $m['msg'] = "Bienvenu chez Docta, votre profil a été approuvé. Votre lien personnel est $link vous pouvez le partarger à vos patients pour qu'ils entrent directement en contact avec vous.\n\nUtilisez l'application mobile pour vous connecter au compte.\n\nEmail : $data->email\nMot de passe : $pass\n\n<a href='$link2'>Télécharger l'application Docteur</a>\n\n";
 

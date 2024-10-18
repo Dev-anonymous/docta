@@ -27,16 +27,7 @@ class DoctaAPIController extends Controller
 
         foreach ($t as $el) {
             $o = (object) $el->toArray();
-
-
-            $img = $el->profils()->first()?->image;
-
-            if (!$img) {
-                $img = asset('images/doc.jpg');
-            } else {
-                $img = asset('storage/' . $img);
-            }
-            $o->image = $img;
+            $o->image = userimage($el);
 
             $o->derniere_connexion = $el->derniere_connexion?->format('d-m-Y H:i:s') ?? '-';
             $label = 'Déconnecté';
@@ -141,13 +132,7 @@ class DoctaAPIController extends Controller
     public function show(User $docta)
     {
         $profi = $docta->profils()->first();
-        $img = $profi?->image;
 
-        if (!$img) {
-            $img = asset('images/doc.jpg');
-        } else {
-            $img = asset('storage/' . $img);
-        }
         $sold = @$docta->profils()->first()?->solde;
         $solde = v($sold, 'USD');
         if ($docta->type == 'interne') {
@@ -166,7 +151,7 @@ class DoctaAPIController extends Controller
             'name' => ucwords($docta->name),
             'email' => $docta->email ?? '-',
             'phone' => $docta->phone ?? '',
-            'image' => $img,
+            'image' => userimage($docta),
             'solde' => $solde,
             'type' => $docta->type,
             'categorie' => $profi?->categorie->categorie,

@@ -181,19 +181,13 @@ class AppController extends Controller
 
         foreach ($data as $el) {
             $profi = $el->profils()->first();
-            $img = $profi?->image;
-            if (!$img) {
-                $img = asset('images/doc.jpg');
-            } else {
-                $img = asset('storage/' . $img);
-            }
             $o = (object) [];
             $o->id = $el->id;
             $o->code = $profi->code;
             $o->name = ucwords($el->name);
             $o->type = ucfirst($profi->categorie->categorie);
             $o->bio = ucfirst($profi->bio);
-            $o->image = $img;
+            $o->image = userimage($el);
             $tab[] = $o;
         }
         return response()->json([
@@ -213,17 +207,11 @@ class AppController extends Controller
             ]);
         }
 
-        $img = $profi?->image;
-        if (!$img) {
-            $img = asset('images/doc.jpg');
-        } else {
-            $img = asset('storage/' . $img);
-        }
         $o = (object) [];
         $o->code = $profi->code;
         $o->name = ucwords($profi->user->name);
         $o->type = ucfirst($profi->categorie->categorie);
-        $o->image = $img;
+        $o->image = userimage($profi->user);
 
         return response()->json([
             'success' => true,
@@ -360,6 +348,7 @@ class AppController extends Controller
 
         $messages = [];
         $docta = [];
+        $mydocta = null;
 
         if ($chat) {
             $messages = $chat->messages()->where(['fromuser' => 1, 'sent' => 0])->get();
@@ -376,6 +365,8 @@ class AppController extends Controller
             $user = $chat->user;
             if ($user) {
                 $docta[] = $user->id;
+                $pro = $user->profils()->first();
+                $mydocta = (object) ['name' => $user->name, 'image' => userimage($user), 'code' => @$pro->code, 'type' => @$pro->categorie->categorie];
             }
         }
 
@@ -398,10 +389,12 @@ class AppController extends Controller
                 'markhasread' => !(bool) $userread,
                 'conseils' => $conseil,
                 'docta' => $docta,
+                'mydocta' => $mydocta,
                 'zego' => $zego,
                 'solde' => $solde,
                 'sms' => $sms,
                 'appel' => $appel,
+                'app' => ['telephone' => $app->telephone, 'nom' => $app->nom, 'email' => $app->email],
             ]
         ]);
     }
@@ -761,15 +754,8 @@ class AppController extends Controller
         if ($user->user_role == 'docta') {
             $pro = $user->profils()->first();
             if ($pro) {
-                $img = $pro->image;
-                if (!$img) {
-                    $img = asset('images/doc.jpg');
-                } else {
-                    $img = asset('storage/' . $img);
-                }
-
                 $profil['actif'] = $pro->actif;
-                $profil['image'] = $img;
+                $profil['image'] = userimage($user);
                 $profil['code'] = $pro->code;
                 $profil['lien'] = route('codedocta', $pro->code);
                 $profil['categorie'] = $pro->categorie->categorie;

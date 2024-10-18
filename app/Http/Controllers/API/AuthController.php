@@ -91,17 +91,10 @@ class AuthController extends Controller
         if ($user->user_role == 'docta') {
             $pro = $user->profils()->first();
             if ($pro) {
-                $img = $pro->image;
-                if (!$img) {
-                    $img = asset('images/doc.jpg');
-                } else {
-                    $img = asset('storage/' . $img);
-                }
-
                 $profil['actif'] = $pro->actif;
-                $profil['image'] = $img;
+                $profil['image'] = userimage($user);
                 $profil['code'] = $pro->code;
-                $profil['lien'] = route('web.index', ['docta' => $pro->code]);
+                $profil['lien'] = route('codedocta', $pro->code);
                 $profil['categorie'] = $pro->categorie->categorie;
             }
         }

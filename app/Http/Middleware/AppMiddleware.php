@@ -21,6 +21,8 @@ class AppMiddleware
     public function handle(Request $request, Closure $next)
     {
         $deviceid = $request->header('deviceid');
+        $devicename = $request->header('Device-name');
+        $appversion = $request->header('App-version');
         $uid = $request->header('uid');
 
         $app = App::where('uid', $uid)->first();
@@ -80,7 +82,8 @@ class AppMiddleware
             }
         }
         $now = now('Africa/Lubumbashi');
-        $app->update(['last_login' => $now]);
+        $app->update(['last_login' => $now, 'devicename' => ucfirst($devicename), 'appversion' => $appversion]);
+
         return $next($request);
     }
 }

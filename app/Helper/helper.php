@@ -447,3 +447,14 @@ function v($val, $apend = '')
     $v =  number_format($val, 3, '.', ' ');
     return $v . ($apend ? " $apend" : '');
 }
+
+function userimage(User $user)
+{
+    $img = $user->profils()->first()?->image;
+    if (!$img) {
+        $img = asset('images/doc.jpg');
+    } else {
+        $img = asset('storage/' . $img);
+    }
+    return $img;
+}
