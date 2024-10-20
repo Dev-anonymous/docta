@@ -33,12 +33,13 @@ class Notify extends Command
      */
     public function handle()
     {
-        $apps = [];
-        foreach (App::all() as $el) {
-            if (isapp($el)) {
-                $apps[] = $el;
-            }
-        }
+        $apps = App::all();
+        //  [];
+        // foreach (App::all() as $el) {
+        // if (isapp($el)) {
+        // $apps[] = $el;
+        // }
+        // }
 
         $notify = $mig = [];
         foreach ($apps as $el) {
