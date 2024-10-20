@@ -88,6 +88,8 @@ class AppMiddleware
         $now = now('Africa/Lubumbashi');
         $app->update(['last_login' => $now, 'devicename' => ucfirst($devicename), 'appversion' => $appversion]);
 
+        abort_if($app->blocked == 1, 403, "App Version not valid");
+
         return $next($request);
     }
 }

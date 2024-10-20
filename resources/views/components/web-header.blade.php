@@ -33,7 +33,7 @@
         </nav>
 
         <a href="#" class="appointment-btn" id="dapp" style="display: none">
-            <span class="d-none d-md-inline"> Télecharger l'</span> APP <i class="fa-brands fa-google-play"></i></span>
+            <span class="d-none d-md-inline"> Télécharger l'</span> APP <i class="fa-brands fa-google-play"></i></span>
         </a>
     </div>
 </header>

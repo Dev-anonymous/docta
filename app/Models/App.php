@@ -25,6 +25,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $nom
  * @property string|null $fcmtoken
  * @property int|null $premium
+ * @property int|null $blocked
  * 
  * @property Collection|Chat[] $chats
  * @property Collection|Paiement[] $paiements
@@ -40,7 +41,8 @@ class App extends Model
 	protected $casts = [
 		'date' => 'datetime',
 		'last_login' => 'datetime',
-		'premium' => 'int'
+		'premium' => 'int',
+		'blocked' => 'int'
 	];
 
 	protected $hidden = [
@@ -58,7 +60,8 @@ class App extends Model
 		'email',
 		'nom',
 		'fcmtoken',
-		'premium'
+		'premium',
+		'blocked'
 	];
 
 	public function chats()

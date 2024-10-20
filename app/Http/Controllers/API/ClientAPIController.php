@@ -54,7 +54,7 @@ class ClientAPIController extends Controller
             $o->last_login = $el->last_login?->format('d-m-Y H:i:s');
             $o->date = $el->date?->format('d-m-Y H:i:s');
             $o->actif = $actif;
-            $o->isapp = strpos($el->uid, 'BROWSER-') === false;
+            $o->isapp = isapp($el);
             $tab[] = $o;
         }
 

@@ -458,3 +458,9 @@ function userimage(User $user)
     }
     return $img;
 }
+
+
+function isapp(App $app)
+{
+    return strpos($app->uid, 'BROWSER-') === false;
+}

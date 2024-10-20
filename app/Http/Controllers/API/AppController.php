@@ -14,6 +14,7 @@ use App\Models\Message;
 use App\Models\Profil;
 use App\Models\Pushnotification;
 use App\Models\Solde;
+use App\Models\Update;
 use App\Models\User;
 use App\Models\Zego;
 use DateTime;
@@ -33,7 +34,30 @@ class AppController extends Controller
 
     function appversion()
     {
-        $appversion = Appversion::first();
+        $appversion = (object) Appversion::first()->toArray();
+        $ver = request()->header('App-version');
+        if ($ver) {
+            $ver =  str_replace('Docta V', '', $ver);
+            $cur = "1.1.7";
+
+            $n = version_compare($ver, $cur);
+            $app = userapp();
+
+            if ($n == -1) {
+                $note = "VEUILLEZ SVP DÉSINSTALLER CETTE APPLICATION SUR VOTRE TÉLÉPHONE, ENSUITE OUVREZ PLAYSTORE ET CHERCHEZ L'APPLICATION « Docta » PUIS TÉLÉCHARGEZ-LA.";
+                $appversion->noteclient = $note;
+                $appversion->requiredclient = 1;
+                $appversion->versionclient = "ersion PLAYSTORE DISPONIBLE !";
+                $app->update(['blocked' => true]);
+            } else {
+                // ???? nope
+                if ($app) {
+                    Update::where('app_id', $app->id)->delete();
+                    $app->update(['blocked' => false]);
+                }
+            }
+        }
+
         return response()->json([
             'success' => true,
             'data' => $appversion,
