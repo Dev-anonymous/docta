@@ -248,10 +248,15 @@
                             <span solde></span>
                         </span>
                     </div>
-                    <a href="#" class="btn btn-sm btn-outline-primary text-white" style="margin-left: 20px"
-                        data-bs-toggle="modal" data-bs-target="#mdl-docta">
-                        <i class="fa fa-user-md"></i> Docteur
-                    </a>
+                    <div class="">
+                        <a href="#" class="btn btn-sm btn-dark text-white" id="mydocta">
+                            <i class="fa fa-user-md"></i>
+                        </a>
+                        <a href="#" class="btn btn-sm btn-outline-primary text-white" style="margin-left: 5px"
+                            data-bs-toggle="modal" data-bs-target="#mdl-docta">
+                            <i class="fa fa-user-md"></i> Docteurs
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -527,9 +532,9 @@
                                     <div class="card m-2 p-2 divdocta">
                                         <div class="d-flex justify-content-center">
                                             <div class="">
-                                                <img class='rounded-circle' style="object-fit: contain; border: 1px solid #ccc;"
-                                                    src="{{ $img }}" width="100px" height="100px"
-                                                    alt="">
+                                                <img class='rounded-circle'
+                                                    style="object-fit: contain; border: 1px solid #ccc;"
+                                                    src="{{ $img }}" width="100px" height="100px">
                                             </div>
                                         </div>
                                         <p style="font-weight: 900" class="m-0">{{ ucwords($el->name) }}</p>
@@ -589,6 +594,42 @@
                             <span></span> OUI JE CONFIRME
                         </button>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdl-mydocta" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content ">
+            <div class="modal-body">
+                <div class="p-3 rounded-5" style="background-color: rgba(0, 0, 0, 0.075)">
+                    <div class="d-flex justify-content-between">
+                        <h4>Vous discutez avec le docteur</h4>
+                        <img src="{{ asset('images/logo.png') }}" alt="" width="150px">
+                    </div>
+                    <div class="mt-4">
+                        <div class="card m-2 p-2 divdocta">
+                            <div class="d-flex justify-content-center">
+                                <div class="">
+                                    <img class='rounded-circle' idocta
+                                        style="object-fit: contain; border: 1px solid #ccc;" width="100px"
+                                        height="100px">
+                                </div>
+                            </div>
+                            <p style="font-weight: 900" class="m-0" ndocta></p>
+                            <p style="font-weight: 300" class="m-0">
+                                <i tdocta></i>
+                            </p>
+                            <p style="font-weight: 300" class="m-0">
+                                <i cdocta></i>
+                            </p>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-outline-dark my-2" data-bs-dismiss="modal">
+                        Fermer
+                    </button>
                 </div>
             </div>
         </div>
@@ -1014,6 +1055,18 @@
         }
 
         first = true;
+        $('#mydocta').click(function() {
+            console.log('f');
+            var data = $(this).attr('data');
+            if (data) {
+                data = JSON.parse(unescape(data));
+                $('[idocta]').attr('src', data.image);
+                $('[ndocta]').html(data.name);
+                $('[cdocta]').html('Code médecin: ' + data.code);
+                $('[tdocta]').html(data.type);
+                $('#mdl-mydocta').modal('show');
+            }
+        })
 
         function watchMsg() {
             $.ajax({
@@ -1030,6 +1083,10 @@
                     var newmsg = data.message.length > 0;
                     var messages = data.message;
                     var markread = data.markhasread;
+                    var mydocta = data.mydocta;
+                    if (mydocta) {
+                        $('#mydocta').attr('data', escape(JSON.stringify(mydocta)));
+                    }
 
                     $(messages).each(function(i, e) {
                         e.received = 0;

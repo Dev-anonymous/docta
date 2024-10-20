@@ -45,7 +45,10 @@
         $.ajax({
             url: '{{ route('dl') }}',
             success: function() {
-                location.assign('{{ asset('docta.apk') }}');
+                // location.assign('{{ asset('docta.apk') }}');
+                // location.assign('https://play.google.com/store/apps/details?id=com.docta.app');
+                window.open('https://play.google.com/store/apps/details?id=com.docta.app',
+                '_blank');
             },
             error: function() {
                 alert("Echec de connexion, veuillez relancer le téléchargement SVP.")
