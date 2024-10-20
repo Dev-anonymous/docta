@@ -111,7 +111,9 @@
                         <div class="form-group">
                             <label for="">Envoyer aux</label>
                             <select name="to" id="" class="form-control">
-                                <option value="client">Clients</option>
+                                <option value="client">Clients (Navigateurs & Appli Mobile)</option>
+                                <option value="web">Clients (Navigateurs)</option>
+                                <option value="app">Clients (Appli Mobile)</option>
                                 <option value="docta">Docta</option>
                             </select>
                         </div>

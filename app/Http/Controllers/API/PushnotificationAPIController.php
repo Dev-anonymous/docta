@@ -31,7 +31,7 @@ class PushnotificationAPIController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make(request()->all(), [
-            'to' => 'required|',
+            'to' => 'required|in:client,app,web,docta',
             'pushtitle' => 'required|',
             'pushmessage' => 'required|',
         ]);
@@ -56,13 +56,33 @@ class PushnotificationAPIController extends Controller
                     'data' => $pushno
                 ]);
             }
-        } else {
+        } elseif ('web' == $to) {
+            foreach (App::all() as $app) {
+                if (!isapp($app)) {
+                    $pushno = json_encode(['to' => ['app', $app->id], 'title' => $title, 'message' => $message]);
+                    Pushnotification::create([
+                        'data' => $pushno
+                    ]);
+                }
+            }
+        } elseif ('app' == $to) {
+            foreach (App::all() as $app) {
+                if (isapp($app)) {
+                    $pushno = json_encode(['to' => ['app', $app->id], 'title' => $title, 'message' => $message]);
+                    Pushnotification::create([
+                        'data' => $pushno
+                    ]);
+                }
+            }
+        } elseif ('docta' == $to) {
             foreach (User::where('user_role', 'docta')->get() as $user) {
                 $pushno = json_encode(['to' => ['user', $user->id], 'title' => $title, 'message' => $message]);
                 Pushnotification::create([
                     'data' => $pushno
                 ]);
             }
+        } else {
+            abort(403);
         }
         DB::commit();
 
