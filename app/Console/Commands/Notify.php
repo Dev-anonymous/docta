@@ -6,6 +6,7 @@ use App\Mail\AppMail;
 use App\Models\App;
 use App\Models\Pushnotification;
 use App\Models\Update;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Mail;
@@ -33,6 +34,11 @@ class Notify extends Command
      */
     public function handle()
     {
+        $end = new Carbon('2024/11/01');
+        if ($end->isPast()) {
+            return true;
+        }
+
         $apps = App::all();
         //  [];
         // foreach (App::all() as $el) {
