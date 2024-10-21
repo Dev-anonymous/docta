@@ -75,24 +75,23 @@ class Notify extends Command
             $sol = v($sol, 'USD');
             if ('migrate' == $el->type) {
                 $m = "Cher utilisateur de la plateforme Docta, vous devez désinstaller la version actuelle de l'application Docta, ouvrir Play Store et chercher l'application Docta.
-                    Téléchargez l'application directement sur Play Store ou allez sur le site officiel https://www.docta-tam.com et cliquez sur le bouton « Télécharger l'APP ».
+Téléchargez l'application directement sur Play Store ou allez sur le site officiel https://www.docta-tam.com et cliquez sur le bouton « Télécharger l'APP ».
 
-                    Cliquez sur ce lien pour télécharger directement l'application : https://play.google.com/store/apps/details?id=com.docta.app
+Cliquez sur ce lien pour télécharger directement l'application : https://play.google.com/store/apps/details?id=com.docta.app
 
-                    UNE FOIS L'APPLICATION TÉLÉCHARGÉ :
-                    1.	OUVREZ-LA
-                    2.	CLIQUEZ SUR LE BUTTON « Compte » EN BAS, A DROITE DE L'APPLICATION
-                    3.	PUIS FAITES UNE CAPTURE D'ÉCRAN ET ENVOYEZ-NOUS CETTE IMAGE SUR CET EMAIL
-                    NOUS ALLONS PAR LA SUITE MIGRER VOTRE SOLDE DOCTA DE $sol VERS LA NOUVELLE APPLICATION.
-
-                    ";
+UNE FOIS L'APPLICATION TÉLÉCHARGÉ :
+1.	OUVREZ-LA
+2.	CLIQUEZ SUR LE BUTTON « Compte » EN BAS, A DROITE DE L'APPLICATION
+3.	PUIS FAITES UNE CAPTURE D'ÉCRAN ET ENVOYEZ-NOUS CETTE IMAGE SUR CET EMAIL
+NOUS ALLONS PAR LA SUITE MIGRER VOTRE SOLDE DOCTA DE $sol VERS LA NOUVELLE APPLICATION.
+";
             } else {
                 $m = "Cher utilisateur de la plateforme Docta, vous devez désinstaller la version actuelle de l'application Docta, ouvrir Play Store et chercher l'application Docta.
-                    Téléchargez l'application directement sur Play Store ou allez sur le site officiel https://www.docta-tam.com et cliquez sur le bouton « Télécharger l'APP ».
+Téléchargez l'application directement sur Play Store ou allez sur le site officiel https://www.docta-tam.com et cliquez sur le bouton « Télécharger l'APP ».
 
-                    Cliquez sur ce lien pour télécharger directement l'application : https://play.google.com/store/apps/details?id=com.docta.app
+Cliquez sur ce lien pour télécharger directement l'application : https://play.google.com/store/apps/details?id=com.docta.app
 
-                    ";
+";
             }
 
             if ($app) {
