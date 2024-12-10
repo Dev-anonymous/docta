@@ -471,7 +471,12 @@
                             confidentialité.
                         </h5>
                         <br>
-                        <h5 class="text-danger">Docta vous offre un message gratuit.</h5>
+                        <h5 class="text-danger">
+                            Pour une belle fin d'année, Docta vous offre de discuter gratuitement avec un médecin de vos
+                            problèmes de santé. Téléchargez l'application Docta sur PlayStore.
+                            L'offre débute le 10/12 et prendra fin le 31/12/2024. <br> <br>
+                            Nous vous souhaitons de finir cette année en très bonne santé.
+                        </h5>
                         <br>
                         <h5>Pour recharger votre compte, cliquez sur le solde.</h5>
                     </div>
@@ -1539,15 +1544,15 @@
 
         function welcome() {
             var mdl = $('#mdl-welcome');
-            var ok = Number(localStorage.getItem('docta_ios_welcome'));
+            var ok = Number(localStorage.getItem('docta_ios_welcome2'));
             if (ok < 2) {
                 mdl.modal('show');
             }
 
             mdl.on('hide.bs.modal', function() {
-                var ok = Number(localStorage.getItem('docta_ios_welcome'));
+                var ok = Number(localStorage.getItem('docta_ios_welcome2'));
                 ok += 1;
-                localStorage.setItem('docta_ios_welcome', ok);
+                localStorage.setItem('docta_ios_welcome2', ok);
             });
         }
     }

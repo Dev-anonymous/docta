@@ -39,7 +39,6 @@ class SystemMiddleware
         assignchat();
         completeTrans();
         defaultdata();
-        Artisan::call('sendpush');
         return $next($request);
     }
 }
