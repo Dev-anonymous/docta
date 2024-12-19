@@ -89,6 +89,7 @@ class AuthController extends Controller
 
         $profil = [];
         if ($user->user_role == 'docta') {
+            $user->tokens()->delete();
             $pro = $user->profils()->first();
             if ($pro) {
                 $profil['actif'] = $pro->actif;
