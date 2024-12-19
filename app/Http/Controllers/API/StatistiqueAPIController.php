@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use App\Models\App;
 use App\Models\Chat;
 use App\Models\Download;
@@ -19,12 +20,17 @@ class StatistiqueAPIController extends Controller
      */
     public function index()
     {
+        $user = auth()->user();
+
         $docta = User::where('user_role', 'docta')->count();
         $clients = App::count();
         $min_date = now('Africa/Lubumbashi')->subDays(8)->format("Y-m-d H:i:s");
         $clientactifs = App::whereDate('last_login', '>=', $min_date)->count();
 
         $docta_id = request('docta_id');
+        if ('docta' == $user->user_role) {
+            $docta_id = $user->id;
+        }
 
         $visites = [];
         $telechargement = [];
@@ -67,24 +73,30 @@ class StatistiqueAPIController extends Controller
         $messagehier = $messagehier->count();
         $messagehebdomadaire = $messagehebdomadaire->count();
 
-        return response([
-            'docta' => $docta,
-            'clients' => $clients,
-            'clientactifs' => $clientactifs,
-            'visites' => $visites,
-            'visitehier' => $visitehier,
-            'visitejournaliere' => $visitejournaliere,
-            'visitehebdomadaire' => $visitehebdomadaire,
-            'telechargement' => $telechargement,
-            'telechargementhier' => $telechargementhier,
-            'telechargementjournaliere' => $telechargementjournaliere,
-            'telechargementhebdomadaire' => $telechargementhebdomadaire,
-            'messages' => $messages,
-            'messagehier' => $messagehier,
-            'messagejournaliere' => $messagejournaliere,
-            'messagehebdomadaire' => $messagehebdomadaire,
-            'doctaname' => $doctaname,
-        ]);
+        $data = [];
+        $data['messagehier'] = $messagehier;
+        $data['messagejournaliere'] = $messagejournaliere;
+        $data['messagehebdomadaire'] = $messagehebdomadaire;
+        $data['messages'] = $messages;
+
+        if ($user->user_role == 'admin') {
+            $data['docta'] = $docta;
+            $data['clients'] = $clients;
+            $data['clientactifs'] = $clientactifs;
+            $data['visites'] = $visites;
+            $data['visitehier'] = $visitehier;
+            $data['visitejournaliere'] = $visitejournaliere;
+            $data['visitehebdomadaire'] = $visitehebdomadaire;
+            $data['telechargement'] = $telechargement;
+            $data['telechargementhier'] = $telechargementhier;
+            $data['telechargementjournaliere'] = $telechargementjournaliere;
+            $data['telechargementhebdomadaire'] = $telechargementhebdomadaire;
+
+            $data['doctaname'] = $doctaname;
+        } else if ($user->user_role == 'docta') {
+        }
+
+        return response($data);
     }
 
     /**

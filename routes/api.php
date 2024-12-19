@@ -15,9 +15,9 @@ use App\Http\Controllers\API\PAYController;
 use App\Http\Controllers\API\PushnotificationAPIController;
 use App\Http\Controllers\API\SiteAPIController;
 use App\Http\Controllers\API\SlideAPIController;
+use App\Http\Controllers\API\StatistiqueAPIController;
 use App\Http\Controllers\API\TauxAPIController;
 use App\Http\Controllers\API\ZegocloudController;
-use App\Http\Controllers\StatistiqueAPIController;
 use App\Models\Conseilmedical;
 use Illuminate\Support\Facades\Route;
 
@@ -55,12 +55,13 @@ Route::prefix('v1')->group(function () {
         Route::post('pay/init2', [PAYController::class, 'init_payment2']);
         Route::get('pay/check2', [PAYController::class, 'check_payment']);
 
+        // Docta Mobile APP
         Route::middleware('docta.mdwl')->group(function () {
             Route::post('/auth/logout', [AuthController::class, 'logout']);
-            Route::get('/chat', [AppController::class, 'getchat']);
+            Route::get('/chat', [AppController::class, 'getchat'])->name('api.docta.chat');
             Route::post('/chat', [AppController::class, 'postmessage']);
-            Route::post('user/message/received', [AppController::class, 'received2']);
-            Route::post('user/chat/received', [AppController::class, 'chatreceived']);
+            Route::post('user/message/received', [AppController::class, 'received2'])->name('api.docta.received');
+            Route::post('user/chat/received', [AppController::class, 'chatreceived'])->name('api.docta.received-2');
             Route::get('getallmessage-admin', [AppController::class, 'getallmessageadmin']);
         });
     });
@@ -78,7 +79,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('site', SiteAPIController::class);
     Route::resource('appversion', AppVersionAPIController::class);
     Route::resource('clients', ClientAPIController::class);
-    Route::any('stat', [StatistiqueAPIController::class,'index'])->name('stat.index');
+    Route::any('stat', [StatistiqueAPIController::class, 'index'])->name('stat.index');
     Route::resource('slide', SlideAPIController::class);
     Route::post('slide/{slide}', [SlideAPIController::class, 'update']);
     Route::resource('pushnotification', PushnotificationAPIController::class);

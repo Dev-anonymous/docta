@@ -27,7 +27,7 @@
     <div id="main-wrapper">
         <div class="nav-header" style="background-color: #fff">
             <div class="brand-logo">
-                <a href="{{ route('admin.home') }}">
+                <a href="{{ route('login') }}">
                     <b class="logo-abbr">
                         <img src="{{ asset('images/logo.png') }}" alt="">
                     </b>

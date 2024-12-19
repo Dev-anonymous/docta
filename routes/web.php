@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\API\AppController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\PAYController;
+use App\Http\Controllers\DoctaController;
 use App\Http\Controllers\WEBController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -11,7 +12,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('login', function () {
     $r = request('r');
     if (Auth::check()) {
-        $url = route('admin.home');
+        $role = auth()->user()->user_role;
+        if ('admin' == $role) {
+            $url = route('admin.home');
+        } else if ('docta' == $role) {
+            $url = route('docta.home');
+        } else {
+            abort(403, 'Who are you ?');
+        }
         if ($r) {
             $url = urldecode($r);
         }
@@ -38,10 +46,9 @@ Route::get('/doctor', [WEBController::class, 'doctor'])->name('web.doctor');
 
 
 Route::middleware('auth')->group(function () {
+    Route::post('/auth/logout', [AuthController::class, 'logout'])->name('web.logout');
+
     Route::middleware('admin.mdwl')->group(function () {
-
-        Route::post('/auth/logout', [AuthController::class, 'logout'])->name('web.logout');
-
         Route::prefix('admin-dash')->group(function () {
             Route::controller(AdminController::class)->group(function () {
                 Route::get('', 'index')->name('admin.home');
@@ -59,6 +66,12 @@ Route::middleware('auth')->group(function () {
                 Route::get('app', 'app')->name('admin.app');
                 Route::get('categorie', 'categorie')->name('admin.categorie');
             });
+        });
+    });
+
+    Route::prefix('docta-dash')->group(function () {
+        Route::controller(DoctaController::class)->group(function () {
+            Route::get('', 'index')->name('docta.home');
         });
     });
 });
