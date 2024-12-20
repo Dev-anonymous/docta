@@ -184,9 +184,32 @@
                         <i class="fa fa-lock text-success fa-2x"></i>
                     </div>
                     <hr>
-                    <div class="alert alert-success">
-                        <i class="fa fa-info-circle"></i>
-                        Nous utilisons les payements sécurisés
+                    <div class="mb-2">
+                        <div class="text-center">
+                            <b class="mr-2">Nous acceptons les paiements par </b>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <a class="m-1">
+                                <img class="img-thumbnail shadow-lg"
+                                    src="{{ asset('images/payment-method/airtel.png') }}" width="100px"
+                                    height="50px" alt="" />
+                            </a>
+                            <a class="m-1">
+                                <img class="img-thumbnail shadow-lg"
+                                    src="{{ asset('images/payment-method/vodacom.png') }}" width="100px"
+                                    height="50px" alt="" />
+                            </a>
+                            <a class="m-1">
+                                <img class="img-thumbnail shadow-lg"
+                                    src="{{ asset('images/payment-method/orange.png') }}" width="100px"
+                                    height="50px" alt="" />
+                            </a>
+                            <a class="m-1">
+                                <img class="img-thumbnail shadow-lg"
+                                    src="{{ asset('images/payment-method/afrimoney.png') }}" width="100px"
+                                    height="50px" alt="" />
+                            </a>
+                        </div>
                     </div>
                     <form action="#" class="was-validated" id="f-pay">
                         <div class="form-group">

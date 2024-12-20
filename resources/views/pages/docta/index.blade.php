@@ -123,7 +123,107 @@
         }
     });
 </script>
-<x-chatboxdocta />
+@if (!$mustpay)
+    <x-chatboxdocta />
+@endif
+
+@if ($mustpay)
+    <div class="modal fade" id="mdlinfo" tabindex="-1" role="dialog" data-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Activation du profil</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="jumbotron">
+                        <h2 class="text-danger">
+                            <i class="fa fa-info-circle"></i>
+                            Vous devez activer votre compte avant
+                            de l'utiliser.
+                        </h2>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default bok"><span></span> D'accord</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="mdlpay" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content ">
+                <div class="modal-body">
+                    <div class="p-3 rounded-5" style="background-color: rgba(0, 0, 0, 0.075)">
+                        <div class="d-flex justify-content-between">
+                            <h4>Paiement</h4>
+                            <i class="fa fa-lock text-success fa-2x"></i>
+                        </div>
+                        <hr>
+                        <div class="mb-2">
+                            <div class="text-center">
+                                <b class="mr-2">Nous acceptons les paiements par </b>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <a class="m-1">
+                                    <img class="img-thumbnail shadow-lg"
+                                        src="{{ asset('images/payment-method/airtel.png') }}" width="100px"
+                                        height="50px" alt="" />
+                                </a>
+                                <a class="m-1">
+                                    <img class="img-thumbnail shadow-lg"
+                                        src="{{ asset('images/payment-method/vodacom.png') }}" width="100px"
+                                        height="50px" alt="" />
+                                </a>
+                                <a class="m-1">
+                                    <img class="img-thumbnail shadow-lg"
+                                        src="{{ asset('images/payment-method/orange.png') }}" width="100px"
+                                        height="50px" alt="" />
+                                </a>
+                                <a class="m-1">
+                                    <img class="img-thumbnail shadow-lg"
+                                        src="{{ asset('images/payment-method/afrimoney.png') }}" width="100px"
+                                        height="50px" alt="" />
+                                </a>
+                            </div>
+                        </div>
+                        @php
+                            $tel = substr(auth()->user()->phone, -9);
+                        @endphp
+                        <form action="#" class="was-validated" id="f-pay">
+                            <div class="form-group">
+                                <label for="">Télephone Mobile Money</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1">+243</span>
+                                    </div>
+                                    <input type="text" required pattern="[0-9.]+" value="{{ $tel }}"
+                                        class="form-control" placeholder="Votre numéro Tel." name="telephone"
+                                        maxlength="9">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <h4>Montant de paiemnt : {{ v($montant, 'USD') }}</h4>
+                            </div>
+                            <div class="mt-3 mb-3">
+                                <div id="rep"></div>
+                            </div>
+                            <button class="btn btn-outline-info" type="submit">
+                                <span></span>
+                                PAYER
+                            </button>
+
+                            <button type="button" class="btn btn-light my-2" id="btncancel"
+                                style="display: none">Annuler
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
+
 
 @section('js-code')
     <script src="{{ asset('js/apexchart.js') }}"></script>
@@ -237,6 +337,113 @@
                 })
             }
             stat();
+
+            @if ($mustpay)
+                $('#mdlinfo').modal('show');
+                $('.bok').click(function() {
+                    $('.modal').modal('hide');
+                    $('#mdlpay').modal('show');
+                });
+
+
+                CANSHOW = true;
+                var xhr = [];
+                var interv = null;
+
+                var callback = function() {
+                    var x =
+                        $.ajax({
+                            url: '{{ route('api.docta.paycheck') }}',
+                            data: {
+                                myref: REF,
+                            },
+                            success: function(res) {
+                                var trans = res.transaction;
+                                var status = trans?.status;
+                                if (status === 'success') {
+                                    $('#btncancel').hide();
+                                    clearInterval(interv);
+                                    var form = $('#f-pay');
+                                    var btn = $(':submit', form).attr('disabled', false);
+                                    btn.html('<span></span> PAYER');
+                                    rep = $('#rep', form);
+                                    rep.html(
+                                        `<b>TRANSACTION EFFECTUEE !</b>`
+                                    ).removeClass();
+                                    rep.addClass('alert alert-success');
+                                    rep.slideDown();
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 3000);
+
+                                } else if (status === 'failed') {
+                                    clearInterval(interv);
+                                    $('#btncancel').hide();
+                                    var form = $('#f-pay');
+                                    var btn = $(':submit', form).attr('disabled', false);
+                                    btn.html('<span></span> Valider');
+                                    var rep = $('#rep', form);
+                                    rep.html(
+                                        `<b>TRANSACTION ECHOUEE !</b><p>Vous avez peut-être saisi un mauvais Pin. Merci de réessayer.</p>`
+                                    ).removeClass();
+                                    rep.addClass('alert alert-danger');
+                                    $(xhr).each(function(i, e) {
+                                        e.abort();
+                                    });
+                                }
+                            }
+                        });
+                    xhr.push(x);
+                }
+                $('#btncancel').click(function() {
+                    clearInterval(interv);
+                    $(this).hide();
+                    var form = $('#f-pay');
+                    var btn = $(':submit', form).attr('disabled', false);
+                    btn.html('<span></span> PAYER');
+                    var rep = $('#rep', form);
+                    rep.html("Paiement annulé.").removeClass();
+                    rep.addClass('alert alert-danger');
+                    $(xhr).each(function(i, e) {
+                        e.abort();
+                    });
+                });
+
+                $('#f-pay').submit(function() {
+                    event.preventDefault();
+                    var form = $(this);
+                    var btn = $(':submit', form);
+                    var rep = $('#rep', form);
+                    rep.html('').removeClass();
+                    var data = form.serialize();
+                    data = data.split('telephone=').join('telephone=+243');
+
+                    btn.attr('disabled', true).find('span').removeClass().addClass(
+                        'fa fa-spin fa-spinner');
+                    $.ajax({
+                        url: '{{ route('api.docta.payinit') }}',
+                        type: 'post',
+                        data: data,
+                        success: function(res) {
+                            if (res.success) {
+                                rep.html(res.message).removeClass();
+                                rep.addClass('alert alert-success');
+                                btn.html(
+                                    '<i class="fa fa-spin fa-spinner"></i> Confirmez votre Pin au téléphone...'
+                                );
+                                btn.attr('disabled', true);
+                                clearInterval(interv);
+                                REF = res.data.myref;
+                                interv = setInterval(callback, 3000);
+                                $('#btncancel').show();
+                            } else {
+                                rep.removeClass().addClass('text-danger').html(res.message);
+                                btn.attr('disabled', false).find('span').removeClass();
+                            }
+                        }
+                    });
+                });
+            @endif
         })
     </script>
 @endsection

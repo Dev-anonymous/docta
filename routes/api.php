@@ -52,8 +52,8 @@ Route::prefix('v1')->group(function () {
     Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('doctaprofil', [AppController::class, 'doctaprofil']);
         Route::get('forfait-profil', [AppController::class, 'forfait_profil']);
-        Route::post('pay/init2', [PAYController::class, 'init_payment2']);
-        Route::get('pay/check2', [PAYController::class, 'check_payment']);
+        Route::post('pay/init2', [PAYController::class, 'init_payment2'])->name('api.docta.payinit');
+        Route::get('pay/check2', [PAYController::class, 'check_payment'])->name('api.docta.paycheck');
 
         // Docta Mobile APP
         Route::middleware('docta.mdwl')->group(function () {
