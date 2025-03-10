@@ -27,31 +27,40 @@
             <ul>
                 <li>
                     <a class="nav-link scrollto" href="#hero">
-                        <i class="fa fa-home mr-1"></i>
-                        <span style="margin-left: 5px">Accueil</span>
+                        <div class="">
+                            <i class="fa fa-home"></i>
+                            <span style="margin-left: 5px">Accueil</span>
+                        </div>
                     </a>
                 </li>
                 <li>
                     <a class="nav-link @if (Route::is('doctamag')) active @endif" href="{{ route('doctamag') }}">
-                        <i class="fa fa-book-atlas mr-1"></i>
-                        <span style="margin-left: 5px">Docta Mag</span>
+                        <div class="">
+                            <i class="fa fa-book-atlas"></i>
+                            <span style="margin-left: 5px">Docta Mag</span>
+                        </div>
                     </a>
                 </li>
                 <li>
                     <a class="nav-link scrollto" href="#about">
-                        <span style="margin-left: 5px">A propos</span>
+                        <div class="">
+                            <i class="fa fa-building"></i>
+                            <span style="margin-left: 5px">A propos</span>
+                        </div>
                     </a>
                 </li>
                 <li>
                     <a class="nav-link scrollto" href="#contact">
-                        <i class="fa fa-phone mr-1"></i>
-                        <span style="margin-left: 5px">Contact</span>
+                        <div class="">
+                            <i class="fa fa-phone"></i>
+                            <span style="margin-left: 5px">Contact</span>
+                        </div>
                     </a>
                 </li>
                 @guest
                     <li>
                         <a class="nav-link" href="{{ route('login') }}">
-                            <i class="fa fa-unlock mr-1"></i>
+                            <i class="fa fa-unlock"></i>
                             <span style="margin-left: 5px">Connexion</span>
                         </a>
                     </li>

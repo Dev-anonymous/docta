@@ -43,7 +43,7 @@
      </style>
  @endsection
  @section('body')
-     <section id="hero2" class="d-flex align-items-center" style="height: 45vh;">
+     <section id="hero2" class="d-flex align-items-center" style="height: 80vh;">
          <div class="container">
              <h1>Bienvenue sur Docta Mag</h1>
              <h2>
