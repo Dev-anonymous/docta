@@ -139,19 +139,21 @@
                                                  </button>
                                              @endguest
                                              @auth
-                                                 @if (candl(auth()->user(), $el))
-                                                     <button value="{{ $el->id }}" class="btn btn-outline-info btn-sm"
-                                                         dlmag>
-                                                         <i class="fa fa-download"></i>
-                                                         Télécharger
-                                                     </button>
-                                                 @else
-                                                     <button value="{{ magkey($el) }}"
-                                                         label="{{ moislabel((int) $el->date->format('m')) }} {{ date('Y') }}"
-                                                         class="btn btn-outline-warning btn-sm" subscribe>
-                                                         <i class="fa fa-download"></i>
-                                                         Télécharger
-                                                     </button>
+                                                 @if ($el->fichier)
+                                                     @if (candl(auth()->user(), $el))
+                                                         <button value="{{ $el->id }}"
+                                                             class="btn btn-outline-info btn-sm" dlmag>
+                                                             <i class="fa fa-download"></i>
+                                                             Télécharger
+                                                         </button>
+                                                     @else
+                                                         <button value="{{ magkey($el) }}"
+                                                             label="{{ moislabel((int) $el->date->format('m')) }} {{ date('Y') }}"
+                                                             class="btn btn-outline-warning btn-sm" subscribe>
+                                                             <i class="fa fa-download"></i>
+                                                             Télécharger
+                                                         </button>
+                                                     @endif
                                                  @endif
                                              @endauth
                                          </div>
