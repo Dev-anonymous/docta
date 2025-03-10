@@ -4,6 +4,7 @@ use App\Http\Controllers\API\AppController;
 use App\Http\Controllers\API\AppVersionAPIController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CategorieAPIController;
+use App\Http\Controllers\API\CategoriemagAPIController;
 use App\Http\Controllers\API\ClientAPIController;
 use App\Http\Controllers\API\ConseilAPIController;
 use App\Http\Controllers\API\ConseilMedicalAPIController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\API\ContactAPIController;
 use App\Http\Controllers\API\DemandeadhesionAPIController;
 use App\Http\Controllers\API\DoctaAPIController;
 use App\Http\Controllers\API\ForfaitAPIController;
+use App\Http\Controllers\API\MagazineAPIController;
 use App\Http\Controllers\API\PAYController;
 use App\Http\Controllers\API\PushnotificationAPIController;
 use App\Http\Controllers\API\SiteAPIController;
@@ -55,6 +57,10 @@ Route::prefix('v1')->group(function () {
         Route::post('pay/init2', [PAYController::class, 'init_payment2'])->name('api.docta.payinit');
         Route::get('pay/check2', [PAYController::class, 'check_payment'])->name('api.docta.paycheck');
 
+        // client
+        Route::get('subscribeval', [AppController::class, 'subscribeval'])->name('subscribeval');
+        Route::post('/pay/init3', [PAYController::class, 'init_payment3'])->name('api.init.pay3');
+
         // Docta Mobile APP
         Route::middleware('docta.mdwl')->group(function () {
             Route::post('/auth/logout', [AuthController::class, 'logout']);
@@ -84,4 +90,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('slide/{slide}', [SlideAPIController::class, 'update']);
     Route::resource('pushnotification', PushnotificationAPIController::class);
     Route::resource('categorie', CategorieAPIController::class);
+    Route::resource('categoriemag', CategoriemagAPIController::class);
+    Route::resource('magazine', MagazineAPIController::class);
 });

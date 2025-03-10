@@ -62,6 +62,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 :root {
+  --appcolor: #02BBFF;
   --blue: #324cdd;
   --indigo: #6610f2;
   --purple: #6f42c1;
@@ -4441,7 +4442,7 @@ button.close {
       height: 10px;
       content: ""; }
   .carousel-indicators .active {
-    background-color: #02BBFF; }
+    background-color:  var(--appcolor); }
 
 .carousel-caption {
   position: absolute;

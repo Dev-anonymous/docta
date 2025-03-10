@@ -61,13 +61,41 @@
 
 <script src="{{ asset('assets/js/jq.min.js') }}"></script>
 <script>
+    @guest
+    localStorage.setItem('token', '')
+    @endguest
     $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            'Authorization': 'Bearer ' + localStorage.getItem('token'),
-            'Accept': 'application/json',
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('Accept', 'application/json');
+            xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+            xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
         }
     });
+
+    @auth
+    $('[logout]').click(function() {
+        var el = $(this);
+        el.html('<i class="fa fa-spinner fa-spin fa-2x"></i>');
+        $.ajax({
+            type: 'post',
+            url: '{{ route('web.logout') }}',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('Accept', 'application/json');
+                xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
+            },
+            success: function(data) {
+                localStorage.setItem('token', '');
+                location.reload();
+            },
+            error: function(data) {
+                alert('Error during logout.');
+                location.reload();
+            }
+        })
+    });
+    @endauth
+
     $('#fcont').submit(function() {
         event.preventDefault();
         var form = $(this);

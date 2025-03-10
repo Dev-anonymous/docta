@@ -25,9 +25,84 @@
 
         <nav id="navbar" class="navbar order-last order-lg-0">
             <ul>
-                <li><a class="nav-link scrollto active" href="#hero">Accueil</a></li>
-                <li><a class="nav-link scrollto" href="#about">A propos</a></li>
-                <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+                <li>
+                    <a class="nav-link scrollto" href="#hero">
+                        <i class="fa fa-home mr-1"></i>
+                        <span style="margin-left: 5px">Accueil</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link @if (Route::is('doctamag')) active @endif" href="{{ route('doctamag') }}">
+                        <i class="fa fa-book-atlas mr-1"></i>
+                        <span style="margin-left: 5px">Docta Mag</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link scrollto" href="#about">
+                        <span style="margin-left: 5px">A propos</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link scrollto" href="#contact">
+                        <i class="fa fa-phone mr-1"></i>
+                        <span style="margin-left: 5px">Contact</span>
+                    </a>
+                </li>
+                @guest
+                    <li>
+                        <a class="nav-link" href="{{ route('login') }}">
+                            <i class="fa fa-unlock mr-1"></i>
+                            <span style="margin-left: 5px">Connexion</span>
+                        </a>
+                    </li>
+                @endguest
+                @auth
+                    @php
+                        $user = auth()->user();
+                        $abo = $user->abonnements()->orderBy('id', 'desc')->first();
+                        $lab = '';
+                        if ($abo) {
+                            $key = explode('-', $abo->key);
+                            $lab = moislabel((int) $key[0]) . " $key[1]";
+                        }
+                    @endphp
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-user-alt"></i> <span style="margin-left: 5px">{{ $user->name }}</span>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            @if ($user->user_role == 'admin')
+                                <li><a class="dropdown-item" href="{{ route('admin.home') }}">Dashboard</a></li>
+                            @endif
+                            {{-- <li><a class="dropdown-item" href="#">Another action</a></li> --}}
+                            <li class="text-muted">
+                                <small style="margin-left: 10px">Mon compte</small>
+                                <p class="dropdown-item m-0">
+                                    {{ $user->email }} <br>
+                                    +{{ $user->phone }}
+                                </p>
+                                <hr>
+                                <small style="margin-left: 10px">Mon abonnement</small>
+                                <p class="dropdown-item m-0">
+                                    @if (empty($lab))
+                                        <b>Aucun abonnement</b>
+                                    @else
+                                        <b class="text-success"><i class="fa fa-check-circle"></i> {{ $lab }}</b>
+                                    @endif
+                                </p>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="event.preventDefault()" logout>
+                                    Déconnexion
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endauth
             </ul>
             <i class="bi bi-list mobile-nav-toggle"></i>
         </nav>

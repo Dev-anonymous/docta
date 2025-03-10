@@ -1,5 +1,8 @@
  @extends('layouts.web')
  @section('title', 'Accueil')
+ @section('meta')
+     @include('components.defaultmeta')
+ @endsection
 
  @section('body')
      <section id="hero" class="d-flex align-items-center">

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categorie;
+use App\Models\Categoriemagazine;
+use App\Models\Magazine;
 use App\Models\Profil;
 use App\Models\Site;
 use App\Models\Slide;
@@ -59,5 +61,29 @@ class WEBController extends Controller
     {
         $categories = Categorie::orderBy('categorie')->get();
         return view('pages.web.doctor', compact('categories'));
+    }
+
+    function doctamag()
+    {
+        $mag = Magazine::where('id', request('item'))->first();
+        if ($mag) {
+            $text = $mag->text;
+            if (strlen($text) > 10) {
+                //
+            } else {
+                $mag = null;
+            }
+        }
+        $magazines = Magazine::orderBy('date', 'desc');
+        $mcat = request('mcat');
+        if ($mcat) {
+            $magazines->whereHas('categoriemagazine', function ($q) use ($mcat) {
+                $q->where('categorie', $mcat);
+            });
+        }
+        $magazines  = $magazines->paginate(6);
+
+        $cats = Categoriemagazine::orderBy('categorie')->get();
+        return view('pages.web.doctamag', compact('magazines', 'mag', 'cats'));
     }
 }

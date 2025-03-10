@@ -39,7 +39,7 @@ class AuthController extends Controller
         $login = $data['login'];
         if (filter_var($login, FILTER_VALIDATE_EMAIL)) {
             $_ = ['password' => $data['password'], 'email' => $login];
-            if (Auth::attempt($_, true)) {
+            if (Auth::attempt($_, request()->has('remember'))) {
                 $success = true;
             }
         } else if (is_numeric($login)) {
@@ -50,7 +50,7 @@ class AuthController extends Controller
             // $login = "+" . $login;
             // $login = "0" . $login;
             $_ = ['password' => $data['password'], 'phone' => $login];
-            if (Auth::attempt($_,  true)) {
+            if (Auth::attempt($_,  request()->has('remember'))) {
                 $success = true;
             }
         } else {
@@ -109,6 +109,36 @@ class AuthController extends Controller
                 'chats' => $chats,
                 'messages' => $messages,
                 'profil' => $profil,
+            ]
+        ]);
+    }
+
+    function signup()
+    {
+        $validator = Validator::make(request()->all(), [
+            'name' => 'required',
+            'email' => 'required|unique:users',
+            'phone' => 'required|min:10|unique:users',
+            'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $m = implode(" ", $validator->errors()->all());
+            return response([
+                'message' => $m
+            ]);
+        }
+
+        $data = $validator->validated();
+        $data['password'] = Hash::make(request('password'));
+        $data['user_role'] = 'client';
+        $user =  User::create($data);
+        Auth::login($user);
+        return response([
+            'success' => true,
+            'message' => "Votre compte Docta est créé avec succès.",
+            'data' => [
+                'token' => $user->createToken('token_' . time())->plainTextToken,
             ]
         ]);
     }

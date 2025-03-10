@@ -8,6 +8,7 @@ use App\Models\Forfait;
 use App\Models\Gopay;
 use App\Models\Maxicash;
 use App\Models\Paiement;
+use App\Models\Taux;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -197,6 +198,81 @@ class PAYController extends Controller
             'paydata' => json_encode([
                 'fortable' => 'profil',
                 'profil_id' => $prof->id,
+            ]),
+        ]);
+        $r = gopay_init_payment($amount, $devise, $tel, $myref);
+
+        $ref = null;
+        if ($r->success) {
+            $ref = $r->data->ref;
+            $gopay->update(compact('ref'));
+        }
+
+        return response([
+            'success' => $r->success,
+            'message' => $r->message,
+            'data' => ['myref' => $myref]
+        ]);
+    }
+
+    public function init_payment3()
+    {
+        $validator = Validator::make(
+            request()->all(),
+            [
+                'devise' => 'required',
+                'magkey' => 'required',
+            ]
+        );
+
+        if ($validator->fails()) {
+            $m = implode(', ', $validator->errors()->all());
+            return response([
+                'success' => false,
+                'message' => $m
+            ]);
+        }
+        $tel = request()->telephone;
+        $tel = "+" . ((int) $tel);
+
+        $ok = preg_match('/(\+24390|\+24399|\+24397|\+24398|\+24380|\+24381|\+24382|\+24383|\+24384|\+24385|\+24389)[0-9]{7}/', $tel);
+
+        if (!$ok) {
+            $m = "Le numéro $tel est invalide";
+            return response([
+                'success' => false,
+                'message' => $m
+            ]);
+        }
+
+        $devise = request('devise');
+        $magkey = request('magkey');
+
+        $user = auth()->user();
+        $ab = $user->abonnements()->where('key', $magkey)->first();
+        if ($ab) {
+            return response([
+                'message' => "Echec d'abonnement."
+            ]);
+        }
+
+        if ('USD' == $devise) {
+            $amount = 1;
+        } else if ('CDF' == $devise) {
+            $taux = Taux::first();
+            $amount = $taux->usd_cdf;
+        } else {
+            abort(403);
+        }
+
+        $myref = 'myref' . time() . rand(10000, 90000);
+        $gopay = Gopay::create([
+            'myref' => $myref,
+            'issaved' => 0,
+            'isfailed' => 0,
+            'paydata' => json_encode([
+                'fortable' => 'abonnement',
+                'insert' => ['users_id' => auth()->user()->id, 'key' => $magkey, 'ref' => $myref],
             ]),
         ]);
         $r = gopay_init_payment($amount, $devise, $tel, $myref);

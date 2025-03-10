@@ -1,6 +1,8 @@
  @extends('layouts.web')
  @section('title', $title)
-
+ @section('meta')
+     @include('components.defaultmeta')
+ @endsection
  @section('body')
 
 

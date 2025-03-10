@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\App;
 use App\Models\Appversion;
 use App\Models\Categorie;
+use App\Models\Categoriemagazine;
 use App\Models\Contact;
 use App\Models\Errorlog;
 use App\Models\Forfait;
@@ -108,5 +109,15 @@ class AdminController extends Controller
     {
         $data = Appversion::first();
         return view('pages.admin.app', compact('data'));
+    }
+
+    public function categoriemag()
+    {
+        return view('pages.admin.categoriemag');
+    }
+    public function magazine()
+    {
+        $categories = Categoriemagazine::orderBy('categorie')->get();
+        return view('pages.admin.magazine', compact('categories'));
     }
 }

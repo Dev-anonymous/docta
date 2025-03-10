@@ -1,6 +1,10 @@
  @extends('layouts.web')
  @section('title', 'Demande du profil Docta')
  @section('meta')
+     <link rel="icon" type="image/png" href="{{ asset('images/icon.png') }}">
+     <meta property="og:image" content="{{ asset('images/icon.png') }}">
+     <meta property="og:url" content="{{ url()->current() }}">
+
      <meta name="description" content="Veuillez remplir soigneusement tous les champs du formulaire">
      <meta property="og:title" content="Demande du profil Docta">
      <meta property="og:description" content="Veuillez remplir soigneusement tous les champs du formulaire">

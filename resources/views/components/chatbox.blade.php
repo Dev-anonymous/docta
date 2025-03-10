@@ -274,12 +274,12 @@
                             confidentialité.
                         </h5>
                         <br>
-                        <h5 class="text-danger">
+                        {{-- <h5 class="text-danger">
                             Pour une belle fin d'année, Docta vous offre de discuter gratuitement avec un médecin de vos
                             problèmes de santé. Téléchargez l'application Docta sur PlayStore.
                             L'offre débute le 10/12 et prendra fin le 31/12/2024. <br> <br>
                             Nous vous souhaitons de finir cette année en très bonne santé.
-                        </h5>
+                        </h5> --}}
                         <br>
                         <h5>Pour recharger votre compte, cliquez sur le solde.</h5>
                     </div>

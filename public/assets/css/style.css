@@ -9,13 +9,17 @@
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
+:root{
+    --appcolor: #02BBFF;
+}
+
 body {
   font-family: "Open Sans", sans-serif;
   color: #444444;
 }
 
 a {
-  color: #02BBFF;
+  color: var(--appcolor);
   text-decoration: none;
 }
 
@@ -52,7 +56,7 @@ h6 {
   position: fixed;
   top: calc(50% - 30px);
   left: calc(50% - 30px);
-  border: 6px solid #02BBFF;
+  border: 6px solid var(--appcolor);
   border-top-color: #d1e6f9;
   border-radius: 50%;
   width: 60px;
@@ -80,7 +84,7 @@ h6 {
   right: 15px;
   bottom: 15px;
   z-index: 996;
-  background: #02BBFF;
+  background: var(--appcolor);
   width: 40px;
   height: 40px;
   border-radius: 4px;
@@ -129,11 +133,11 @@ h6 {
 }
 
 #topbar .contact-info a:hover {
-  color: #02BBFF;
+  color: var(--appcolor);
 }
 
 #topbar .contact-info i {
-  color: #02BBFF;
+  color: var(--appcolor);
   padding-right: 4px;
   margin-left: 15px;
   line-height: 0;
@@ -152,7 +156,7 @@ h6 {
 }
 
 #topbar .social-links a:hover {
-  color: #02BBFF;
+  color: var(--appcolor);
 }
 
 #topbar .social-links a:first-child {
@@ -198,7 +202,7 @@ h6 {
 */
 .appointment-btn {
   margin-left: 25px;
-  background: #02BBFF;
+  background: var(--appcolor);
   color: #fff;
   border-radius: 50px;
   padding: 8px 25px;
@@ -272,8 +276,8 @@ h6 {
 .navbar .active,
 .navbar .active:focus,
 .navbar li:hover>a {
-  color: #02BBFF;
-  border-color: #02BBFF;
+  color: var(--appcolor);
+  border-color: var(--appcolor);
 }
 
 .navbar .dropdown ul {
@@ -311,7 +315,7 @@ h6 {
 .navbar .dropdown ul a:hover,
 .navbar .dropdown ul .active:hover,
 .navbar .dropdown ul li:hover>a {
-  color: #02BBFF;
+  color: var(--appcolor);
 }
 
 .navbar .dropdown:hover>ul {
@@ -415,7 +419,7 @@ h6 {
 .navbar-mobile a:hover,
 .navbar-mobile .active,
 .navbar-mobile li:hover>a {
-  color: #02BBFF;
+  color: var(--appcolor);
 }
 
 .navbar-mobile .getstarted,
@@ -450,7 +454,7 @@ h6 {
 .navbar-mobile .dropdown ul a:hover,
 .navbar-mobile .dropdown ul .active:hover,
 .navbar-mobile .dropdown ul li:hover>a {
-  color: #02BBFF;
+  color: var(--appcolor);
 }
 
 .navbar-mobile .dropdown>.dropdown-active {
@@ -460,7 +464,7 @@ h6 {
 /*--------------------------------------------------------------
 # Hero Section
 --------------------------------------------------------------*/
-#hero {
+#hero,#hero2 {
   width: 100%;
   height: 90vh;
   background: url("../img/hero-bg.jpg") top center;
@@ -468,11 +472,11 @@ h6 {
   margin-bottom: -200px;
 }
 
-#hero .container {
+#hero .container,#hero2 .container {
   position: relative;
 }
 
-#hero h1 {
+#hero h1,#hero2 h1 {
   margin: 0;
   font-size: 48px;
   font-weight: 700;
@@ -481,13 +485,13 @@ h6 {
   color: #2c4964;
 }
 
-#hero h2 {
+#hero h2,#hero2 h2 {
   color: #2c4964;
   margin: 10px 0 0 0;
   font-size: 24px;
 }
 
-#hero .btn-get-started {
+#hero .btn-get-started,#hero2 .btn-get-started {
   font-family: "Raleway", sans-serif;
   text-transform: uppercase;
   font-weight: 500;
@@ -499,35 +503,35 @@ h6 {
   border-radius: 50px;
   transition: 0.5s;
   color: #fff;
-  background: #02BBFF;
+  background: var(--appcolor);
 }
 
-#hero .btn-get-started:hover {
+#hero .btn-get-started:hover,#hero2 .btn-get-started:hover {
   background: #3291e6;
 }
 
 @media (min-width: 1024px) {
-  #hero {
+  #hero,#hero2 {
     background-attachment: fixed;
   }
 }
 
 @media (max-width: 992px) {
-  #hero {
+  #hero,#hero2 {
     margin-bottom: 0;
     height: 100vh;
   }
 
-  #hero .container {
+  #hero .container,#hero2 .container {
     padding-bottom: 63px;
   }
 
-  #hero h1 {
+  #hero h1,#hero2 h1 {
     font-size: 28px;
     line-height: 36px;
   }
 
-  #hero h2 {
+  #hero h2,#hero2 h2 {
     font-size: 18px;
     line-height: 24px;
     margin-bottom: 30px;
@@ -535,7 +539,7 @@ h6 {
 }
 
 @media (max-height: 600px) {
-  #hero {
+  #hero,#hero2 {
     height: 110vh;
   }
 }
@@ -583,7 +587,7 @@ section {
   display: block;
   width: 40px;
   height: 3px;
-  background: #02BBFF;
+  background: var(--appcolor);
   bottom: 0;
   left: calc(50% - 20px);
 }
@@ -659,7 +663,7 @@ section {
 --------------------------------------------------------------*/
 .why-us .content {
   padding: 30px;
-  background: #02BBFF;
+  background: var(--appcolor);
   border-radius: 4px;
   color: #fff;
 }
@@ -688,7 +692,7 @@ section {
 }
 
 .why-us .content .more-btn:hover {
-  color: #02BBFF;
+  color: var(--appcolor);
   background: #fff;
 }
 
@@ -703,7 +707,7 @@ section {
 
 .why-us .icon-boxes .icon-box i {
   font-size: 40px;
-  color: #02BBFF;
+  color: var(--appcolor);
   margin-bottom: 30px;
 }
 
@@ -751,13 +755,13 @@ section {
 }
 
 .about .icon-box .icon i {
-  color: #02BBFF;
+  color: var(--appcolor);
   font-size: 32px;
 }
 
 .about .icon-box:hover .icon {
-  background: #02BBFF;
-  border-color: #02BBFF;
+  background: var(--appcolor);
+  border-color: var(--appcolor);
 }
 
 .about .icon-box:hover .icon i {
@@ -777,7 +781,7 @@ section {
 }
 
 .about .icon-box .title a:hover {
-  color: #02BBFF;
+  color: var(--appcolor);
 }
 
 .about .icon-box .description {
@@ -795,7 +799,7 @@ section {
 .about .play-btn {
   width: 94px;
   height: 94px;
-  background: radial-gradient(#02BBFF 50%, rgba(25, 119, 204, 0.4) 52%);
+  background: radial-gradient(var(--appcolor) 50%, rgba(25, 119, 204, 0.4) 52%);
   border-radius: 50%;
   display: block;
   position: absolute;
@@ -838,7 +842,7 @@ section {
 }
 
 .about .play-btn:hover::after {
-  border-left: 15px solid #02BBFF;
+  border-left: 15px solid var(--appcolor);
   transform: scale(20);
 }
 
@@ -893,7 +897,7 @@ section {
   left: 50%;
   transform: translateX(-50%);
   font-size: 20px;
-  background: #02BBFF;
+  background: var(--appcolor);
   color: #fff;
   border-radius: 50px;
   display: inline-flex;
@@ -931,7 +935,7 @@ section {
   margin: 0 auto;
   width: 64px;
   height: 64px;
-  background: #02BBFF;
+  background: var(--appcolor);
   border-radius: 5px;
   transition: all 0.3s ease-out 0s;
   display: flex;
@@ -980,8 +984,8 @@ section {
 }
 
 .services .icon-box:hover {
-  background: #02BBFF;
-  border-color: #02BBFF;
+  background: var(--appcolor);
+  border-color: var(--appcolor);
 }
 
 .services .icon-box:hover .icon {
@@ -989,7 +993,7 @@ section {
 }
 
 .services .icon-box:hover .icon i {
-  color: #02BBFF;
+  color: var(--appcolor);
 }
 
 .services .icon-box:hover .icon::before {
@@ -1073,7 +1077,7 @@ section {
 .appointment .php-email-form input:focus,
 .appointment .php-email-form textarea:focus,
 .appointment .php-email-form select:focus {
-  border-color: #02BBFF;
+  border-color: var(--appcolor);
 }
 
 .appointment .php-email-form input,
@@ -1086,7 +1090,7 @@ section {
 }
 
 .appointment .php-email-form button[type=submit] {
-  background: #02BBFF;
+  background: var(--appcolor);
   border: 0;
   padding: 10px 35px;
   color: #fff;
@@ -1121,12 +1125,12 @@ section {
 }
 
 .departments .nav-link:hover {
-  color: #02BBFF;
+  color: var(--appcolor);
 }
 
 .departments .nav-link.active {
-  color: #02BBFF;
-  border-color: #02BBFF;
+  color: var(--appcolor);
+  border-color: var(--appcolor);
 }
 
 .departments .tab-pane.active {
@@ -1156,7 +1160,7 @@ section {
 
   .departments .nav-link.active {
     color: #fff;
-    background: #02BBFF;
+    background: var(--appcolor);
   }
 }
 
@@ -1248,7 +1252,7 @@ section {
 }
 
 .doctors .member .social a:hover {
-  background: #02BBFF;
+  background: var(--appcolor);
 }
 
 .doctors .member .social a+a {
@@ -1320,7 +1324,7 @@ section {
 }
 
 .faq .faq-list a.collapsed:hover {
-  color: #02BBFF;
+  color: var(--appcolor);
 }
 
 .faq .faq-list a.collapsed .icon-show {
@@ -1414,11 +1418,11 @@ section {
   height: 12px;
   background-color: #fff;
   opacity: 1;
-  border: 1px solid #02BBFF;
+  border: 1px solid var(--appcolor);
 }
 
 .testimonials .swiper-pagination .swiper-pagination-bullet-active {
-  background-color: #02BBFF;
+  background-color: var(--appcolor);
 }
 
 @media (max-width: 767px) {
@@ -1469,7 +1473,7 @@ section {
 
 .contact .info i {
   font-size: 20px;
-  color: #02BBFF;
+  color: var(--appcolor);
   float: left;
   width: 44px;
   height: 44px;
@@ -1504,7 +1508,7 @@ section {
 .contact .info .email:hover i,
 .contact .info .address:hover i,
 .contact .info .phone:hover i {
-  background: #02BBFF;
+  background: var(--appcolor);
   color: #fff;
 }
 
@@ -1574,7 +1578,7 @@ section {
 }
 
 .contact .php-email-form button[type=submit] {
-  background: #02BBFF;
+  background: var(--appcolor);
   border: 0;
   padding: 10px 35px;
   color: #fff;
@@ -1675,7 +1679,7 @@ section {
 
 #footer .footer-top .footer-links ul a:hover {
   text-decoration: none;
-  color: #02BBFF;
+  color: var(--appcolor);
 }
 
 #footer .footer-newsletter {
@@ -1715,7 +1719,7 @@ section {
   background: none;
   font-size: 16px;
   padding: 0 20px;
-  background: #02BBFF;
+  background: var(--appcolor);
   color: #fff;
   transition: 0.3s;
   border-radius: 50px;
@@ -1734,7 +1738,7 @@ section {
 #footer .social-links a {
   font-size: 18px;
   display: inline-block;
-  background: #02BBFF;
+  background: var(--appcolor);
   color: #fff;
   line-height: 1;
   padding: 8px 0;

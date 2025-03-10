@@ -29,6 +29,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string|null $fcmtoken
  * @property string|null $type
  *
+ * @property Collection|Abonnement[] $abonnements
  * @property Collection|Chat[] $chats
  * @property Collection|Profil[] $profils
  *
@@ -38,39 +39,44 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-	protected $table = 'users';
+    protected $table = 'users';
 
-	protected $casts = [
-		'email_verified_at' => 'datetime',
-		'derniere_connexion' => 'datetime'
-	];
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'derniere_connexion' => 'datetime'
+    ];
 
-	protected $hidden = [
-		'password',
-		'remember_token',
-		'fcmtoken'
-	];
+    protected $hidden = [
+        'password',
+        'remember_token',
+        'fcmtoken'
+    ];
 
-	protected $fillable = [
-		'name',
-		'email',
-		'email_verified_at',
-		'password',
-		'remember_token',
-		'phone',
-		'derniere_connexion',
-		'user_role',
-		'fcmtoken',
-		'type'
-	];
+    protected $fillable = [
+        'name',
+        'email',
+        'email_verified_at',
+        'password',
+        'remember_token',
+        'phone',
+        'derniere_connexion',
+        'user_role',
+        'fcmtoken',
+        'type'
+    ];
 
-	public function chats()
-	{
-		return $this->hasMany(Chat::class, 'users_id');
-	}
+    public function abonnements()
+    {
+        return $this->hasMany(Abonnement::class, 'users_id');
+    }
 
-	public function profils()
-	{
-		return $this->hasMany(Profil::class, 'users_id');
-	}
+    public function chats()
+    {
+        return $this->hasMany(Chat::class, 'users_id');
+    }
+
+    public function profils()
+    {
+        return $this->hasMany(Profil::class, 'users_id');
+    }
 }

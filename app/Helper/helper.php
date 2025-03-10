@@ -1,10 +1,12 @@
 <?php
 
+use App\Models\Abonnement;
 use App\Models\App;
 use App\Models\Categorie;
 use App\Models\Chat;
 use App\Models\Forfait;
 use App\Models\Gopay;
+use App\Models\Magazine;
 use App\Models\Message;
 use App\Models\Paiement;
 use App\Models\Profil;
@@ -140,6 +142,16 @@ function saveData($paydata, $trans)
                 }
                 $solde->increment('solde_usd', $val);
                 $trans->update(['issaved' => 1]);
+            }
+
+            if ($fortable == 'abonnement') {
+                $inser = (array) $d['insert'];
+                $inser['date'] = nnow();
+                $ob = Abonnement::where(['key' => $inser['key'], 'users_id' => $inser['users_id']])->first();
+                if (!$ob) {
+                    Abonnement::create($inser);
+                    $trans->update(['issaved' => 1]);
+                }
             }
         });
     } catch (\Throwable $th) {
@@ -463,4 +475,39 @@ function userimage(User $user)
 function isapp(App $app)
 {
     return strpos($app->uid, 'BROWSER-') === false;
+}
+
+function candl(User $user, Magazine $mag)
+{
+    $date = $mag->date;
+    $magkey = $date->format('m-Y');
+    $ab = $user->abonnements()->where('key', $magkey)->count();
+    return (bool) $ab;
+}
+
+function magkey(Magazine $mag)
+{
+    $date = $mag->date;
+    $magkey = $date->format('m-Y');
+    return $magkey;
+}
+
+
+function moislabel($n)
+{
+    $tab = [
+        1 => "Janvier",
+        2 => "Fevrier",
+        3 => "Mars",
+        4 => "Avril",
+        5 => "Mai",
+        6 => "Juin",
+        7 => "Juillet",
+        8 => "Aout",
+        9 => "Septembre",
+        10 => "Octobre",
+        11 => "Novembre",
+        12 => "Decembre",
+    ];
+    return $tab[$n];
 }

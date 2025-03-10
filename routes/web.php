@@ -17,6 +17,8 @@ Route::get('login', function () {
             $url = route('admin.home');
         } else if ('docta' == $role) {
             $url = route('docta.home');
+        } else if ('client' == $role) {
+            $url = route('web.index');
         } else {
             abort(403, 'Who are you ?');
         }
@@ -29,6 +31,7 @@ Route::get('login', function () {
 })->name('login');
 
 Route::post('/auth/login', [AuthController::class, 'login'])->name('web.login');
+Route::post('/auth/signup', [AuthController::class, 'signup'])->name('web.signup');
 
 #####################################################################################################################
 Route::get('/pay-cb', [PAYController::class, 'pay_cb'])->name('pay.callback');
@@ -39,6 +42,7 @@ Route::middleware('visite.mdwl')->group(function () {
     Route::get('/mention-legale', [WEBController::class, 'mention'])->name('web.mention');
     Route::get('/termes-et-conditions', [WEBController::class, 'terme'])->name('web.terme');
     Route::get('/apptermes', [WEBController::class, 'terme00'])->name('terme00');
+    Route::get('/docta-mag', [WEBController::class, 'doctamag'])->name('doctamag');
 });
 Route::get('/doctor', [WEBController::class, 'doctor'])->name('web.doctor');
 #####################################################################################################################
@@ -65,6 +69,8 @@ Route::middleware('auth')->group(function () {
                 Route::get('log', 'log')->name('admin.log');
                 Route::get('app', 'app')->name('admin.app');
                 Route::get('categorie', 'categorie')->name('admin.categorie');
+                Route::get('categorie-mag', 'categoriemag')->name('admin.categoriemag');
+                Route::get('magazine', 'magazine')->name('admin.magazine');
             });
         });
     });
@@ -74,6 +80,9 @@ Route::middleware('auth')->group(function () {
             Route::get('', 'index')->name('docta.home');
         });
     });
+
+    Route::get('magdl', [AppController::class, 'magdl'])->name('magdl');
+
 });
 
 Route::post('uid', [AppController::class, 'uid'])->name('web.uid');

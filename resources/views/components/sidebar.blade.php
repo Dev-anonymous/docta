@@ -29,6 +29,15 @@
                 </li>
                 <li>
                     <a menulabel class="has-arrow" href="javascript:void()" aria-expanded="false">
+                        <i class="fa fa-book menu-icon"></i><span class="nav-text">Docta Mag</span>
+                    </a>
+                    <ul aria-expanded="true">
+                        <li><a href="{{ route('admin.magazine') }}">Magazines</a></li>
+                        <li><a href="{{ route('admin.categoriemag') }}">Catégories</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a menulabel class="has-arrow" href="javascript:void()" aria-expanded="false">
                         <i class="fa fa-android menu-icon"></i><span class="nav-text">Application</span>
                     </a>
                     <ul aria-expanded="true">

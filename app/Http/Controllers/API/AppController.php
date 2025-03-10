@@ -10,15 +10,18 @@ use App\Models\Conseilmedical;
 use App\Models\Download;
 use App\Models\Errorlog;
 use App\Models\Forfait;
+use App\Models\Magazine;
 use App\Models\Message;
 use App\Models\Profil;
 use App\Models\Pushnotification;
 use App\Models\Solde;
+use App\Models\Taux;
 use App\Models\Update;
 use App\Models\User;
 use App\Models\Zego;
 use DateTime;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 
 class AppController extends Controller
@@ -187,7 +190,7 @@ class AppController extends Controller
 
         $app->update(['premium' => 1]);
         $chat->update(['users_id' => $user->id, 'sent' => 0]);
-        Message::where('chat_id', $chat->id)->update(['senttouser' => 0]);
+        // Message::where('chat_id', $chat->id)->update(['senttouser' => 0]);
 
         DB::commit();
 
@@ -794,5 +797,38 @@ class AppController extends Controller
                 'user' => $user,
             ]
         ]);
+    }
+
+    function subscribeval()
+    {
+        $devise = request('devise');
+        if ('USD' == $devise) {
+            return [
+                'val' => '1.00 USD'
+            ];
+        } else if ('CDF' == $devise) {
+            $taux = Taux::first();
+            $val = $taux->usd_cdf;
+            return [
+                'val' => v(round($val, 2), 'CDF')
+            ];
+        }
+        abort(422);
+    }
+
+    function magdl()
+    {
+        $user = auth()->user();
+        $mag = Magazine::where(['id' => request('item')])->first();
+        if ($mag) {
+            if (candl($user, $mag)) {
+                $file = public_path('storage/' . $mag->fichier);
+                $key = magkey($mag);
+                $name = "DoctaMag-$key.pdf";
+                return Response::download($file, $name);
+            }
+        }
+
+        abort(403);
     }
 }
