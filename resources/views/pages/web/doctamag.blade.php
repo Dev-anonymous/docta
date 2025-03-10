@@ -255,9 +255,14 @@
                                              <span class="input-group-text" id="basic-addon1">+243</span>
                                          </div>
                                          @php
-                                             $phone = auth()->user()->phone;
-                                             $tel = substr($phone, -9);
+                                             $tel = '';
                                          @endphp
+                                         @auth
+                                             @php
+                                                 $phone = auth()->user()->phone;
+                                                 $tel = substr($phone, -9);
+                                             @endphp
+                                         @endauth
                                          <input type="text" required pattern="[0-9.]+" class="form-control"
                                              value="{{ $tel }}" placeholder="Votre numéro Tel."
                                              name="telephone" maxlength="9">
