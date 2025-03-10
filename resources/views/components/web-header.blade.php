@@ -60,8 +60,10 @@
                 @guest
                     <li>
                         <a class="nav-link" href="{{ route('login') }}">
-                            <i class="fa fa-unlock"></i>
-                            <span style="margin-left: 5px">Connexion</span>
+                            <div class="">
+                                <i class="fa fa-unlock"></i>
+                                <span style="margin-left: 5px">Connexion</span>
+                            </div>
                         </a>
                     </li>
                 @endguest
@@ -78,7 +80,9 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa fa-user-alt"></i> <span style="margin-left: 5px">{{ $user->name }}</span>
+                            <div class="">
+                                <i class="fa fa-user-alt"></i> <span style="margin-left: 5px">{{ $user->name }}</span>
+                            </div>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             @if ($user->user_role == 'admin')
