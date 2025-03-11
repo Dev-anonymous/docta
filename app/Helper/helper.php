@@ -479,6 +479,12 @@ function isapp(App $app)
 
 function candl(User $user, Magazine $mag)
 {
+    if (!$mag->fichier) {
+        return false;
+    }
+    if ($mag->free) {
+        return true;
+    }
     $date = $mag->date;
     $magkey = $date->format('m-Y');
     $ab = $user->abonnements()->where('key', $magkey)->count();

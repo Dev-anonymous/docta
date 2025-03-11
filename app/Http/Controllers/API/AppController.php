@@ -23,6 +23,7 @@ use DateTime;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
+use Jaybizzle\CrawlerDetect\CrawlerDetect;
 
 class AppController extends Controller
 {
@@ -822,6 +823,11 @@ class AppController extends Controller
         $mag = Magazine::where(['id' => request('item')])->first();
         if ($mag) {
             if (candl($user, $mag)) {
+                $CrawlerDetect = new CrawlerDetect();
+                if (!$CrawlerDetect->isCrawler()) {
+                    $mag->increment('dl');
+                }
+
                 $file = public_path('storage/' . $mag->fichier);
                 $key = magkey($mag);
                 $name = "DoctaMag-$key.pdf";

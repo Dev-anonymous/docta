@@ -5,9 +5,11 @@
      <meta property="og:image" content="{{ asset('images/icon.png') }}">
      <meta property="og:url" content="{{ url()->current() }}">
 
-     <meta name="description" content="Bienvenue sur Docta Mag">
-     <meta property="og:title" content="Docta Mag">
-     <meta property="og:description" content="Bienvenue sur Docta Mag">
+     <meta name="description"
+         content="@if ($mag) {{ $mag->titre }} @else  Bienvenue sur Docta Mag @endif">
+     <meta property="og:title" content="@if ($mag) {{ $mag->titre }} @else  Docta Mag @endif">
+     <meta property="og:description"
+         content="@if ($mag) {{ $mag->titre }} @else  Bienvenue sur Docta Mag @endif">
      <style>
          .catpanel {
              box-shadow: 0px 10px 45px rgba(0, 0, 0, 0.2);
@@ -74,7 +76,32 @@
                                  <div class="mb-5">
                                      {!! $mag->text !!}
                                  </div>
-                                 <b>Date publication : {{ $mag->datepublication?->format('d-m-Y H:i:s') }}</b>
+                                 <div class="mb-5">
+                                     @guest
+                                         <button class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#offline">
+                                             <i class="fa fa-download"></i>
+                                             Télécharger
+                                         </button>
+                                     @endguest
+                                     @auth
+                                         @if (@$mag->fichier)
+                                             @if (candl(auth()->user(), $mag))
+                                                 <button value="{{ $mag->id }}" class="btn btn-outline-info btn-sm" dlmag>
+                                                     <i class="fa fa-download"></i>
+                                                     Télécharger
+                                                 </button>
+                                             @else
+                                                 <button value="{{ magkey($mag) }}"
+                                                     label="{{ moislabel((int) $mag->date->format('m')) }} {{ date('Y') }}"
+                                                     class="btn btn-outline-warning btn-sm" subscribe>
+                                                     <i class="fa fa-download"></i>
+                                                     Télécharger
+                                                 </button>
+                                             @endif
+                                         @endif
+                                     @endauth
+                                 </div>
+                                 <small>Date publication : {{ $mag->datepublication?->format('d-m-Y H:i:s') }}</small>
                              </div>
                          </div>
                      </div>
@@ -113,7 +140,7 @@
                          @foreach ($magazines as $el)
                              <div class="col-md-4 mb-3">
                                  <div class="card carte">
-                                     <img src="{{ asset('storage/' . $el->image) }}" style="object-fit: cover"
+                                     <img src="{{ asset('storage/' . $el->image) }}" style="height: 250px; width: 100%"
                                          alt="">
                                      <div class="card-body" style="height: 350px; overflow: auto;">
                                          <i class="text-muted small">{{ $el->datepublication?->format('d-m-Y H:i:s') }}</i>
@@ -141,11 +168,19 @@
                                              @auth
                                                  @if ($el->fichier)
                                                      @if (candl(auth()->user(), $el))
-                                                         <button value="{{ $el->id }}"
-                                                             class="btn btn-outline-info btn-sm" dlmag>
-                                                             <i class="fa fa-download"></i>
-                                                             Télécharger
-                                                         </button>
+                                                         @if ($el->free)
+                                                             <button value="{{ $el->id }}"
+                                                                 class="btn btn-outline-success btn-sm" dlmag>
+                                                                 <i class="fa fa-download"></i>
+                                                                 Télécharger
+                                                             </button>
+                                                         @else
+                                                             <button value="{{ $el->id }}"
+                                                                 class="btn btn-outline-info btn-sm" dlmag>
+                                                                 <i class="fa fa-download"></i>
+                                                                 Télécharger
+                                                             </button>
+                                                         @endif
                                                      @else
                                                          <button value="{{ magkey($el) }}"
                                                              label="{{ moislabel((int) $el->date->format('m')) }} {{ date('Y') }}"
@@ -190,7 +225,7 @@
                          <div class="modal-body">
                              <div class="p-3 rounded-5" style="background-color: rgba(0, 0, 0, 0.075)">
                                  <div class="d-flex justify-content-between">
-                                     <h4>Veillez vous connecter</h4>
+                                     <h4>Veuillez vous connecter</h4>
                                      <img src="{{ asset('images/logo.png') }}" alt="" width="150px">
                                  </div>
                                  <div class="mt-4 mb-2">
@@ -201,8 +236,8 @@
                                  <button type="button" class="btn btn-outline-dark my-2" data-dismiss="modal">
                                      Fermer
                                  </button>
-                                 <a href="{{ route('login', ['r' => route('doctamag')]) }}" class="btn btn-info  my-2">
-                                     Se connecter
+                                 <a href="{{ route('login', ['r' => url()->full()]) }}" class="btn btn-info  my-2">
+                                     Connectez vous ou créez un compte
                                  </a>
                              </div>
                          </div>
@@ -210,8 +245,8 @@
                  </div>
              </div>
          @endguest
-
-         <div class="modal fade" id="submdl" tabindex="-1" role="dialog" aria-hidden="true" data-bs-backdrop="static">
+         <div class="modal fade" id="submdl" tabindex="-1" role="dialog" aria-hidden="true"
+             data-bs-backdrop="static">
              <div class="modal-dialog modal-md" role="document">
                  <div class="modal-content ">
                      <div class="modal-body">

@@ -10,6 +10,7 @@ use App\Models\Site;
 use App\Models\Slide;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Jaybizzle\CrawlerDetect\CrawlerDetect;
 
 class WEBController extends Controller
 {
@@ -69,7 +70,10 @@ class WEBController extends Controller
         if ($mag) {
             $text = $mag->text;
             if (strlen($text) > 10) {
-                //
+                $CrawlerDetect = new CrawlerDetect();
+                if (!$CrawlerDetect->isCrawler()) {
+                    $mag->increment('view');
+                }
             } else {
                 $mag = null;
             }

@@ -21,6 +21,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $fichier
  * @property Carbon|null $date
  * @property Carbon|null $datepublication
+ * @property int|null $free
+ * @property int|null $view
+ * @property int|null $dl
  * 
  * @property Categoriemagazine $categoriemagazine
  *
@@ -34,7 +37,10 @@ class Magazine extends Model
 	protected $casts = [
 		'categoriemagazine_id' => 'int',
 		'date' => 'datetime',
-		'datepublication' => 'datetime'
+		'datepublication' => 'datetime',
+		'free' => 'int',
+		'view' => 'int',
+		'dl' => 'int'
 	];
 
 	protected $fillable = [
@@ -45,7 +51,10 @@ class Magazine extends Model
 		'image',
 		'fichier',
 		'date',
-		'datepublication'
+		'datepublication',
+		'free',
+		'view',
+		'dl'
 	];
 
 	public function categoriemagazine()

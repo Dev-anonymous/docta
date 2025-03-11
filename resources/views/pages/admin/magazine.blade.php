@@ -31,8 +31,10 @@
                                             <th>DESCRIPTION</th>
                                             <th>AFFICHE</th>
                                             <th>FICHIER</th>
+                                            <th>TYPE</th>
                                             <th>DATE</th>
                                             <th>DATE PUBLICATION</th>
+                                            <th>DETAILS</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -72,6 +74,10 @@
                         <div class="form-group">
                             <label class="col-form-label">Affiche du magazine : .png,.jpg,.jpeg (500x300 | 1000x500)</label>
                             <input type="file" accept=".png,.jpg,.jpeg," class="form-control" name="image" required>
+                        </div>
+                        <div class="form-check form-check-inline mb-3">
+                            <input name="free" class="form-check-input" type="checkbox" id="inlineCheckbox12213">
+                            <label class="form-check-label" for="inlineCheckbox12213">Ce magazine est gratuit</label>
                         </div>
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Date du magaine</label>
@@ -256,7 +262,7 @@
                     [10, 25, 50, 100, "All"]
                 ],
                 order: [
-                    [6, 'desc']
+                    [8, 'desc']
                 ],
                 columnDefs: [
                     // {
@@ -265,7 +271,7 @@
                     // },
                     {
                         width: '1%',
-                        targets: 7
+                        targets: 9
                     }
                 ],
                 columns: [{
@@ -294,12 +300,21 @@
                         searchable: false
                     },
                     {
+                        data: 'free',
+                        name: 'free'
+                    },
+                    {
                         data: 'date',
                         name: 'date'
                     },
                     {
                         data: 'datepublication',
                         name: 'datepublication'
+                    }, {
+                        data: 'view',
+                        name: 'view',
+                        orderable: true,
+                        searchable: false
                     },
                     {
                         data: 'action',

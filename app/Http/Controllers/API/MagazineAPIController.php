@@ -44,13 +44,21 @@ class MagazineAPIController extends Controller
                 ->editColumn('categoriemagazine_id', function ($row) {
                     return $row->categoriemagazine->categorie;
                 })
-
+                ->editColumn('free', function ($row) {
+                    if ($row->free) {
+                        return "<span class='badge badge-success'>GRATUIT</span>";
+                    }
+                    return "<span class='badge badge-danger'>PAYANT</span>";
+                })
                 ->editColumn('date', function ($row) {
                     return  $row->date?->format('d-m-Y');
                 })->editColumn('datepublication', function ($row) {
                     return  $row->datepublication?->format('d-m-Y H:i:s');
                 })
-                ->rawColumns(['action', 'image', 'fichier', 'date'])
+                ->editColumn('view', function ($row) {
+                    return "<b>Vue : $row->view<br/> Téléch : $row->dl</b>";
+                })
+                ->rawColumns(['action', 'image', 'fichier', 'date', 'free'])
                 ->make(true);
         }
 
@@ -94,6 +102,9 @@ class MagazineAPIController extends Controller
         }
         $data['image'] = request('image')->store('magazines', 'public');
         $data['datepublication'] = nnow();
+        $data['free'] = request()->has('free');
+        $data['dl'] = 0;
+        $data['view'] = 0;
         Magazine::create($data);
         return response([
             'success' => true,
