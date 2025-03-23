@@ -131,83 +131,87 @@
                                                  class="fa @if ($isactive) fa-check-circle @else fa-book @endif "></i>
                                              <span>
                                                  {{ $el->categorie }}
+                                                 <span class="badge  badge-pill bg-info">{{ $el->magazines_count }}</span>
                                              </span>
                                          </b>
                                      </div>
                                  @endforeach
                              </div>
                          </div>
-                         @foreach ($magazines as $el)
-                             <div class="col-md-4 mb-3">
-                                 <div class="card carte">
-                                     <img src="{{ asset('storage/' . $el->image) }}" style="height: 250px; width: 100%"
-                                         alt="">
-                                     <div class="card-body" style="height: 350px; overflow: auto;">
-                                         <i class="text-muted small">{{ $el->datepublication?->format('d-m-Y H:i:s') }}</i>
-                                         <br>
-                                         <i class="text-muted small">{{ $el->categoriemagazine->categorie }}</i>
-                                         <h5 class="card-title">{{ $el->titre }}</h5>
-                                         <p class="card-text">
-                                         <div>
-                                             {{ $el->description }}
+                         <div class="" magdiv>
+                             @foreach ($magazines as $el)
+                                 <div class="col-md-4 mb-3">
+                                     <div class="card carte">
+                                         <img src="{{ asset('storage/' . $el->image) }}" style="height: 250px; width: 100%"
+                                             alt="">
+                                         <div class="card-body" style="height: 350px; overflow: auto;">
+                                             <i
+                                                 class="text-muted small">{{ $el->datepublication?->format('d-m-Y H:i:s') }}</i>
+                                             <br>
+                                             <i class="text-muted small">{{ $el->categoriemagazine->categorie }}</i>
+                                             <h5 class="card-title">{{ $el->titre }}</h5>
+                                             <p class="card-text">
+                                             <div>
+                                                 {{ $el->description }}
+                                             </div>
+                                             </p>
                                          </div>
-                                         </p>
-                                     </div>
-                                     <div class="card-footer bg-white border-top-0 d-flex justify-content-between">
-                                         <div class="">
-                                             @php
+                                         <div class="card-footer bg-white border-top-0 d-flex justify-content-between">
+                                             <div class="">
+                                                 @php
 
-                                             @endphp
-                                             @guest
-                                                 <button class="btn btn-outline-info btn-sm" data-toggle="modal"
-                                                     data-target="#offline">
-                                                     <i class="fa fa-download"></i>
-                                                     Télécharger
-                                                 </button>
-                                             @endguest
-                                             @auth
-                                                 @if ($el->fichier)
-                                                     @if (candl(auth()->user(), $el))
-                                                         @if ($el->free)
-                                                             <button value="{{ $el->id }}"
-                                                                 class="btn btn-outline-success btn-sm" dlmag>
-                                                                 <i class="fa fa-download"></i>
-                                                                 Télécharger
-                                                             </button>
+                                                 @endphp
+                                                 @guest
+                                                     <button class="btn btn-outline-info btn-sm" data-toggle="modal"
+                                                         data-target="#offline">
+                                                         <i class="fa fa-download"></i>
+                                                         Télécharger
+                                                     </button>
+                                                 @endguest
+                                                 @auth
+                                                     @if ($el->fichier)
+                                                         @if (candl(auth()->user(), $el))
+                                                             @if ($el->free)
+                                                                 <button value="{{ $el->id }}"
+                                                                     class="btn btn-outline-success btn-sm" dlmag>
+                                                                     <i class="fa fa-download"></i>
+                                                                     Télécharger
+                                                                 </button>
+                                                             @else
+                                                                 <button value="{{ $el->id }}"
+                                                                     class="btn btn-outline-info btn-sm" dlmag>
+                                                                     <i class="fa fa-download"></i>
+                                                                     Télécharger
+                                                                 </button>
+                                                             @endif
                                                          @else
-                                                             <button value="{{ $el->id }}"
-                                                                 class="btn btn-outline-info btn-sm" dlmag>
+                                                             <button value="{{ magkey($el) }}"
+                                                                 label="{{ moislabel((int) $el->date->format('m')) }} {{ date('Y') }}"
+                                                                 class="btn btn-outline-warning btn-sm" subscribe>
                                                                  <i class="fa fa-download"></i>
                                                                  Télécharger
                                                              </button>
                                                          @endif
-                                                     @else
-                                                         <button value="{{ magkey($el) }}"
-                                                             label="{{ moislabel((int) $el->date->format('m')) }} {{ date('Y') }}"
-                                                             class="btn btn-outline-warning btn-sm" subscribe>
-                                                             <i class="fa fa-download"></i>
-                                                             Télécharger
-                                                         </button>
                                                      @endif
+                                                 @endauth
+                                             </div>
+                                             <div class="">
+                                                 @php
+                                                     $n = strlen($el->text);
+                                                 @endphp
+                                                 @if ($n > 10)
+                                                     <a href="{{ route('doctamag', ['item' => $el->id]) }}"
+                                                         class="btn btn-info btn-sm">
+                                                         <i class="fa fa-eye"></i>
+                                                         Lire la suite
+                                                     </a>
                                                  @endif
-                                             @endauth
-                                         </div>
-                                         <div class="">
-                                             @php
-                                                 $n = strlen($el->text);
-                                             @endphp
-                                             @if ($n > 10)
-                                                 <a href="{{ route('doctamag', ['item' => $el->id]) }}"
-                                                     class="btn btn-info btn-sm">
-                                                     <i class="fa fa-eye"></i>
-                                                     Lire la suite
-                                                 </a>
-                                             @endif
+                                             </div>
                                          </div>
                                      </div>
                                  </div>
-                             </div>
-                         @endforeach
+                             @endforeach
+                         </div>
                      </div>
                      <div class="row">
                          <div class="col-12 mt-4 d-flex justify-content-center">
@@ -225,11 +229,11 @@
                          <div class="modal-body">
                              <div class="p-3 rounded-5" style="background-color: rgba(0, 0, 0, 0.075)">
                                  <div class="d-flex justify-content-between">
-                                     <h4>Veuillez vous connecter</h4>
+                                     <h4>Veuillez vous connectez</h4>
                                      <img src="{{ asset('images/logo.png') }}" alt="" width="150px">
                                  </div>
                                  <div class="mt-4 mb-2">
-                                     <h5>Connecter vous ou créer un compte pour avoir accès au téléchargement des magazines pour
+                                     <h5>Connectez vous ou créez un compte pour avoir accès au téléchargement des magazines pour
                                          <b style="font-size: 25px">1$</b> l'abonnement mensuel.
                                      </h5>
                                  </div>
@@ -373,6 +377,12 @@
              }, 3000);
 
          });
+
+         setTimeout(() => {
+             $('html,body').animate({
+                 scrollTop: $('[magdiv]').offset().top - 100
+             }, 1000);
+         }, 1500);
 
 
          var sel = $('select[name=devise]');

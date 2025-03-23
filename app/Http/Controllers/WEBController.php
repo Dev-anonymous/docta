@@ -87,7 +87,7 @@ class WEBController extends Controller
         }
         $magazines  = $magazines->paginate(6);
 
-        $cats = Categoriemagazine::orderBy('categorie')->get();
+        $cats = Categoriemagazine::orderBy('categorie')->whereHas('magazines')->withCount('magazines')->get();
         return view('pages.web.doctamag', compact('magazines', 'mag', 'cats'));
     }
 }

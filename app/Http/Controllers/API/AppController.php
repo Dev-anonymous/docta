@@ -828,7 +828,10 @@ class AppController extends Controller
                     $mag->increment('dl');
                 }
 
-                $file = public_path('storage/' . $mag->fichier);
+                $file = 'storage/' . $mag->fichier;
+                if (!file_exists($file)) {
+                    abort(404);
+                }
                 $key = magkey($mag);
                 $name = "DoctaMag-$key.pdf";
                 return Response::download($file, $name);
