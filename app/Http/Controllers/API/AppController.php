@@ -250,9 +250,8 @@ class AppController extends Controller
 
     public function message()
     {
-        if (!istest()) {
-            canmessage();
-        }
+        canmessage();
+
         $app = userapp();
 
         $validator = Validator::make(request()->all(), [
@@ -423,6 +422,7 @@ class AppController extends Controller
                 'sms' => $sms,
                 'appel' => $appel,
                 'app' => ['telephone' => $app->telephone, 'nom' => $app->nom, 'email' => $app->email],
+                'canmessage' => canmessage(false)
             ]
         ]);
     }

@@ -258,31 +258,50 @@ function istest()
     return false;
 }
 
-function canmessage()
+function canmessage($abort = true)
 {
+    if (istest()) {
+        return true;
+    }
     $app = userapp();
     $chat = $app->chats()->first();
+
+    $forf = Forfait::first();
+    $sms = (float) @$forf->sms;
+
+    if (!$sms) {
+        return true;
+    }
+
     if ($chat) {
         $n = $chat->messages()->where('fromuser', 0)->count();
-        if ($n < 1) {
-            // one free message
-            return true;
-        }
+        // if ($n < 1) {
+        //     // one free message
+        //     return true;
+        // }
         // $n = $chat->messages()->where('fromuser', 0)->whereNull('file')->count();
         $sold = $app->soldes()->first()->solde_usd;
-        $forf = Forfait::first();
-
-        $sms = (float) @$forf->sms;
         $can = $sold >= $sms;
 
         if (!$can) {
-            abort(403, 'Balance error for SMS');
+            if ($abort) {
+                abort(403, 'Balance error for SMS');
+            } else {
+                return false;
+            }
         }
+        return true;
         // $n = $chat->messages()->where('fromuser', 0)->whereNotNull('file')->count();
         // $sold = $app->soldes()->first()->solde_usd;
         // if ($sold <= 0 && $sms > 0) {
         //     abort(403, 'Balance error for FILE');
         // }
+    } else {
+        if ($abort) {
+            abort(403, 'No free SMS');
+        } else {
+            return false;
+        }
     }
 }
 

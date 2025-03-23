@@ -665,16 +665,15 @@
             var solde = Number(spa.attr('solde'));
             var facsms = Number(spa.attr('sms'));
 
-            if (n > 0) {
-                if ((solde == 0 && facsms > 0) || (facsms > 0 && solde < facsms)) {
-                    var sp = $('[error]');
-                    sp.stop().html(
-                        "Veuillez recharger votre crédit SVP. Cliquez sur la zone crédit en gris foncé en haut.");
-                    setTimeout(() => {
-                        sp.html('');
-                    }, 10000);
-                    return false;
-                }
+            var canm = btn_send.attr('canmessage');
+            if (canm == "false") {
+                var sp = $('[error]');
+                sp.stop().html(
+                    "Veuillez recharger votre crédit SVP. Cliquez sur la zone crédit en gris foncé en haut.");
+                setTimeout(() => {
+                    sp.html('');
+                }, 10000);
+                return false;
             }
             return true;
         }
@@ -864,7 +863,6 @@
 
         first = true;
         $('#mydocta').click(function() {
-            console.log('f');
             var data = $(this).attr('data');
             if (data) {
                 data = JSON.parse(unescape(data));
@@ -884,6 +882,7 @@
                 },
                 success: function(rep) {
                     var data = rep.data;
+                    btn_send.attr('canmessage', data.canmessage);
                     if (first) {
                         first = false;
                         $("#btn-chat").fadeIn();
