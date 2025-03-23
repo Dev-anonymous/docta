@@ -138,7 +138,7 @@
                                  @endforeach
                              </div>
                          </div>
-                         <div class="" magdiv>
+                         <div class="row" magdiv>
                              @foreach ($magazines as $el)
                                  <div class="col-md-4 mb-3">
                                      <div class="card carte">
