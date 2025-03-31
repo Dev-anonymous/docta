@@ -51,7 +51,9 @@
              <h2>
                  Chaque mois, le Magazine Docta vous plonge au cœur de l'univers de la santé avec une approche claire,
                  accessible et scientifiquement rigoureuse. Conçu pour informer, sensibiliser et accompagner ses lecteurs,
-                 le Magazine Docta couvre un large éventail de thématiques essentielles à votre bien-être.
+                 le Magazine Docta couvre un large éventail de thématiques essentielles à votre bien-être. <br> <br>
+                 Ce n'est pas tout ! Dans la rubrique "<b>Votre Minute Santé</b>", retrouvez des articles gratuits pour une santé
+                 éclairée, accessibles à tous, à tout moment !
              </h2>
          </div>
      </section>
@@ -60,7 +62,7 @@
          <section class="contact" style="margin-top: 12%">
              <div class="container">
                  @if ($mag)
-                     <div class="w-100">
+                     <div class="w-100" magdiv>
                          <div class="d-flex justify-content-center">
                              <div class="">
                                  <div class="mb-3">
@@ -144,10 +146,23 @@
                                      <div class="card carte">
                                          <img src="{{ asset('storage/' . $el->image) }}" style="height: 250px; width: 100%"
                                              alt="">
-                                         <div class="card-body" style="height: 350px; overflow: auto;">
-                                             <i
-                                                 class="text-muted small">{{ $el->datepublication?->format('d-m-Y H:i:s') }}</i>
-                                             <br>
+                                         <div cldass="px-3">
+                                             <div class="d-flex justify-content-between px-3">
+                                                 <i class="text-muted small">
+                                                     {{ $el->datepublication?->format('d-m-Y H:i:s') }}
+                                                 </i>
+                                                 <div class="">
+                                                     @if (candl(auth()->user(), $el))
+                                                         <div>
+                                                             <span class="badge bg-success">
+                                                                 <i class="fa fa-star"></i> Gratuit
+                                                             </span>
+                                                         </div>
+                                                     @endif
+                                                 </div>
+                                             </div>
+                                         </div>
+                                         <div class="card-body pt-0" style="height: 350px; overflow: auto;">
                                              <i class="text-muted small">{{ $el->categoriemagazine->categorie }}</i>
                                              <h5 class="card-title">{{ $el->titre }}</h5>
                                              <p class="card-text">
@@ -229,12 +244,14 @@
                          <div class="modal-body">
                              <div class="p-3 rounded-5" style="background-color: rgba(0, 0, 0, 0.075)">
                                  <div class="d-flex justify-content-between">
-                                     <h4>Veuillez vous connectez</h4>
+                                     <h4>Veuillez vous connecter</h4>
                                      <img src="{{ asset('images/logo.png') }}" alt="" width="150px">
                                  </div>
                                  <div class="mt-4 mb-2">
-                                     <h5>Connectez vous ou créez un compte pour avoir accès au téléchargement des magazines pour
-                                         <b style="font-size: 25px">1$</b> l'abonnement mensuel.
+                                     <h5>
+                                         Connectez vous ou créez un compte pour accéder au téléchargement gratuit de <b>votre
+                                             minute santé</b> et au <b>magazine Docta</b> pour <b
+                                             style="font-size: 25px">1$</b>.
                                      </h5>
                                  </div>
                                  <button type="button" class="btn btn-outline-dark my-2" data-dismiss="modal">
