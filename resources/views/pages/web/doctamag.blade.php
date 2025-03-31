@@ -216,7 +216,7 @@
                                                  @endphp
                                                  @if ($n > 10)
                                                      <a href="{{ route('doctamag', ['item' => $el->id]) }}"
-                                                         class="btn btn-info btn-sm">
+                                                         class="btn btn-light btn-sm">
                                                          <i class="fa fa-eye"></i>
                                                          Lire la suite
                                                      </a>
