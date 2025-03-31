@@ -496,7 +496,7 @@ function isapp(App $app)
     return strpos($app->uid, 'BROWSER-') === false;
 }
 
-function candl(User $user, Magazine $mag)
+function candl(?User $user = null, Magazine $mag)
 {
     if (!$mag->fichier) {
         return false;
@@ -504,10 +504,14 @@ function candl(User $user, Magazine $mag)
     if ($mag->free) {
         return true;
     }
-    $date = $mag->date;
-    $magkey = $date->format('m-Y');
-    $ab = $user->abonnements()->where('key', $magkey)->count();
-    return (bool) $ab;
+    if ($user) {
+        $date = $mag->date;
+        $magkey = $date->format('m-Y');
+        $ab = $user->abonnements()->where('key', $magkey)->count();
+        return (bool) $ab;
+    } else {
+        return false;
+    }
 }
 
 function magkey(Magazine $mag)
